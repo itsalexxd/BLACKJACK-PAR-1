@@ -12,5 +12,14 @@ if __name__ == "__main__":
     print ("Modos de ejecucion: [J]uego [A]nalisis")
     modoEjecucion = input ("Modo de ejecucion: ")
     
-    
+    if modoEjecucion == 'J':
+        print ("MODO JUEGO SELECCIONADO")
+        
+    if modoEjecucion == 'A':
+        print ("MODO ANALISIS SELECCIONADO")
+        
+    if modoEjecucion != 'J' || modoEjecucion != 'A':
+        print ("Entrada no valida, inserte de nuevo el modo de ejecución")
+        print ("Modos de ejecucion: [J]uego [A]nalisis")
+        modoEjecucion = input ("Modo de ejecucion: ")
     
