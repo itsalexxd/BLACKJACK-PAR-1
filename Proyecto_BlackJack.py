@@ -19,7 +19,7 @@ if __name__ == "__main__":
         print ("MODO ANALISIS SELECCIONADO")
     
     else if modoEjecucion == '':
-        print ("MODO ")
+        print ("MODO JUEGO PREDETERMINADO")
         
     else modoEjecucion != 'J' or modoEjecucion != 'A':
         print ("Entrada no valida, inserte de nuevo el modo de ejecución")
