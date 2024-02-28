@@ -8,7 +8,7 @@ Curso 2023-2024
 
 if __name__ == "__main__":
     
-    # Pido el modo de ejecucion en el que desea iniciar el programa
+    # Pedimos el modo de ejecucion en el que desea iniciar el programa
     print ("Modos de ejecucion: [J]uego [A]nalisis")
     modoEjecucion = input ("Modo de ejecucion: ")
     
@@ -18,7 +18,8 @@ if __name__ == "__main__":
     else if modoEjecucion == 'A':
         print ("MODO ANALISIS SELECCIONADO")
     
-    else if :
+    else if modoEjecucion == '':
+        print ("MODO ")
         
     else modoEjecucion != 'J' or modoEjecucion != 'A':
         print ("Entrada no valida, inserte de nuevo el modo de ejecución")
