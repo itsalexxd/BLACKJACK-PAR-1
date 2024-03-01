@@ -23,6 +23,13 @@ if __name__ == "__main__":
     
     if modoEjecucion == 'J' or modoEjecucion == '':
         
+        #temporal hasta ver como se hacen el resto de cosas para tener las variables
+        manoCoupier = []
+        manoJugador = []
+        recuentoCoupier = 0
+        recuentoJugador = 0
+        manosJugador = 0
+        
         if modoEjecucion == '':
             print ("MODO PREDETERMINADO PREDETERMINADO - JUEGO")
         else:
@@ -36,7 +43,13 @@ if __name__ == "__main__":
         print (" ")
         apuesta = input ("Seleccione la apuesta que desea realizar: [2] [10] [50]: ")
         print (" ")
-        print ("Reparto inicial:")
+        print ("REPARTO INICIAL:")
+        print ("")
+        print ("<" + manoCoupier + "> Coupier (" + recuentoCoupier + "): ")
+        print ("")
+        for i in range (manosJugador):
+            print ("")
+            print ("<" + manoJugador + "> Jugador (" + recuentoJugador + "): ")
         
 
 #################################################################################################################
@@ -63,4 +76,5 @@ if __name__ == "__main__":
     #### M E T O D O S ####
     #######################
     
-    
+    def repartoInicial():
+        return 0

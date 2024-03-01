@@ -129,3 +129,40 @@ Partida:
             se desglosa cada mano (linea por mano)
             resultado de comparar la mano con la del coupier -> indicamos beneficio / perdida de la jugada
             mostrar balance total de la partida 
+
+
+
+
+
+
+
+
+
+
+
+
+############################################
+#### P L A N T I L L A #### C A R T A S ####
+############################################
+
+PALOS | ♠  ♥  ♦  ♣
+
++-----+
+|  A  |
+|  ♠  |
++-----+
+
++-----+
+|  6  |
+|  ♥  |
++-----+
+
++-----+
+|  K  |
+|  ♦  |
++-----+
+
++-----+
+|  5  |
+|  ♣  |
++-----+
