@@ -17,26 +17,50 @@ if __name__ == "__main__":
     numPartida = 0
     balance = 0
     
-    if modoEjecucion == 'J':
+    ###################
+    #### J U E G O ####
+    ###################
+    
+    if modoEjecucion == 'J' or modoEjecucion == '':
         
+        if modoEjecucion == '':
+            print ("MODO PREDETERMINADO PREDETERMINADO - JUEGO")
+        else:
+            print ("MODO JUEGO SELECCIONADO")
+            
         # Sumo 1 a la cuenta de las partidas
         numPartida += numPartida + 1
         
-        print ("MODO JUEGO SELECCIONADO")
         print (" ")
         print ("--- INICIO DE LA PARTIDA #" + str(numPartida) + " --- BALANCE = " + str(balance) + "€")
         print (" ")
         apuesta = input ("Seleccione la apuesta que desea realizar: [2] [10] [50]: ")
+        print (" ")
+        print ("Reparto inicial:")
+        
+
+#################################################################################################################
         
         
+    #########################
+    #### A N A L I S I S ####
+    #########################
+    
     elif modoEjecucion == 'A':
         print ("MODO ANALISIS SELECCIONADO")
-    
-    elif modoEjecucion == '':
-        print ("MODO JUEGO PREDETERMINADO")
+        
+#################################################################################################################
         
     else:
         print ("Entrada no valida, inserte de nuevo el modo de ejecución")
         print ("Modos de ejecucion: [J]uego [A]nalisis")
         modoEjecucion = input ("Modo de ejecucion: ")
+    
+#################################################################################################################
+
+
+    #######################
+    #### M E T O D O S ####
+    #######################
+    
     
