@@ -73,7 +73,8 @@ class Croupier:
 
 class Jugador:
     def __init__(self):
-        self.manos = [Mano()]
+        self.manos = [Mano(),Mano()]
+        
     
     
     
@@ -96,19 +97,23 @@ if __name__ == "__main__":
     mazoDiamantes = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
     mazoCorazones = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
     baraja = [mazoPicas, mazoTrevoles, mazoDiamantes, mazoCorazones]
-    
+    # Mostramos la baraja
     muestraBaraja(baraja)
+
+    # Mostramos por pantalla las cartas
     imprimir_carta("♦", " J")
     imprimir_carta("♦", "10")    
     
+    # Definimos 
     croupier = Croupier()
     jugador = Jugador()
     
-    # Agregamos cartas
+    # Agregamos cartas a las manos
     croupier.mano.agregarCartas('J')
-    jugador.manos[1].agregarCartas('K')
+    jugador.manos[0].agregarCartas('K')
+    jugador.manos[1].agregarCartas('1')
     
-    # Mostramos el valor total
+    # Mostramos el valor total de cada mano
     print("Valor total de la mano del croupier:", croupier.mano.obtenerSuma())
     print("Valor total de la mano del jugador:", jugador.manos[0].obtenerSuma())
     print("Valor total de la mano del jugador:", jugador.manos[1].obtenerSuma())
