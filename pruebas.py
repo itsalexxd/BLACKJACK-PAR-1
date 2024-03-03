@@ -4,7 +4,7 @@ def imprimir_carta(palo, valor):
     carta = f"""
 ╭───────╮
 │       │
-│   {valor}   │
+│  {valor}   │
 │   {palo}   │
 │       │
 ╰───────╯
@@ -41,8 +41,39 @@ def muestraBaraja(baraja):
         print(f"Mazo {i + 1}: ", end="")
         print(*mazo, sep=", ")
         
+class Mano:
+    def __init__(self):
+        self.cartas = []
         
-class Coche():
+    def agregarCartas(self, carta):
+        self.cartas.append(carta)
+        
+    def obtenerSuma(self):
+        valorTotal = 0
+        ases = 0
+        for carta in self.cartas:
+            if carta in ['J', 'Q', 'K']:
+                valorTotal += 10
+            elif carta == 'A':
+                ases += 1
+            else:
+                valorTotal += int(carta)
+        
+        for _ in range(ases):
+            if valorTotal + 11 <= 21:
+                valorTotal += 11
+            else:
+                valorTotal += 1
+        
+        return valorTotal
+
+class Croupier:
+    def __init__(self):
+        self.mano = Mano()
+
+class Jugador:
+    def __init__(self):
+        self.manos = [Mano()]
     
     
     
@@ -67,3 +98,16 @@ if __name__ == "__main__":
     baraja = [mazoPicas, mazoTrevoles, mazoDiamantes, mazoCorazones]
     
     muestraBaraja(baraja)
+    imprimir_carta("♦", " J")
+    imprimir_carta("♦", "10")    
+    
+    croupier = Croupier()
+    jugador = Jugador()
+    
+    # Agregamos cartas
+    croupier.mano.agregarCartas('J')
+    jugador.manos[0].agregarCartas('5')
+    
+    # Mostramos el valor total
+    print("Valor total de la mano del croupier:", croupier.mano.obtenerSuma())
+    print("Valor total de la mano del jugador:", jugador.manos[0].obtenerSuma())
