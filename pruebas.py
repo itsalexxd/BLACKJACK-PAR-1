@@ -87,7 +87,7 @@ if __name__ == "__main__":
     rangoMazosFinal = 4  
     # Genero 2 numeros de forma aleatoria para elegir mazo y carta
     randomCartas, randomMazos = randomizador(rangoCartasInicio, rangoCartasFinal, rangoMazosInicio, rangoMazosFinal)
-    print (randomCartas, randomMazos)
+    print ("Cartas: ", randomCartas," Mazos: ", randomMazos)
     
 
     # Creo la baraja
@@ -106,8 +106,9 @@ if __name__ == "__main__":
     
     # Agregamos cartas
     croupier.mano.agregarCartas('J')
-    jugador.manos[0].agregarCartas('5')
+    jugador.manos[1].agregarCartas('K')
     
     # Mostramos el valor total
     print("Valor total de la mano del croupier:", croupier.mano.obtenerSuma())
     print("Valor total de la mano del jugador:", jugador.manos[0].obtenerSuma())
+    print("Valor total de la mano del jugador:", jugador.manos[1].obtenerSuma())
