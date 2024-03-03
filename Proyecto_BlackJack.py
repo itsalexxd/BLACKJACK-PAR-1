@@ -45,11 +45,11 @@ if __name__ == "__main__":
         print (" ")
         print ("REPARTO INICIAL:")
         print ("")
-        print ("<" + manoCoupier + "> Coupier (" + recuentoCoupier + "): ")
+        print ("<" + str(manoCoupier) + "> Coupier (" + str(recuentoCoupier) + "): ")
         print ("")
         for i in range (manosJugador):
             print ("")
-            print ("<" + manoJugador + "> Jugador (" + recuentoJugador + "): ")
+            print ("<" + str(manoJugador) + "> Jugador (" + str(recuentoJugador) + "): ")
         
 
 #################################################################################################################
