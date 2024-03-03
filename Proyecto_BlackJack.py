@@ -10,7 +10,8 @@ if __name__ == "__main__":
     
     # Pedimos el modo de ejecucion en el que desea iniciar el programa
     print ("Modos de ejecucion: [J]uego [A]nalisis")
-    modoEjecucion = input ("Modo de ejecucion: ")
+    entrada = input ("Modo de ejecucion: ")
+    modoEjecucion = entrada.upper()
     
     print (" ")
     
