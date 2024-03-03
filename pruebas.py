@@ -40,6 +40,10 @@ def muestraBaraja(baraja):
     for i, mazo in enumerate(baraja):
         print(f"Mazo {i + 1}: ", end="")
         print(*mazo, sep=", ")
+        
+        
+class Coche():
+    
     
     
     
