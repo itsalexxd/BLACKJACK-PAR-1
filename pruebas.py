@@ -12,11 +12,7 @@ def imprimir_carta(palo, valor):
     print(carta)
     
 
-# Indico los rangos para los valores random
-rangoCartasInicio = 1
-rangoCartasFinal = 13
-rangoMazosInicio = 1
-rangoMazosFinal = 4  
+
 
 # Funcion para generar dos numeros aleatorios dentro de unos rangos indicados
 def randomizador(rangoCartasInicio, rangoCartasFinal, rangoMazosInicio, rangoMazosFinal):
@@ -25,21 +21,7 @@ def randomizador(rangoCartasInicio, rangoCartasFinal, rangoMazosInicio, rangoMaz
     
     return randomCartas, randomMazos
 
-# 
-mazoPicas = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
-mazoTrevoles = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
-mazoDiamantes = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
-mazoCorazones = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
-
-baraja = [mazoPicas, mazoTrevoles, mazoDiamantes, mazoCorazones]
-
-    
-manoCoupier = []
-manoJugador = []
-    
-    
-
-# Inserto
+# Recupero el valor de las cartas en la baraja
 def recuperaCartas():
     cartasMazo = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
     long = len(cartasMazo)
@@ -53,8 +35,6 @@ def recuperaCartas():
         mazoDiamantes.append(i, restaurador)
         mazoCorazones.append(i, restaurador)
 
-# def reparteCoupier(randomCartas, randomMazos, mazoPicas, mazoTrevoles, mazoCorazones, manoCoupier):
-
 # Funcion para mostrar la baraja completa
 def muestraBaraja(baraja):
     for i, mazo in enumerate(baraja):
@@ -65,14 +45,21 @@ def muestraBaraja(baraja):
     
 if __name__ == "__main__":
     
+    # Indico los rangos para generar los valores random
+    rangoCartasInicio = 1
+    rangoCartasFinal = 13
+    rangoMazosInicio = 1
+    rangoMazosFinal = 4  
     # Genero 2 numeros de forma aleatoria para elegir mazo y carta
-    # randomCartas, randomMazos = randomizador(rangoCartasInicio, rangoCartasFinal, rangoMazosInicio, rangoMazosFinal)
+    randomCartas, randomMazos = randomizador(rangoCartasInicio, rangoCartasFinal, rangoMazosInicio, rangoMazosFinal)
+    print (randomCartas, randomMazos)
+    
 
+    # Creo la baraja
     mazoPicas = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
     mazoTrevoles = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
     mazoDiamantes = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
     mazoCorazones = ['1','2','3','4','5','6','7','8','9','10','J','Q','K']
-
     baraja = [mazoPicas, mazoTrevoles, mazoDiamantes, mazoCorazones]
     
     muestraBaraja(baraja)
