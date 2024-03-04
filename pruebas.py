@@ -4,8 +4,9 @@ def imprimir_carta(palo, valor):
     carta = f"""
 ╭───────╮
 │       │
-│  {valor}   │
-│   {palo}   │
+│    {valor} │
+│       │
+│ {palo}     │
 │       │
 ╰───────╯
 """
@@ -43,7 +44,10 @@ def muestraBaraja(baraja):
         
 class Mano:
     def __init__(self):
-        self.cartas = []
+        # self.estado = estado    # 3 estados -> Abierta/Cerrada/Pasada o Separar
+        # self.valor = valor      # Suma de las cartas de la mano
+        # self.apuesta = apuesta  # Valor de la apuesta de la mano
+        self.cartas = []        # Cartas que posee la mano
         
     def agregarCartas(self, carta):
         self.cartas.append(carta)
@@ -110,8 +114,11 @@ if __name__ == "__main__":
     
     # Agregamos cartas a las manos
     croupier.mano.agregarCartas('J')
+    
     jugador.manos[0].agregarCartas('K')
-    jugador.manos[1].agregarCartas('1')
+    
+    jugador.manos[1].agregarCartas('A')
+    jugador.manos[1].agregarCartas('A')
     
     # Mostramos el valor total de cada mano
     print("Valor total de la mano del croupier:", croupier.mano.obtenerSuma())
