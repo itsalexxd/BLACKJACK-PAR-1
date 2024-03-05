@@ -110,10 +110,10 @@ def accederListas():
     
     mat = [[1,2,3],[4,5,6],[7,8,9]]
     
-    print ("a) Accede al elemento (1,2)", mat[1,2])
+    print ("a) Accede al elemento (1,2): ", mat[0][2])
     
-    print ("b) Obten la primera fila")
-
+    print ("b) Obten la primera fila: ", mat[0])
+            
     
 
 
@@ -134,7 +134,60 @@ def verMatriz():
             print (matriz[i][j], end=" ")
         print()
 
+def insertaDiccionarioVacio():
+    print ("###############################")
+    print ("#### E J E R C I C I O - 7 ####")
+    print ("###############################")
+    
+    print ()
+    
+    print ("Partiendo de un diccionario vacio mundial=() inserte los siguientes elementos")
+    print ("Spain - 12")
+    print ("Netherlands - 11")
+    print ("Italy - 10")
+    print ("Germany - 8")
+    print ("France - 6")
+    print ("Portugal - 5")
+    
+    print ()
 
+    mundial = {}
+
+    print ("Mundial (Vacio)", mundial)
+
+    mundial["Spain"] = 12
+    mundial["Netherlands"] = 11
+    mundial["Italy"] = 10
+    mundial["Germany"] = 8
+    mundial["France"] = 6
+    mundial["Portugal"] = 5
+    
+    print ("Mundial (Insertado)", mundial)
+    
+    return mundial
+    
+    
+def gestionaLista(mundial):
+    print ("###############################")
+    print ("#### E J E R C I C I O - 8 ####")
+    print ("###############################")
+    
+    print ()
+    
+    print ("Sobre el diccionario del apartado anterior: ")
+    
+    print ()
+    
+    print ("a) Imprime el diccionario con la sentencia 'print': ", mundial)
+    print ("b) Obtenga el valor de la clave 'Spain': ", mundial["Spain"])
+    print ("c) Obtenga el valor de la clave 'Portugal': ", mundial["Portugal"])
+    mundial["Spain"] += 3
+    print ("d) Incremente el valor de Spain en 3: ", mundial["Spain"])
+    mundial["France"] -= 2 
+    print ("e) Decremente el valor de Francia en 2: ", mundial["France"])
+    
+
+    
 if __name__ == "__main__":
     
     print()
@@ -164,6 +217,25 @@ if __name__ == "__main__":
     print()
     print()
     
+    # Ejercicio 5
+    accederListas()
+    
+    print()
+    print()
+    
     # Ejercicio 6
     verMatriz()
+    
+    print ()
+    print ()
+    
+    # Ejercicio 7
+    mundial = insertaDiccionarioVacio()
+    
+    
+    print ()
+    print ()
+    
+    # Ejercicio 8
+    gestionaLista(mundial)
     
