@@ -254,7 +254,60 @@ def pideDatosUsuario ():
     
     print (nombre,apellido1,apellido2, "nacio el", dia, "de",mes, "de",año) 
     
+def areaCiculo():
+    print ("################################")
+    print ("#### E J E R C I C I O - 12 ####")
+    print ("################################")
     
+    print ()
+    
+    print ("Elabore un programa que lea el radio de un círculo e imprima por pantalla el área del mismo (recuerde que elárea es πr2).")
+    print ("Nota: el valor de π se obtiene con math.pi, incluyendo import math al inicio del programa")
+    
+    print ()
+    
+    radio = int(input("Radio del ciculo para calcular su area:"))
+    
+    area = math.pi * pow(radio, 2)
+    
+    print ("El area es:", area)
+    
+def calculaIVA():
+    print ("################################")
+    print ("#### E J E R C I C I O - 13 ####")
+    print ("################################")
+    
+    print ()
+    
+    print ("Construya un programa que lea el valor de un producto sin IVA y muestre por pantalla el valor del producto conIVA (18 %).")
+    
+    print ()
+    
+    valorProducto = int(input("Inserte el valor del producto del cual quiere calcular su valor sin IVA:"))
+    ivaEnProducto = valorProducto * 0.18
+    valorFinal = valorProducto - ivaEnProducto
+    print ("El valor del product sin el IVA es de:", valorFinal)
+    
+    
+def evaluaPolinomio():
+    print ("################################")
+    print ("#### E J E R C I C I O - 14 ####")
+    print ("################################")
+    
+    print ()
+    
+    print ("Elabore un programa que lea el valor de x y que evalúe el polinomio x^4 + x^3 + 2x^2 − x")
+    
+    print ()
+    
+    valorX = int(input("Inserte el valor para la x: "))
+    resultadoPolinomio = pow(valorX, 4) + pow(valorX, 3) + 2 * pow(valorX, 2) - valorX
+
+    print("El resultado del polinomio para el valor de x insertado es de: ", resultadoPolinomio)
+
+
+
+
 if __name__ == "__main__":
     
     print()
@@ -326,4 +379,17 @@ if __name__ == "__main__":
     print ()
     print ()
     
+    # Ejercicio 12
+    areaCiculo()
     
+    print ()
+    print ()
+    
+    # Ejercicio 13
+    calculaIVA()
+    
+    print ()
+    print ()
+    
+    # Ejercicio 14
+    evaluaPolinomio()
