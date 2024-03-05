@@ -229,6 +229,32 @@ def tiempoPasado():
     print ("Horas:", horas)
     print ("Minutos:", minutos)
     print ("Segundos:", segundos)
+    
+    
+def pideDatosUsuario ():
+    print ("################################")
+    print ("#### E J E R C I C I O - 11 ####")
+    print ("################################")
+    
+    print ()
+    
+    print ("Construya un programa que pida al usuario su nombre, sus apellidos y su fecha de nacimiento. A continuación tiene que mostrar los datos por pantalla formateados como en el siguiente ejemplo:")
+    
+    print ()
+    
+    nombre = input("Inserte su nombre:")
+    apellido1 = input("Inserte su primer apellido:")
+    apellido2 = input("Inserte su segundo apellido:")
+    print ("Inserte la fecha de nacimiento:")
+    dia = input("Dia:")
+    mes = input("Mes:")
+    año = input("Año:")
+    
+    print ()
+    
+    print (nombre,apellido1,apellido2, "nacio el", dia, "de",mes, "de",año) 
+    
+    
 if __name__ == "__main__":
     
     print()
@@ -290,6 +316,12 @@ if __name__ == "__main__":
     
     # Ejercicio 10
     tiempoPasado()
+    
+    print ()
+    print ()
+    
+    # Ejercicio 11
+    pideDatosUsuario()
     
     print ()
     print ()
