@@ -186,8 +186,49 @@ def gestionaLista(mundial):
     mundial["France"] -= 2 
     print ("e) Decremente el valor de Francia en 2: ", mundial["France"])
     
-
+def gestionaDiccionario():
+    print ("###############################")
+    print ("#### E J E R C I C I O - 9 ####")
+    print ("###############################")
     
+    print ()
+    
+    inventario = {'manzanas':430, 'bananas':312, 'naranjas':525, 'peras':217}
+    print ("A partir del diccionario: ", inventario)
+    
+    print ()
+    
+    inventario['manzanas'] += 20
+    print ("a) Incremente las manzanas en 20: ", inventario['manzanas'])
+    inventario['peras'] -= 110
+    print ("b) Decrementa las peras en 110: ", inventario['peras'])
+    
+def tiempoPasado():
+    print ("################################")
+    print ("#### E J E R C I C I O - 10 ####")
+    print ("################################")
+    
+    print ()
+    
+    print ("Elabore un programa que lea una hora expresada en segundos transcurridos desde las 12 de la noche y muestre por pantalla el equivalente en horas, minutos y segundos:")
+    
+    print ()
+
+    segundos = int(input("Inserte la hora en segundos: "))
+    
+    # SEGUNDOS <-60-> MINTUOS <-24-> HORAS
+    horas = segundos / 3600
+    horas = math.floor(horas)
+    segundos = segundos - horas*3600
+    
+    minutos = segundos / 60
+    minutos = math.floor(minutos)
+    segundos = segundos - minutos*60
+
+    print ("Tiempo transcurrido: ")
+    print ("Horas:", horas)
+    print ("Minutos:", minutos)
+    print ("Segundos:", segundos)
 if __name__ == "__main__":
     
     print()
@@ -231,11 +272,26 @@ if __name__ == "__main__":
     
     # Ejercicio 7
     mundial = insertaDiccionarioVacio()
-    
-    
+        
     print ()
     print ()
     
     # Ejercicio 8
     gestionaLista(mundial)
+    
+    print ()
+    print ()
+    
+    # Ejercicio 9
+    gestionaDiccionario()
+    
+    print ()
+    print ()
+    
+    # Ejercicio 10
+    tiempoPasado()
+    
+    print ()
+    print ()
+    
     
