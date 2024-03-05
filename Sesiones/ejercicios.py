@@ -306,8 +306,27 @@ def evaluaPolinomio():
     print("El resultado del polinomio para el valor de x insertado es de: ", resultadoPolinomio)
 
 
+def perimetroAreaRectangulo():
+    print ("################################")
+    print ("#### E J E R C I C I O - 14 ####")
+    print ("################################")
+    
+    print ()
+    
+    print ("- Construya un programa que pida el valor de los dos lados de un rectángulo y muestre el valor de su perímetroy de su área.")
 
-
+    print ()
+    
+    base = int(input("Inserte el valor de la base:"))
+    altura = int(input("Inserte el valor de la altura:"))
+    
+    perimetro = 2 * base + 2 * altura
+    area = base * altura
+    
+    print ("El perimetro es de:", perimetro)
+    print ("El area es de: ", area)
+    
+    
 if __name__ == "__main__":
     
     print()
@@ -393,3 +412,9 @@ if __name__ == "__main__":
     
     # Ejercicio 14
     evaluaPolinomio()
+    
+    print ()
+    print ()
+    
+    # Ejercicoi 15
+    perimetroAreaRectangulo()
