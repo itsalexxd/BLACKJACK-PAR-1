@@ -6,8 +6,9 @@ García del Caz, Carla
 Curso 2023-2024
 """
 
-if __name__ == "__main__":
-    
+import CodigoPractica.externo2 as externo2
+
+def Main():
     # Pedimos el modo de ejecucion en el que desea iniciar el programa
     print ("Modos de ejecucion: [J]uego [A]nalisis")
     entrada = input ("Modo de ejecucion: ")
@@ -48,9 +49,7 @@ if __name__ == "__main__":
         print ("")
         print ("<" + str(manoCoupier) + "> Coupier (" + str(recuentoCoupier) + "): ")
         print ("")
-        for i in range (manosJugador):
-            print ("")
-            print ("<" + str(manoJugador) + "> Jugador (" + str(recuentoJugador) + "): ")
+        
         
 
 #################################################################################################################
@@ -72,10 +71,6 @@ if __name__ == "__main__":
     
 #################################################################################################################
 
-
-    #######################
-    #### M E T O D O S ####
-    #######################
+if __name__ == "__main__":
+    Main()
     
-    def repartoInicial():
-        return 0

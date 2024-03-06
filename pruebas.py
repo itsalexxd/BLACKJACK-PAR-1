@@ -80,12 +80,8 @@ class Jugador:
         self.manos = [Mano(),Mano()]
         
     
-    
-    
-    
-if __name__ == "__main__":
-    
-    # Indico los rangos para generar los valores random
+def Main():
+        # Indico los rangos para generar los valores random
     rangoCartasInicio = 1
     rangoCartasFinal = 13
     rangoMazosInicio = 1
@@ -124,3 +120,7 @@ if __name__ == "__main__":
     print("Valor total de la mano del croupier:", croupier.mano.obtenerSuma())
     print("Valor total de la mano del jugador:", jugador.manos[0].obtenerSuma())
     print("Valor total de la mano del jugador:", jugador.manos[1].obtenerSuma())
+
+    
+if __name__ == "__main__":
+    Main()

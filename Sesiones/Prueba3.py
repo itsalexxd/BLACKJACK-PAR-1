@@ -1,8 +1,27 @@
 # Sesion 3 -> Tratamiento de ficheros y excepciones
 
-# Ejemplo de lectura de ficheros
+# Como importar paquetes externos en python
+''' 
+IMPORTACION
+-----------
 
+Modulos -> .py
+Paquetes -> .pyd
+
+Dos formas para importar
+import externo (importamos TODOS los objetos)
+from externo import estrategia (importamos los objetos QUE QUERAMOS)
+
+Iguales en cuanto rendimiento
+'''
+import CodigoPractica.externo2 as externo2 # Tienen que estar en el mismo directorio
+# Para usar los objetos importados, se usan como si estuvieran en el mismo programa
+
+# Ejemplo de lectura de ficheros
 def Main():
+    mazo = externo2.Mazo(1,2)
+    print(mazo.reparte())
+    
     # Tratamiento de excepciones a la hora de abrir un fichero
     try:
         # Apertura del fichero (modo lectura -> r)
@@ -29,4 +48,5 @@ def Main():
 
 if __name__ == "__main__":
     Main()
-
+    
+    print(jugador)
