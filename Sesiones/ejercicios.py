@@ -416,5 +416,5 @@ if __name__ == "__main__":
     print ()
     print ()
     
-    # Ejercicoi 15
+    # Ejercicio 15
     perimetroAreaRectangulo()
