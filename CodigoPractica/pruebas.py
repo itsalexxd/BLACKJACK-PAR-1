@@ -1,21 +1,33 @@
 import externo2
 
+# A-10 y (J Q K)
 class MiCarta(externo2.CartaBase):
-    def __init__(self, ind, palo):
-        self.palo = palo
-
 
     # Devuelve el palo en un rango de 0-51
+    @property
     def palo(self):
         if self.ind >= 0 and self.ind <= 12:
-            return "♠"
+            return "♠ [PICAS]"
         elif self.ind >= 13 and self.ind <= 25:
-            return "♣"
+            return "♣ [TREVOLES]"
         elif self.ind >= 26 and self.ind <= 38:
-            return "♦"
+            return "♦ [DIAMANTES]"
         else:
-            return "♥"
-            
+            return "♥ [CORAZONES]"
+    
+    @property
+    def numCarta(self):
+        
+        if self.ind % 13 + 1 == 1:
+            return "A"
+        elif self.ind % 13 + 1 == 11:
+            return "J"
+        elif self.ind % 13 + 1 == 12:
+            return "Q"
+        elif self.ind % 13 + 1 == 13:
+            return "K"
+        else:
+            return self.ind % 13 + 1
 
 
 #################
@@ -23,7 +35,10 @@ class MiCarta(externo2.CartaBase):
 #################
 
 def Main():
-    pass
+    carta = MiCarta(51)
+    print("Palo", carta.palo)
+    print("Valor", carta.valor)
+    print("Carta", carta.numCarta)
 
 
 if __name__ == "__main__":
