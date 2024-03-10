@@ -1,11 +1,3 @@
-""" Paradigmas de Programación, curso 2023/24
-    Código externo para la primera práctica
-    Versión utilizada en el enunciado
-    (c) César Vaca
-
-    Atención: En este código se usan type hints para ayudar a documentar el código, pero
-    vosotros no estais obligados a usarlo
-"""
 import random
 
 
