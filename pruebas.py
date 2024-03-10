@@ -10,7 +10,7 @@ def imprimir_carta(palo, valor):
 │ {palo}     │
 │       │
 ╰───────╯
-"""
+    """
     print(carta)
     
 
@@ -126,29 +126,6 @@ def Main():
 
     externo.Mazo()
 
-
-
-
-
-
-    
-    # Importar la clase CartaBase si se encuentra en un módulo separado
-    # from nombre_del_modulo import CartaBase
-
-    # Definir una función o sección de código para generar una carta
-    def generar_carta(indice: int) -> externo.CartaBase:
-        """
-        Genera una carta con el índice proporcionado.
-        :param indice: El índice de la carta (0-51)
-        :return: Una instancia de la clase CartaBase representando la carta generada.
-        """
-        return externo.CartaBase(indice)
-
-    # Ejemplo de uso para generar una carta con índice 10
-    carta_generada = generar_carta(3)
-
-    # Imprimir el valor de la carta generada
-    print("El valor de la carta generada es:", carta_generada.valor)
 
     
 if __name__ == "__main__":

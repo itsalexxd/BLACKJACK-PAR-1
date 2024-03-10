@@ -39,6 +39,8 @@ def Main():
     print("Palo", carta.palo)
     print("Valor", carta.valor)
     print("Carta", carta.numCarta)
+    
+    mazo = externo2.Mazo()
 
 
 if __name__ == "__main__":

@@ -88,6 +88,7 @@ class Estrategia(object):
         return Estrategia.MATN[vj - 4][vc - 1]
 
 
+
 class Mazo(object):
     """ Clase que representa un mazo de cartas
     """
