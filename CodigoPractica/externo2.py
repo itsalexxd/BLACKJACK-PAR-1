@@ -1,6 +1,5 @@
 import random
 
-
 class CartaBase(object):
     """ Clase minimalista que representa una carta de la baraja
         Debería crearse una clase que herede de esta
