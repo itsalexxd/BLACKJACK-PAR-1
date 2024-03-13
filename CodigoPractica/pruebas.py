@@ -61,16 +61,22 @@ class MiCarta(externo2.CartaBase):
 def Main():
        
     estrategia = externo2.Estrategia(2)
-    mazo = externo2.Mazo(externo2.CartaBase,estrategia)
-    
+    mazo = externo2.Mazo(MiCarta,estrategia)
+
+
     listaCartas = []
-    for i in range(10):
-       valor = mazo.reparte().valor
-       listaCartas.append(valor)
-       
-    for i in range(10):
-        MiCarta.dibujacarta(listaCartas[i])
-         
+    
+    # Calculo e inserto el indice de las cartas en listaCartas
+    for i in range(51):
+        valor = int(mazo.reparte().ind)
+        listaCartas.append(valor)
+                
+    print(listaCartas)
+    print(len(listaCartas))
+    
+    for i in range(51):
+        carta = MiCarta(listaCartas[i])
+        carta.dibujacarta(carta) 
     
     
 
