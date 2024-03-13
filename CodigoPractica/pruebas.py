@@ -32,25 +32,26 @@ class MiCarta(externo2.CartaBase):
 def dibujacarta(carta):
     if(carta.valor) == 10:
         carta = f"""
-╭───────╮
-│       │
-│    {carta.valor} │
-│       │
-│  {carta.palo}    │
-│       │
-╰───────╯
-    """
+    ╭───────╮
+    │       │
+    │    {carta.valor} │
+    │       │
+    │  {carta.palo}    │
+    │       │
+    ╰───────╯
+        """
+        print(carta)
     else:
         carta = f"""
-╭───────╮
-│       │
-│    {carta.valor}  │
-│       │
-│  {carta.palo}    │
-│       │
-╰───────╯
-    """
-    print(carta)
+    ╭───────╮
+    │       │
+    │    {carta.valor}  │
+    │       │
+    │  {carta.palo}    │
+    │       │
+    ╰───────╯
+        """
+        print(carta)
 
 
 #################
@@ -58,10 +59,16 @@ def dibujacarta(carta):
 #################
 
 def Main():
-    carta = MiCarta(35)
+       
+    estrategia = externo2.Estrategia(2)
+    mazo = externo2.Mazo(externo2.CartaBase,estrategia)
+    print(mazo.reparte().valor)
+
+    carta = MiCarta(mazo.reparte().valor)
+    print (carta)
     dibujacarta(carta)
     
-
+    
 
 if __name__ == "__main__":
     Main()
