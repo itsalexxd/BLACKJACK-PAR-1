@@ -3,7 +3,6 @@ import externo2
 # PICAS TREVOLES DIAMANTES CORAZONES ♠  ♥  ♦  ♣#
 # A-10 y (J Q K) = 10
 class MiCarta(externo2.CartaBase):
-
     # Devuelve el palo en un rango de 0-51
     @property
     def palo(self):
@@ -30,7 +29,7 @@ class MiCarta(externo2.CartaBase):
         else:
             return self.ind % 13 + 1
     
-def imprimir_carta(carta):
+def dibujacarta(carta):
     if(carta.valor) == 10:
         carta = f"""
 ╭───────╮
@@ -60,7 +59,7 @@ def imprimir_carta(carta):
 
 def Main():
     carta = MiCarta(35)
-    imprimir_carta(carta)
+    dibujacarta(carta)
     
 
 
