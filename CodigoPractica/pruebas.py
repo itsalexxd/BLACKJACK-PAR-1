@@ -67,18 +67,11 @@ def Main():
     listaCartas = []
     
     # Calculo e inserto el indice de las cartas en listaCartas
-    for i in range(51):
+    for i in range(100):
         valor = int(mazo.reparte().ind)
-        listaCartas.append(valor)
-                
+        listaCartas.append(valor) 
+    
     print(listaCartas)
-    print(len(listaCartas))
-    
-    for i in range(51):
-        carta = MiCarta(listaCartas[i])
-        carta.dibujacarta(carta) 
-    
-    
 
 if __name__ == "__main__":
     Main()
