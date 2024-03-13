@@ -1,19 +1,20 @@
 import externo2
 
-# A-10 y (J Q K)
+# PICAS TREVOLES DIAMANTES CORAZONES ♠  ♥  ♦  ♣#
+# A-10 y (J Q K) = 10
 class MiCarta(externo2.CartaBase):
 
     # Devuelve el palo en un rango de 0-51
     @property
     def palo(self):
         if self.ind >= 0 and self.ind <= 12:
-            return "♠ [PICAS]"
+            return "♠"  # [PICAS]"
         elif self.ind >= 13 and self.ind <= 25:
-            return "♣ [TREVOLES]"
+            return "♣" # [TREVOLES]"
         elif self.ind >= 26 and self.ind <= 38:
-            return "♦ [DIAMANTES]"
+            return "♦" # [DIAMANTES]"
         else:
-            return "♥ [CORAZONES]"
+            return "♥" # [CORAZONES]"
     
     @property
     def numCarta(self):
@@ -28,6 +29,29 @@ class MiCarta(externo2.CartaBase):
             return "K"
         else:
             return self.ind % 13 + 1
+    
+def imprimir_carta(carta):
+    if(carta.valor) == 10:
+        carta = f"""
+╭───────╮
+│       │
+│    {carta.valor} │
+│       │
+│  {carta.palo}    │
+│       │
+╰───────╯
+    """
+    else:
+        carta = f"""
+╭───────╮
+│       │
+│    {carta.valor}  │
+│       │
+│  {carta.palo}    │
+│       │
+╰───────╯
+    """
+    print(carta)
 
 
 #################
@@ -35,16 +59,12 @@ class MiCarta(externo2.CartaBase):
 #################
 
 def Main():
-    carta = MiCarta(51)
-    print("Palo", carta.palo)
-    print("Valor", carta.valor)
-    print("Carta", carta.numCarta)
+    carta = MiCarta(35)
+    imprimir_carta(carta)
     
-    mazo = externo2.Mazo()
 
 
 if __name__ == "__main__":
     Main()
     
     
-# PICAS TREVOLES DIAMANTES CORAZONES ♠  ♥  ♦  ♣#
