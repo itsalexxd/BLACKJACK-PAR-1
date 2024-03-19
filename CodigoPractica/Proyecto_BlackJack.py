@@ -9,6 +9,7 @@ Curso 2023-2024
 import externo2
 import os
 
+
 # PICAS TREVOLES DIAMANTES CORAZONES ♠  ♥  ♦  ♣#
 # A-10 y (J Q K) = 10
 class MiCarta(externo2.CartaBase):
@@ -62,69 +63,62 @@ class MiCarta(externo2.CartaBase):
             """
             print(carta)
 
-def clearTermina():
+def clearTerminal():
     os.system('clear')
     
 def separaciones():
     for i in range (2):
         print()
 
+
+
 #################
 #### M A I N ####
 #################
-
 def Main():
-    #    
-    # estrategia = externo2.Estrategia(2)
-    # mazo = externo2.Mazo(MiCarta,estrategia)
-
-
-    # listaCartas = []
+    # Limpiamos la terminal
+    clearTerminal()
     
-    # # Calculo e inserto el indice de las cartas en listaCartas
-    # for i in range(51):
-    #     valor = int(mazo.reparte().ind)
-    #     listaCartas.append(valor) 
+    # Pedimos al usuario que indique el modo de ejecucion del programa
+    print("*** BLACKJACK - PARADIGMAS DE PROGRAMACIÓN 2023/24 ***")
+    print()
+    print("¿Modo de ejecucion?")
+    modoEjec = input ("[J]ugar [A]nalisis: ")
     
-    # for i in range(5):
-    #     carta = MiCarta(listaCartas[i])
-    #     carta.dibujacarta(carta)
+    
+    # Inicio el bucle del juego principal
+    controlWhile = False
+    
+    while controlWhile == False:
+        # Comprobamos en que modo de ejecucion desea iniciarl el usuario el programa
         
-    # print(listaCartas)    
-    
-    
-    
-    # LIMPIO EL TERMINAL #
-    clearTermina()
-    
-    
-    # INICIAMOS EL JUEGO PIDIENDO MODO DE EJECUCION #
-    print("Indique el modo de ejecucion:")
-    modoEjecucion = input("[J]uego [A]nalisi:")
-    
-    bucle1 = False
-    
-    while bucle1 == False:
-        if modoEjecucion == "J" or modoEjecucion == "j":
-            bucle1 = True
+        # Modo JUEGO
+        if modoEjec == 'J' or modoEjec == 'j':
+            controlWhile = True
             separaciones()
-            print("### MODO JUEGO SELECCIONADO ###")
+            print("### MODO EJECUCION SELECCIONADO: JUEGO ###")
+            
+        # Modo ANALISIS
+        elif modoEjec == 'A' or modoEjec == 'a':
+            controlWhile = True
+            separaciones()
+            print("### MODO EJECUCION SELECCIONADO: ANALISIS ###")
+            
+        # Caso predeterminado
+        elif modoEjec == '':
+            controlWhile = True
+            separaciones()
+            print("### MODO EJECUCION SELECCIONADO: PREDETERMINADO (JUEGO) ###")
         
-        elif modoEjecucion == "A" or modoEjecucion == "a":
-            bucle1 = True
-            separaciones()
-            print("### MODO ANALISIS SELECCIONADO ###")
-    
-        elif modoEjecucion == "":
-            bucle1 = True
-            separaciones()
-            print("### MODO JUEGO PREDETERMINADO ###")
+        # Entradas no validas
         else:
             separaciones()
-            print("Opcion insertada no valida, vuelva a insertar el modo de ejecucion")
-            modoEjecucion = input("[J]uego [A]nalisi:")
+            print("Entrada no valida, por favor, inserte correctamente la entrada")
+            modoEjec = input ("[J]ugar [A]nalisis: ")
+            
+            
     
-    
+
 
 if __name__ == "__main__":
     Main()
