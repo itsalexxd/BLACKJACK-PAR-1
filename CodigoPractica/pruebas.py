@@ -66,7 +66,7 @@ def separaciones():
 #################
 
 def Main():
-       
+    #    
     # estrategia = externo2.Estrategia(2)
     # mazo = externo2.Mazo(MiCarta,estrategia)
 

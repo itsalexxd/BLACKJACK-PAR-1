@@ -6,70 +6,125 @@ García del Caz, Carla
 Curso 2023-2024
 """
 
-import CodigoPractica.externo2 as externo2
+import externo2
+import os
+
+# PICAS TREVOLES DIAMANTES CORAZONES ♠  ♥  ♦  ♣#
+# A-10 y (J Q K) = 10
+class MiCarta(externo2.CartaBase):
+    # Devuelve el palo en un rango de 0-51
+    @property
+    def palo(self):
+        if self.ind >= 0 and self.ind <= 12:
+            return "♠"  # [PICAS]"
+        elif self.ind >= 13 and self.ind <= 25:
+            return "♣" # [TREVOLES]"
+        elif self.ind >= 26 and self.ind <= 38:
+            return "♦" # [DIAMANTES]"
+        else:
+            return "♥" # [CORAZONES]"
+    
+    @property
+    def numCarta(self):
+        
+        if self.ind % 13 + 1 == 1:
+            return "A"
+        elif self.ind % 13 + 1 == 11:
+            return "J"
+        elif self.ind % 13 + 1 == 12:
+            return "Q"
+        elif self.ind % 13 + 1 == 13:
+            return "K"
+        else:
+            return self.ind % 13 + 1
+    
+    def dibujacarta(slef, carta):
+        if(super().valor) == 10:
+            carta = f"""
+        ╭───────╮
+        │       │
+        │    {super().valor} │
+        │       │
+        │  {carta.palo}    │
+        │       │
+        ╰───────╯
+            """
+            print(carta)
+        else:
+            carta = f"""
+        ╭───────╮
+        │       │
+        │    {super().valor}  │
+        │       │
+        │  {carta.palo}    │
+        │       │
+        ╰───────╯
+            """
+            print(carta)
+
+def clearTermina():
+    os.system('clear')
+    
+def separaciones():
+    for i in range (2):
+        print()
+
+#################
+#### M A I N ####
+#################
 
 def Main():
-    # Pedimos el modo de ejecucion en el que desea iniciar el programa
-    print ("Modos de ejecucion: [J]uego [A]nalisis")
-    entrada = input ("Modo de ejecucion: ")
-    modoEjecucion = entrada.upper()
-    
-    print (" ")
-    
-    numPartida = 0
-    balance = 0
-    
-    ###################
-    #### J U E G O ####
-    ###################
-    
-    if modoEjecucion == 'J' or modoEjecucion == '':
-        
-        #temporal hasta ver como se hacen el resto de cosas para tener las variables
-        manoCoupier = []
-        manoJugador = []
-        recuentoCoupier = 0
-        recuentoJugador = 0
-        manosJugador = 0
-        
-        if modoEjecucion == '':
-            print ("MODO PREDETERMINADO PREDETERMINADO - JUEGO")
-        else:
-            print ("MODO JUEGO SELECCIONADO")
-            
-        # Sumo 1 a la cuenta de las partidas
-        numPartida += numPartida + 1
-        
-        print (" ")
-        print ("--- INICIO DE LA PARTIDA #" + str(numPartida) + " --- BALANCE = " + str(balance) + "€")
-        print (" ")
-        apuesta = input ("Seleccione la apuesta que desea realizar: [2] [10] [50]: ")
-        print (" ")
-        print ("REPARTO INICIAL:")
-        print ("")
-        print ("<" + str(manoCoupier) + "> Coupier (" + str(recuentoCoupier) + "): ")
-        print ("")
-        
-        
+    #    
+    # estrategia = externo2.Estrategia(2)
+    # mazo = externo2.Mazo(MiCarta,estrategia)
 
-#################################################################################################################
-        
-        
-    #########################
-    #### A N A L I S I S ####
-    #########################
+
+    # listaCartas = []
     
-    elif modoEjecucion == 'A':
-        print ("MODO ANALISIS SELECCIONADO")
-        
-#################################################################################################################
-        
-    else:
-        print ("Entrada no valida, inserte de nuevo el modo de ejecución")
-        print ("Modos de ejecucion: [J]uego [A]nalisis")
-        modoEjecucion = input ("Modo de ejecucion: ")
+    # # Calculo e inserto el indice de las cartas en listaCartas
+    # for i in range(51):
+    #     valor = int(mazo.reparte().ind)
+    #     listaCartas.append(valor) 
     
-#################################################################################################################
+    # for i in range(5):
+    #     carta = MiCarta(listaCartas[i])
+    #     carta.dibujacarta(carta)
+        
+    # print(listaCartas)    
+    
+    
+    
+    # LIMPIO EL TERMINAL #
+    clearTermina()
+    
+    
+    # INICIAMOS EL JUEGO PIDIENDO MODO DE EJECUCION #
+    print("Indique el modo de ejecucion:")
+    modoEjecucion = input("[J]uego [A]nalisi:")
+    
+    bucle1 = False
+    
+    while bucle1 == False:
+        if modoEjecucion == "J" or modoEjecucion == "j":
+            bucle1 = True
+            separaciones()
+            print("### MODO JUEGO SELECCIONADO ###")
+        
+        elif modoEjecucion == "A" or modoEjecucion == "a":
+            bucle1 = True
+            separaciones()
+            print("### MODO ANALISIS SELECCIONADO ###")
+    
+        elif modoEjecucion == "":
+            bucle1 = True
+            separaciones()
+            print("### MODO JUEGO PREDETERMINADO ###")
+        else:
+            separaciones()
+            print("Opcion insertada no valida, vuelva a insertar el modo de ejecucion")
+            modoEjecucion = input("[J]uego [A]nalisi:")
+    
+    
 
 if __name__ == "__main__":
     Main()
