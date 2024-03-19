@@ -98,6 +98,9 @@ def Main():
             separaciones()
             print("### MODO EJECUCION SELECCIONADO: JUEGO ###")
             
+            
+            
+            
         # Modo ANALISIS
         elif modoEjec == 'A' or modoEjec == 'a':
             controlWhile = True
