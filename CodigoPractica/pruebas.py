@@ -101,6 +101,18 @@ def Main():
             bucle1 = True
             separaciones()
             print("### MODO JUEGO SELECCIONADO ###")
+            print()
+            
+            balance = 0
+            print("--- INICIO DE LA PARTIDA #1 --- BALANCE = ", balance)
+            print()
+            apuesta = input("¿Apuesta? [2] [10] [50]  ")
+            
+            print()
+            print("REPARTO INICIAL:")
+            print (apuesta)
+            
+            
         
         elif modoEjecucion == "A" or modoEjecucion == "a":
             bucle1 = True
