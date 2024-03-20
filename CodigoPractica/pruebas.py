@@ -57,10 +57,29 @@ class MiCarta(externo2.CartaBase):
 def clearTermina():
     os.system('clear')
     
-def separaciones():
-    for i in range (2):
+def separaciones(espacios):
+    for i in range (espacios):
         print()
 
+class colores():
+    RED = "\033[31m"
+    
+class Mano():
+    def __init__(self):
+        pass
+    
+class Croupier():
+    def __init__(self):
+        pass
+    
+    def muestrInformacionCroupier():
+        pass
+    
+    
+class Jugador():
+    def __init__(self):
+        pass
+    
 #################
 #### M A I N ####
 #################
@@ -104,13 +123,14 @@ def Main():
             print()
             
             balance = 0
-            print("--- INICIO DE LA PARTIDA #1 --- BALANCE = ", balance)
+            print("--- INICIO DE LA PARTIDA #1 --- BALANCE = ", balance, " €")
             print()
             apuesta = input("¿Apuesta? [2] [10] [50]  ")
             
             print()
             print("REPARTO INICIAL:")
-            print (apuesta)
+            
+            
             
             
         
@@ -126,7 +146,7 @@ def Main():
         else:
             separaciones()
             print("Opcion insertada no valida, vuelva a insertar el modo de ejecucion")
-            modoEjecucion = input("[J]uego [A]nalisi:")
+            modoEjecucion = input(colores.RED + "[J]uego [A]nalisi:" + colores.RED)
     
     
 
