@@ -64,9 +64,14 @@ def separaciones(espacios):
 class colores():
     RED = "\033[31m"
     
+    
 class Mano():
     def __init__(self):
-        pass
+        self.mano = []
+    
+    def robaCarta(self, cartaRobada):
+        self.mano.append(cartaRobada)
+            
     
 class Croupier():
     def __init__(self):
@@ -106,7 +111,7 @@ def Main():
     
     
     # LIMPIO EL TERMINAL #
-    clearTerminal()
+    # clearTerminal()
     
     
     # INICIAMOS EL JUEGO PIDIENDO MODO DE EJECUCION #
@@ -118,7 +123,7 @@ def Main():
     while bucle1 == False:
         if modoEjecucion == "J" or modoEjecucion == "j":
             bucle1 = True
-            separaciones()
+            separaciones(2)
             print("### MODO JUEGO SELECCIONADO ###")
             print()
             
