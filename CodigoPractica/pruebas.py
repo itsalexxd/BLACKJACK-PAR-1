@@ -54,7 +54,7 @@ class MiCarta(externo2.CartaBase):
             """
             print(carta)
 
-def clearTermina():
+def clearTerminal():
     os.system('clear')
     
 def separaciones(espacios):
@@ -85,28 +85,28 @@ class Jugador():
 #################
 
 def Main():
-    #    
-    # estrategia = externo2.Estrategia(2)
-    # mazo = externo2.Mazo(MiCarta,estrategia)
+       
+    estrategia = externo2.Estrategia(2)
+    mazo = externo2.Mazo(MiCarta,estrategia)
 
 
-    # listaCartas = []
+    listaCartas = []
     
-    # # Calculo e inserto el indice de las cartas en listaCartas
-    # for i in range(51):
-    #     valor = int(mazo.reparte().ind)
-    #     listaCartas.append(valor) 
+    # Calculo e inserto el indice de las cartas en listaCartas
+    for i in range(51):
+        valor = int(mazo.reparte().ind)
+        listaCartas.append(valor) 
     
-    # for i in range(5):
-    #     carta = MiCarta(listaCartas[i])
-    #     carta.dibujacarta(carta)
+    for i in range(5):
+        carta = MiCarta(listaCartas[i])
+        carta.dibujacarta(carta)
         
-    # print(listaCartas)    
+    print(listaCartas)    
     
     
     
     # LIMPIO EL TERMINAL #
-    clearTermina()
+    clearTerminal()
     
     
     # INICIAMOS EL JUEGO PIDIENDO MODO DE EJECUCION #
