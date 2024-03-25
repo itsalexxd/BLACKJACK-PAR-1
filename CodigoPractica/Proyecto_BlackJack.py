@@ -116,8 +116,6 @@ def Main():
     
     # Crear un objeto de la clase Croupier
     croupier_obj = Croupier(mazo[1], "Croupier", "10", "Abierto")
-
-    # Llamar al método muestraInfo() para mostrar la información del objeto
     croupier_obj.muestraInfo()
     
 
