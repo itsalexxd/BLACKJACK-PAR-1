@@ -112,9 +112,6 @@ def Main():
     mazo = generamosMazo()
     print(mazo)
     
-    print(mazo[11])
-    
-    # Crear un objeto de la clase Croupier
     croupier_obj = Croupier(mazo[1], "Croupier", "10", "Abierto")
     croupier_obj.muestraInfo()
     
