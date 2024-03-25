@@ -85,8 +85,11 @@ class Mano():
         self.estado = estado
 
 class Croupier(Mano):
-    pass
-            
+    def muestraInfo(self):
+        info = f"Cartas: {self.cartas}, Nombre: {self.nombre}, Valor: {self.valor}, Estado: {self.estado}"
+        print(info)
+        
+
 class Jugador(Mano):
     pass
 
@@ -108,6 +111,15 @@ def Main():
     
     mazo = generamosMazo()
     print(mazo)
+    
+    print(mazo[11])
+    
+    # Crear un objeto de la clase Croupier
+    croupier_obj = Croupier(mazo[1], "Croupier", "10", "Abierto")
+
+    # Llamar al método muestraInfo() para mostrar la información del objeto
+    croupier_obj.muestraInfo()
+    
 
 
 

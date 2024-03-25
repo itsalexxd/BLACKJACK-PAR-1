@@ -68,16 +68,9 @@ class colores():
     
     
 class Mano():
-    def __init__(self, estado):
-        self.mano = []
+    def __init__(self, mano, estado):
+        self.mano = mano
         self.estado = estado
-        
-    def valorTotal(self):
-        pass
-    
-    def robaCarta(self, cartaRobada):
-        self.mano.append(cartaRobada)
-            
     
 class Croupier():
     def __init__(self, manoCrupier):
