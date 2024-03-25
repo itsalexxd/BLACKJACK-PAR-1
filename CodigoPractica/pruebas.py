@@ -110,13 +110,13 @@ def Main():
     for i in range(mazoMezclado):
         posCarta = int(mazo.reparte().ind)
         mazoMezclado.append(posCarta)
-    
-    
-    
+
+
+
     # LIMPIO EL TERMINAL #
     clearTerminal()
-    
-    
+
+
     # INICIAMOS EL JUEGO PIDIENDO MODO DE EJECUCION #
     print("Indique el modo de ejecucion:")
     modoEjecucion = input("[J]uego [A]nalisi:")
