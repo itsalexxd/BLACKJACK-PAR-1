@@ -64,9 +64,16 @@ def separaciones(espacios):
 class colores():
     RED = "\033[31m"
     
+    
+    
+    
 class Mano():
-    def __init__(self):
+    def __init__(self, estado):
         self.mano = []
+        self.estado = estado
+        
+    def valorTotal(self):
+        pass
     
     def robaCarta(self, cartaRobada):
         self.mano.append(cartaRobada)
@@ -146,6 +153,8 @@ def Main():
                 else:
                     print("Apuesta no valida, inserte de nuevo la apuesta deseada")
                     apuesta = input("¿Apuesta? [2] [10] [50]  ")
+                    
+                    
 
 
 

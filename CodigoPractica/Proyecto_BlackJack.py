@@ -9,6 +9,18 @@ Curso 2023-2024
 import externo2
 import os
 
+# Genero una baraja de cartas mezclada con 2 mazos
+def generamosMazo():
+    estrategia = externo2.Estrategia(2)
+    mazo = externo2.Mazo(MiCarta,estrategia)
+
+    listaCartas = []
+    # Calculo e inserto el indice de las cartas en listaCartas
+    for i in range(103):
+        valor = int(mazo.reparte().ind)
+        listaCartas.append(valor)
+
+    return listaCartas
 
 # PICAS TREVOLES DIAMANTES CORAZONES ♠  ♥  ♦  ♣#
 # A-10 y (J Q K) = 10
@@ -62,67 +74,43 @@ class MiCarta(externo2.CartaBase):
         ╰───────╯
             """
             print(carta)
+            
+            
+            
+class Mano():
+    def __init__(self, cartas, nombre, valor, estado):
+        self.cartas = cartas
+        self.nombre = nombre
+        self.valor = valor
+        self.estado = estado
+
+class Croupier(Mano):
+    pass
+            
+class Jugador(Mano):
+    pass
+
+
+
+
+
 
 def clearTerminal():
     os.system('clear')
     
-def separaciones():
-    for i in range (2):
+def separaciones(num):
+    for i in range(num):
         print()
+        
 
-
-
-#################
-#### M A I N ####
-#################
 def Main():
-    # Limpiamos la terminal
     clearTerminal()
     
-    # Pedimos al usuario que indique el modo de ejecucion del programa
-    print("*** BLACKJACK - PARADIGMAS DE PROGRAMACIÓN 2023/24 ***")
-    print()
-    print("¿Modo de ejecucion?")
-    modoEjec = input ("[J]ugar [A]nalisis: ")
-    
-    
-    # Inicio el bucle del juego principal
-    controlWhile = False
-    
-    while controlWhile == False:
-        # Comprobamos en que modo de ejecucion desea iniciarl el usuario el programa
-        
-        # Modo JUEGO
-        if modoEjec == 'J' or modoEjec == 'j':
-            controlWhile = True
-            separaciones()
-            print("### MODO EJECUCION SELECCIONADO: JUEGO ###")
-            
-            
-            
-            
-        # Modo ANALISIS
-        elif modoEjec == 'A' or modoEjec == 'a':
-            controlWhile = True
-            separaciones()
-            print("### MODO EJECUCION SELECCIONADO: ANALISIS ###")
-            
-        # Caso predeterminado
-        elif modoEjec == '':
-            controlWhile = True
-            separaciones()
-            print("### MODO EJECUCION SELECCIONADO: PREDETERMINADO (JUEGO) ###")
-        
-        # Entradas no validas
-        else:
-            separaciones()
-            print("Entrada no valida, por favor, inserte correctamente la entrada")
-            modoEjec = input ("[J]ugar [A]nalisis: ")
-            
-            
-    
+    mazo = generamosMazo()
+    print(mazo)
+
+
 
 
 if __name__ == "__main__":
     Main()
-    
