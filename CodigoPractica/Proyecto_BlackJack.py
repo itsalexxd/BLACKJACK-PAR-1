@@ -36,10 +36,10 @@ class MiCarta(externo2.CartaBase):
             return "♦" # [DIAMANTES]"
         else:
             return "♥" # [CORAZONES]"
-    
+
     @property
     def numCarta(self):
-        
+
         if self.ind % 13 + 1 == 1:
             return "A"
         elif self.ind % 13 + 1 == 11:
@@ -82,11 +82,12 @@ class Mano:
         self.nombre = nombre
         self.cartas = []  # Inicializamos el atributo cartas como una lista vacía
         self.valor = 0
-        self.estado = "Cerrada"
+        self.estado = "A"
 
     def agregar_carta(self, carta):
         self.cartas.append(carta)
         self.calcular_valor()
+        self.calcula_carta()
 
     def calcular_valor(self):
         # Inicializamos el valor en 0 antes de calcularlo nuevamente
@@ -94,24 +95,46 @@ class Mano:
         num_as = 0  # Contador de ases (que valen 1 u 11)
         
         for carta in self.cartas:
-            if carta in ["J", "Q", "K"]:
+            if carta % 13 + 1 in [11, 12, 13] :
                 self.valor += 10
-            elif carta == "A":
+            elif carta % 13 + 1 == 1:
                 num_as += 1
                 self.valor += 11  # Asumimos el valor del as como 11 por defecto
             else:
-                self.valor += int(carta)  # Las cartas numéricas tienen su valor numérico
+                self.valor += int(carta % 13 + 1)  # Las cartas numéricas tienen su valor numérico
         
         # Ajustamos el valor de los ases si el total es mayor a 21
         while num_as > 0 and self.valor > 21:
             self.valor -= 10  # Restamos 10 al valor total por cada as
             num_as -= 1
+            
+    def calcula_carta(self):
+        # Inicializamos el valor en 0 antes de calcularlo nuevamente
+        manoMostrar = []
+        
+        for ind in self.cartas:
+            if ind % 13 + 1 == 1:
+                manoMostrar.append("A")
+            elif ind % 13 + 1 == 11:
+                manoMostrar.append("J")
+            elif ind % 13 + 1 == 12:
+                manoMostrar.append("Q")
+            elif ind % 13 + 1 == 13:
+                manoMostrar.append("K")
+            else:
+                num = ind % 13 + 1
+                manoMostrar.append(num)
+                
+        return manoMostrar
 
     def abrir_mano(self):
-        self.estado = "Abierta"
+        self.estado = "A"
 
     def cerrar_mano(self):
-        self.estado = "Cerrada"
+        self.estado = "C"
+        
+    def mano_pasada(self):
+        self.estado = "P"
         
 class Croupier():
     def __init__(self):
@@ -120,8 +143,16 @@ class Croupier():
 class Jugador():
     def __init__(self, nombre):
         self.nombre = nombre
+        self.mano = Mano(nombre)
         self.balance = 0
 
+def imprimeInfo(jugador, croupier):
+    croupier.mano.calcular_valor()
+    jugador.mano.calcular_valor()
+    print(F"<{croupier.mano.estado}>{croupier.mano.nombre} ({croupier.mano.valor}): ", croupier.mano.calcula_carta())
+    print(F"<{jugador.mano.estado}>{jugador.mano.nombre} ({jugador.mano.valor}): ", jugador.mano.calcula_carta())
+    print(croupier.mano.cartas)
+    print(jugador.mano.cartas)
 
 
 def modoJuego(mazo):
@@ -137,26 +168,23 @@ def modoJuego(mazo):
         
         print("--- INICIO PARTIDA #", countPartidas, " --- BALANCE = ", balance, "€" )
         
-        apuesta = int(input("¿Apuesta? [2] [10] [50]"))
+        apuesta = int(input("¿Apuesta? [2] [10] [50] "))
         
         # REPARTO INICIAL #
         # Creo al croupier y al jugador
         croupier = Croupier()
         jugador = Jugador("Jugador")
         
-        
         # Inserto la primera carta al croupier y al jugador
-        for _ in range(2):
+        for i in range(1):
             croupier.mano.agregar_carta(mazo.pop())
             jugador.mano.agregar_carta(mazo.pop())
         
-            print(f"Estado de la mano del croupier: {croupier.mano.estado}")
-        print(f"Valor de la mano del croupier: {croupier.mano.valor}")
-        print(f"Estado de la mano de {jugador.nombre}: {jugador.mano.estado}")
-        print(f"Valor de la mano de {jugador.nombre}: {jugador.mano.valor}")
+        separaciones(2)
+        
         
         print("REPARTO INICIAL")
-        
+        imprimeInfo(jugador, croupier)
         
         
 def modoAnalisis(mazo):
@@ -185,16 +213,23 @@ def Main():
     mazo = generamosMazo()
 
     print("Indique el modo de ejecucion:")
-    modoEjecucion = input("[J]uego [A]nalisi:")
+    modoEjecucion = input("[J]uego [A]nalisis: ")
     
-    if modoEjecucion == "J" or modoEjecucion == "j":
-        modoJuego(mazo)
+    bucleCorrecto = True
+    while bucleCorrecto:
+        if modoEjecucion == "J" or modoEjecucion == "j":
+            modoJuego(mazo)
+            
+        elif modoEjecucion == "A" or modoEjecucion == "a":
+            modoAnalisis(mazo)
+            
+        elif modoEjecucion == "":
+            modoPredeterminado(mazo)
         
-    elif modoEjecucion == "A" or modoEjecucion == "a":
-        modoAnalisis(mazo)
-        
-    else:
-        modoPredeterminado(mazo)
+        else:
+            separaciones(2)
+            print("Opcion insertada no valida, vuelva a insertar el modo de ejecucion")
+            modoEjecucion = input("[J]uego [A]nalisis:" )
 
 
 
