@@ -166,6 +166,7 @@ class Jugador():
         num_as = 0
         
         for num_mano in self.manos:
+            
             pass
             
     def separarMano(self, indice_mano, indice_carta):
