@@ -135,16 +135,43 @@ class Mano:
         
     def mano_pasada(self):
         self.estado = "P"
-        
+
+
+
 class Croupier():
     def __init__(self):
         self.mano = Mano("Croupier")
-    
+
+
+
 class Jugador():
     def __init__(self, nombre):
         self.nombre = nombre
-        self.mano = Mano(nombre)
+        self.manos = []
         self.balance = 0
+        
+    def agregarManos(self, nombreMano):
+        nombreMano = f"mano{chr(ord('A') + self.contadorManos)}"
+        nuevaMano = Mano(nombreMano)
+        self.manos.append(nuevaMano)
+        self.contadorManos += 1
+        
+    def obtenerMano(self, indice):
+        return self.manos[indice]
+    
+    def calcularValorManos(self):
+        for mano in self.manos:
+            mano.calcular_valor()
+            
+    def separarMano(self, indice_mano, indice_carta):
+        manoOriginal = self.manos[indice_mano]
+        carta = manoOriginal.cartas.pop(indice_carta)  # Quitamos la carta de la mano original
+        nombre_nueva_mano = f"{manoOriginal.nombre}{chr(ord('A') + len(self.manos) - 1)}"
+        nueva_mano = Mano(nombre_nueva_mano)  # Creamos una nueva mano para la carta separada
+        nueva_mano.agregar_carta(carta)  # Agregamos la carta separada a la nueva mano
+        self.manos.append(nueva_mano)  # Agregamos la nueva mano a las manos del jugador
+
+
 
 def imprimeInfo(jugador, croupier):
     croupier.mano.calcular_valor()
@@ -154,6 +181,30 @@ def imprimeInfo(jugador, croupier):
     print(croupier.mano.cartas)
     print(jugador.mano.cartas)
 
+
+def turnoJugador(jugador, mazo):
+    print("TURNO DEL JUGADOR")
+    for i, mano in enumerate(jugador.manos):
+        jugada = input(f"¿Jugada para {mano.nombre}? [P]edir [D]oblar [C]errar")
+        
+        # Pedimos carta
+        if jugada in ["P", "p"]:
+            cartaNueva = mazo.pop()
+            mano.agregar_carta(cartaNueva)
+        
+        # Doblar apuesta
+        elif jugada in ["D", "d"]:
+            pass
+        
+        # Cerrar mano
+        elif jugada in ["C", "c"]:
+            mano.cerrar_mano()
+        
+        elif jugada in ["S", "s"] and len(mano.cartas) == 2 and mano.cartas[0] == mano.cartas[1] == 10:
+            jugador.separar_mano(i, 0)
+        
+        else:
+            print("Opcion no valida, por favor, inserte de nuevo.")
 
 def modoJuego(mazo):
     # Variable que controla el bucle para jugar partidas
@@ -174,17 +225,19 @@ def modoJuego(mazo):
         # Creo al croupier y al jugador
         croupier = Croupier()
         jugador = Jugador("Jugador")
-        
+        # Agregamos una mano al jugador
+        jugador.agregarManos()
+
+        separaciones(2)
+
+        print("REPARTO INICIAL")
         # Inserto la primera carta al croupier y al jugador
         for i in range(1):
             croupier.mano.agregar_carta(mazo.pop())
             jugador.mano.agregar_carta(mazo.pop())
-        
-        separaciones(2)
-        
-        
-        print("REPARTO INICIAL")
         imprimeInfo(jugador, croupier)
+        
+        turnoJugador(jugador, mazo)
         
         
 def modoAnalisis(mazo):
