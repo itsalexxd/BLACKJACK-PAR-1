@@ -148,25 +148,30 @@ class Jugador():
     def __init__(self, nombre):
         self.nombre = nombre
         self.manos = []
+        self.contadorManos = 0
         self.balance = 0
+        self.valor_mano = 0
         
-    def agregarManos(self, nombreMano):
+    def agregar_mano(self):
         nombreMano = f"mano{chr(ord('A') + self.contadorManos)}"
         nuevaMano = Mano(nombreMano)
         self.manos.append(nuevaMano)
         self.contadorManos += 1
         
-    def obtenerMano(self, indice):
+    def obtener_mano(self, indice):
         return self.manos[indice]
-    
-    def calcularValorManos(self):
-        for mano in self.manos:
-            mano.calcular_valor()
+
+    def calcular_valor_manos(self):
+        self.valor_mano = 0
+        num_as = 0
+        
+        for num_mano in self.manos:
+            
             
     def separarMano(self, indice_mano, indice_carta):
-        manoOriginal = self.manos[indice_mano]
-        carta = manoOriginal.cartas.pop(indice_carta)  # Quitamos la carta de la mano original
-        nombre_nueva_mano = f"{manoOriginal.nombre}{chr(ord('A') + len(self.manos) - 1)}"
+        mano_original = self.manos[indice_mano]
+        carta = mano_original.cartas.pop(indice_carta)  # Quitamos la carta de la mano original
+        nombre_nueva_mano = f"{mano_original.nombre}{chr(ord('A') + len(self.manos) - 1)}"
         nueva_mano = Mano(nombre_nueva_mano)  # Creamos una nueva mano para la carta separada
         nueva_mano.agregar_carta(carta)  # Agregamos la carta separada a la nueva mano
         self.manos.append(nueva_mano)  # Agregamos la nueva mano a las manos del jugador
@@ -175,7 +180,7 @@ class Jugador():
 
 def imprimeInfo(jugador, croupier):
     croupier.mano.calcular_valor()
-    jugador.mano.calcular_valor()
+    jugador.manos.calcular_valor_manos()
     print(F"<{croupier.mano.estado}>{croupier.mano.nombre} ({croupier.mano.valor}): ", croupier.mano.calcula_carta())
     print(F"<{jugador.mano.estado}>{jugador.mano.nombre} ({jugador.mano.valor}): ", jugador.mano.calcula_carta())
     print(croupier.mano.cartas)
@@ -226,7 +231,7 @@ def modoJuego(mazo):
         croupier = Croupier()
         jugador = Jugador("Jugador")
         # Agregamos una mano al jugador
-        jugador.agregarManos()
+        jugador.agregar_mano()
 
         separaciones(2)
 
@@ -234,7 +239,7 @@ def modoJuego(mazo):
         # Inserto la primera carta al croupier y al jugador
         for i in range(1):
             croupier.mano.agregar_carta(mazo.pop())
-            jugador.mano.agregar_carta(mazo.pop())
+            jugador.obtener_mano(0).agregar_carta(mazo.pop())
         imprimeInfo(jugador, croupier)
         
         turnoJugador(jugador, mazo)
