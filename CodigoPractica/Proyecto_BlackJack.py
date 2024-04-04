@@ -81,7 +81,6 @@ class Mano:
     def __init__(self, nombre):
         self.nombre = nombre
         self.cartas = []  # Inicializamos el atributo cartas como una lista vacía
-        self.valor = 0
         self.estado = "A"
 
     def agregar_carta(self, carta):
@@ -91,23 +90,25 @@ class Mano:
 
     def calcular_valor(self):
         # Inicializamos el valor en 0 antes de calcularlo nuevamente
-        self.valor = 0
+        valor = 0
         num_as = 0  # Contador de ases (que valen 1 u 11)
         
         for carta in self.cartas:
             if carta % 13 + 1 in [11, 12, 13] :
-                self.valor += 10
+                valor += 10
             elif carta % 13 + 1 == 1:
                 num_as += 1
-                self.valor += 11  # Asumimos el valor del as como 11 por defecto
+                valor += 11  # Asumimos el valor del as como 11 por defecto
             else:
-                self.valor += int(carta % 13 + 1)  # Las cartas numéricas tienen su valor numérico
+                valor += int(carta % 13 + 1)  # Las cartas numéricas tienen su valor numérico
         
         # Ajustamos el valor de los ases si el total es mayor a 21
-        while num_as > 0 and self.valor > 21:
-            self.valor -= 10  # Restamos 10 al valor total por cada as
+        while num_as > 0 and valor > 21:
+            valor -= 10  # Restamos 10 al valor total por cada as
             num_as -= 1
-            
+
+        return valor
+        
     def calcula_carta(self):
         # Inicializamos el valor en 0 antes de calcularlo nuevamente
         manoMostrar = []
@@ -150,7 +151,6 @@ class Jugador():
         self.manos = []
         self.contadorManos = 0
         self.balance = 0
-        self.valor_mano = 0
         
     def agregar_mano(self):
         nombreMano = f"mano{chr(ord('A') + self.contadorManos)}"
@@ -166,7 +166,7 @@ class Jugador():
         num_as = 0
         
         for num_mano in self.manos:
-            
+            pass
             
     def separarMano(self, indice_mano, indice_carta):
         mano_original = self.manos[indice_mano]
@@ -179,10 +179,8 @@ class Jugador():
 
 
 def imprimeInfo(jugador, croupier):
-    croupier.mano.calcular_valor()
-    jugador.manos.calcular_valor_manos()
-    print(F"<{croupier.mano.estado}>{croupier.mano.nombre} ({croupier.mano.valor}): ", croupier.mano.calcula_carta())
-    print(F"<{jugador.mano.estado}>{jugador.mano.nombre} ({jugador.mano.valor}): ", jugador.mano.calcula_carta())
+    print(F"<{croupier.mano.estado}>{croupier.mano.nombre} ({croupier.mano.calcular_valor()}): ", croupier.mano.calcula_carta())
+    print(F"<{jugador.mano.estado}>{jugador.mano.nombre} ({jugador.calcular_valor_manos()}): ", jugador.mano.calcula_carta())
     print(croupier.mano.cartas)
     print(jugador.mano.cartas)
 
