@@ -77,22 +77,93 @@ class MiCarta(externo2.CartaBase):
             
             
             
-class Mano():
-    def __init__(self, cartas, nombre, valor, estado):
-        self.cartas = cartas
+class Mano:
+    def __init__(self, nombre):
         self.nombre = nombre
-        self.valor = valor
-        self.estado = estado
+        self.cartas = []  # Inicializamos el atributo cartas como una lista vacía
+        self.valor = 0
+        self.estado = "Cerrada"
 
-class Croupier(Mano):
-    def muestraInfo(self):
-        info = f"Cartas: {self.cartas}, Nombre: {self.nombre}, Valor: {self.valor}, Estado: {self.estado}"
-        print(info)
+    def agregar_carta(self, carta):
+        self.cartas.append(carta)
+        self.calcular_valor()
+
+    def calcular_valor(self):
+        # Inicializamos el valor en 0 antes de calcularlo nuevamente
+        self.valor = 0
+        num_as = 0  # Contador de ases (que valen 1 u 11)
         
+        for carta in self.cartas:
+            if carta in ["J", "Q", "K"]:
+                self.valor += 10
+            elif carta == "A":
+                num_as += 1
+                self.valor += 11  # Asumimos el valor del as como 11 por defecto
+            else:
+                self.valor += int(carta)  # Las cartas numéricas tienen su valor numérico
+        
+        # Ajustamos el valor de los ases si el total es mayor a 21
+        while num_as > 0 and self.valor > 21:
+            self.valor -= 10  # Restamos 10 al valor total por cada as
+            num_as -= 1
 
-class Jugador(Mano):
+    def abrir_mano(self):
+        self.estado = "Abierta"
+
+    def cerrar_mano(self):
+        self.estado = "Cerrada"
+        
+class Croupier():
+    def __init__(self):
+        self.mano = Mano("Croupier")
+    
+class Jugador():
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self.balance = 0
+
+
+
+def modoJuego(mazo):
+    # Variable que controla el bucle para jugar partidas
+    finPartidas = True
+    
+    # Contador del balance del jugador
+    balance = 0
+    
+    while finPartidas:
+        # Contador de partidas
+        countPartidas = 1
+        
+        print("--- INICIO PARTIDA #", countPartidas, " --- BALANCE = ", balance, "€" )
+        
+        apuesta = int(input("¿Apuesta? [2] [10] [50]"))
+        
+        # REPARTO INICIAL #
+        # Creo al croupier y al jugador
+        croupier = Croupier()
+        jugador = Jugador("Jugador")
+        
+        
+        # Inserto la primera carta al croupier y al jugador
+        for _ in range(2):
+            croupier.mano.agregar_carta(mazo.pop())
+            jugador.mano.agregar_carta(mazo.pop())
+        
+            print(f"Estado de la mano del croupier: {croupier.mano.estado}")
+        print(f"Valor de la mano del croupier: {croupier.mano.valor}")
+        print(f"Estado de la mano de {jugador.nombre}: {jugador.mano.estado}")
+        print(f"Valor de la mano de {jugador.nombre}: {jugador.mano.valor}")
+        
+        print("REPARTO INICIAL")
+        
+        
+        
+def modoAnalisis(mazo):
     pass
 
+def modoPredeterminado(mazo):
+    pass
 
 
 
@@ -109,12 +180,21 @@ def separaciones(num):
 def Main():
     clearTerminal()
     
+    print("*** BLACKJACK - PARADIGMAS DE PROGRAMACIÓN 2023/24 ***")
+    
     mazo = generamosMazo()
-    print(mazo)
+
+    print("Indique el modo de ejecucion:")
+    modoEjecucion = input("[J]uego [A]nalisi:")
     
-    croupier_obj = Croupier(mazo[1], "Croupier", "10", "Abierto")
-    croupier_obj.muestraInfo()
-    
+    if modoEjecucion == "J" or modoEjecucion == "j":
+        modoJuego(mazo)
+        
+    elif modoEjecucion == "A" or modoEjecucion == "a":
+        modoAnalisis(mazo)
+        
+    else:
+        modoPredeterminado(mazo)
 
 
 

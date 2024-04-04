@@ -54,6 +54,17 @@ class MiCarta(externo2.CartaBase):
             """
             print(carta)
 
+def repartoInicial(listaCartas, manoCroupier, manoJugador):
+    
+    cartaCroupier = listaCartas[0]
+    cartaJugador = listaCartas[1]
+    
+    manoCroupier.append(cartaCroupier)
+    manoJugador.append(cartaJugador)
+    
+    print ("Mano Croupier:",manoCroupier)
+    print ("Mano Jugador:",manoJugador)
+
 def clearTerminal():
     os.system('clear')
     
@@ -67,22 +78,7 @@ class colores():
     
     
     
-class Mano():
-    def __init__(self, mano, estado):
-        self.mano = mano
-        self.estado = estado
-    
-class Croupier():
-    def __init__(self, manoCrupier):
-        self.muestraInfCroupier = manoCrupier
-    
-    def muestraInfCroupier():
-        pass
-    
-    
-class Jugador():
-    def __init__(self):
-        pass
+
     
 #################
 #### M A I N ####
@@ -105,17 +101,16 @@ def Main():
         
     print(listaCartas)
     
-    # Genero un array con todas las cartas del mazo desordenadas
-    mazoMezclado = [51]
-    for i in range(mazoMezclado):
-        posCarta = int(mazo.reparte().ind)
-        mazoMezclado.append(posCarta)
+    manoCroupier = []
+    manoJugador = []
 
 
 
     # LIMPIO EL TERMINAL #
     clearTerminal()
+    print("*** BLACKJACK - PARADIGMAS DE PROGRAMACIÓN 2023/24 ***")
 
+    separaciones(2)
 
     # INICIAMOS EL JUEGO PIDIENDO MODO DE EJECUCION #
     print("Indique el modo de ejecucion:")
@@ -141,7 +136,7 @@ def Main():
                     bucle1 = False
                     print()
                     print("REPARTO INICIAL:")
-
+                    repartoInicial(listaCartas, manoCroupier, manoJugador)
                     
                 else:
                     print("Apuesta no valida, inserte de nuevo la apuesta deseada")
