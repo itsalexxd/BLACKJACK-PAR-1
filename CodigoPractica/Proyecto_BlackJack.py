@@ -145,10 +145,11 @@ class Croupier():
 
 
 
-class Jugador():
+class Jugador:
     def __init__(self, nombre):
         self.nombre = nombre
         self.manos = []
+        self.estado_mano = ["A"]
         self.contadorManos = 0
         self.balance = 0
         
@@ -162,13 +163,30 @@ class Jugador():
         return self.manos[indice]
 
     def calcular_valor_manos(self):
-        self.valor_mano = 0
-        num_as = 0
+        valoresManos = []
         
-        for num_mano in self.manos:
+        for mano in self.manos:
+            valor_mano = 0
+            num_as = 0
             
-            pass
+            for carta in mano.cartas:
+                if carta % 13 + 1 in [11, 12, 13]:
+                    valor_mano += 10
+                elif carta % 13 + 1 == 1:
+                    num_as += 1
+                    valor_mano += 11  # Asumimos el valor del as como 11 por defecto
+                else:
+                    valor_mano += int(carta % 13 + 1)  # Las cartas numéricas tienen su valor numérico
             
+            # Ajustamos el valor de los ases si el total es mayor a 21
+            while num_as > 0 and valor_mano > 21:
+                valor_mano -= 10  # Restamos 10 al valor total por cada as
+                num_as -= 1
+
+            valoresManos.append(valor_mano)
+        
+        return valoresManos
+
     def separarMano(self, indice_mano, indice_carta):
         mano_original = self.manos[indice_mano]
         carta = mano_original.cartas.pop(indice_carta)  # Quitamos la carta de la mano original
@@ -181,7 +199,7 @@ class Jugador():
 
 def imprimeInfo(jugador, croupier):
     print(F"<{croupier.mano.estado}>{croupier.mano.nombre} ({croupier.mano.calcular_valor()}): ", croupier.mano.calcula_carta())
-    print(F"<{jugador.mano.estado}>{jugador.mano.nombre} ({jugador.calcular_valor_manos()}): ", jugador.mano.calcula_carta())
+    print(F"<{jugador.manos.estado}>{jugador.manos.nombre} ({jugador.calcular_valor_manos()}): ", jugador.mano.calcula_carta())
     print(croupier.mano.cartas)
     print(jugador.mano.cartas)
 
@@ -196,7 +214,7 @@ def turnoJugador(jugador, mazo):
             cartaNueva = mazo.pop()
             mano.agregar_carta(cartaNueva)
         
-        # Doblar apuesta
+        # Doblar apuesta (solo se puede doblar 1 vez por mano)
         elif jugada in ["D", "d"]:
             pass
         
@@ -209,13 +227,15 @@ def turnoJugador(jugador, mazo):
         
         else:
             print("Opcion no valida, por favor, inserte de nuevo.")
+            jugada = input(f"¿Jugada para {mano.nombre}? [P]edir [D]oblar [C]errar")
 
 def modoJuego(mazo):
     # Variable que controla el bucle para jugar partidas
     finPartidas = True
     
-    # Contador del balance del jugador
-    balance = 0
+    # Contador del balance del jugador y las apuestas
+    balance = [[],[],[]]
+    apuesta = []
     
     while finPartidas:
         # Contador de partidas
@@ -223,7 +243,9 @@ def modoJuego(mazo):
         
         print("--- INICIO PARTIDA #", countPartidas, " --- BALANCE = ", balance, "€" )
         
-        apuesta = int(input("¿Apuesta? [2] [10] [50] "))
+        separaciones(2)
+        
+        valorApuesta = int(input("¿Apuesta? [2] [10] [50] "))
         
         # REPARTO INICIAL #
         # Creo al croupier y al jugador
@@ -241,6 +263,8 @@ def modoJuego(mazo):
             jugador.obtener_mano(0).agregar_carta(mazo.pop())
         imprimeInfo(jugador, croupier)
         
+        separaciones(2)
+         
         turnoJugador(jugador, mazo)
         
         
@@ -267,10 +291,13 @@ def Main():
     
     print("*** BLACKJACK - PARADIGMAS DE PROGRAMACIÓN 2023/24 ***")
     
+    
     mazo = generamosMazo()
 
     print("Indique el modo de ejecucion:")
     modoEjecucion = input("[J]uego [A]nalisis: ")
+    
+    separaciones(2)
     
     bucleCorrecto = True
     while bucleCorrecto:
