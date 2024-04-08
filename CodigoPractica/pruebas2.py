@@ -69,7 +69,12 @@ class Jugador():
         self.nombre = "Jugador"
         self.manos = []
         self.estado_manos = ["A"]
-    
+        
+        self.contador_manos = 0
+        
+    def agregar_mano(self):
+        nombre_mano = f"mano{chr(ord('A') + len(self.manos))}"
+        nueva_mano = []
 
 def modoJuego(mazo):
     pass
@@ -86,5 +91,5 @@ def Main():
     mazo = genera_mazo()
     
 
-if __name__ == "__main??":
+if __name__ == "__main__":
     Main()

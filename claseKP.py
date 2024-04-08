@@ -15,3 +15,6 @@ class Padre(Madre):
     pass
 mipadre = Padre("vegeta", "37")
 mipadre.presentarse()
+
+for i in range(10):
+    print (F"{i}", end='\0')
