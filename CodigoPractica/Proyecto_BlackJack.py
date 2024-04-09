@@ -119,7 +119,9 @@ class Mano:
     def mano_pasada(self):
         self.estado = "PASADA"
 
-
+########################
+#### CLASE CROUPIER ####
+########################
 
 class Croupier():
     def __init__(self):
@@ -167,7 +169,9 @@ class Croupier():
 
 
 
-
+#######################
+#### CLASE JUGADOR ####
+#######################
 
 class Jugador(Mano):
     def __init__(self):
@@ -220,10 +224,12 @@ class Jugador(Mano):
         carta = self.manos[i].cartas[j]
         return traduce_carta(carta)
     
+    # Recibe el indice de la carta y lo traduce al palo correspondiente
     def traducir_palo(self, i, j):
         palo = self.manos[i].cartas[j]
         return traduce_palo(palo)
     
+    # Muestra la informacion del jugador
     def imprime_jugador(self):
         # Linea 1
         # Mostramos el nombre de la mano y la parte superior
@@ -264,15 +270,15 @@ class Jugador(Mano):
         # Linea 4
         # Mostramos el estado de la mano y el final de la carta
             if self.estado_mano[i] == "Cerrada":
-                print(f" {self.estado_mano[i]}", end='\0')
+                print(f"{self.estado_mano[i]} ", end='\0')
             else:
-                print(f"  {self.estado_mano[i]}", end='\0')
+                print(f" {self.estado_mano[i]} ", end='\0')
             for j in range(len(self.manos[i].cartas)):
                     print(f"╰────╯", end='\0')
                     
         separaciones(3)
                     
-                    
+    # Separa la mano
     def separarMano(self, indice_mano, indice_carta):
         mano_original = self.manos[indice_mano]
         carta = mano_original.cartas.pop(indice_carta)  # Quitamos la carta de la mano original
@@ -281,6 +287,7 @@ class Jugador(Mano):
         nueva_mano.agregar_carta(carta)  # Agregamos la carta separada a la nueva mano
         self.manos.append(nueva_mano)  # Agregamos la nueva mano a las manos del jugador
 
+# Recibe el indice de una carta y calcula el valor de la carta correspondiente al indice
 def traduce_carta(carta):
     if carta % 13 + 1 == 1:
         return "A"
@@ -293,6 +300,7 @@ def traduce_carta(carta):
     else:
         return carta % 13 + 1
     
+# Recibe el indice de una carta y calcula el palo de la carta correspondiente al indice
 def traduce_palo(palo):
     if palo >= 0 and palo <= 12:
         return "♠"  # [PICAS]
@@ -303,38 +311,34 @@ def traduce_palo(palo):
     else:
         return "♥" # [CORAZONES]
 
+# Imprime la informacion del Croupier y Jugador
 def imprimeInfo(croupier, jugador):
     croupier.imprime_croupier()
     print('\n')
     jugador.imprime_jugador()
 
-
-def turno_jugador(jugador, mazo):
-    print("TURNO DEL JUGADOR")
-    for i in range(len(jugador.manos)):
-        jugada = input(f"¿Jugada para {jugador.mano[i].nombre}? [P]edir [D]oblar [C]errar")
-        
-        # Pedimos carta
-        if jugada in ["P", "p"]:
-            cartaNueva = mazo.pop()
-            jugador.mano[i].agregar_carta(cartaNueva)
-        
-        # Doblar apuesta (solo se puede doblar 1 vez por mano)
-        elif jugada in ["D", "d"]:
+# Compara las cartas de la mano[i] del jugador
+def compara_cartas(jugador, i):
+    for j in range(len(jugador.manos[i].cartas)): # Recorro las cartas (carta que comparo)
+        carta = jugador.manos[i].cartas[j]
+        for q in range(len(jugador.manos[i].cartas)): # Recorro las cartas (carta que uso para comparar)
+            otra_carta = jugador.manos[i].cartas[q]
             
-            pass
-        
-        # Cerrar mano
-        elif jugada in ["C", "c"]:
-            jugador.mano[i].cerrar_mano()
-        
-        elif jugada in ["S", "s"] and len(mano.cartas) == 2 and mano.cartas[0] == mano.cartas[1] == 10:
-            jugador.separar_mano(i, 0)
-        
+    if carta == otra_carta:
+        return True
+    else:
+        return False
+    
+    
+def turno_jugador(jugador):
+    print("TURNO DEL JUGADOR")
+    for i in range(len(jugador.manos)): # Recorro las manos
+        if compara_cartas(jugador, i) == False: # Compruebo si se activa la funcion para separar
+            jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar  ")
         else:
-            print("Opcion no valida, por favor, inserte de nuevo.")
-            jugada = input(f"¿Jugada para {jugador.mano[i].nombre}? [P]edir [D]oblar [C]errar")
-
+            jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar [S]eparar  ")
+            
+            
 def modoJuego(mazo):
     # Variable que controla el bucle para jugar partidas
     finPartidas = True
@@ -344,12 +348,12 @@ def modoJuego(mazo):
     
     while finPartidas:
         # Contador de partidas
-        countPartidas = 1
+        contador_partidas = 1
         # Creo al croupier y al jugador
         croupier = Croupier()
         jugador = Jugador()
         
-        print("--- INICIO PARTIDA #", countPartidas, " --- BALANCE = ", balance, "€" )
+        print("--- INICIO PARTIDA #", contador_partidas, " --- BALANCE = ", balance, "€" )
         
         separaciones(2)
         
@@ -374,9 +378,9 @@ def modoJuego(mazo):
             
             
         imprimeInfo(croupier, jugador)
-        turno_jugador(jugador, mazo)
+        turno_jugador(jugador)
         
-        
+        contador_partidas += 1
         
         
 def modoAnalisis(mazo):
