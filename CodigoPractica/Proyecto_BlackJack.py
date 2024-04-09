@@ -56,7 +56,7 @@ class Mano:
     def __init__(self, nombre):
         self.nombre = nombre
         self.cartas = []  # Inicializamos el atributo cartas como una lista vacía
-        self.estado = "A"
+        self.estado = "Activa"
 
     def agregar_carta(self, carta):
         self.cartas.append(carta)
@@ -85,32 +85,35 @@ class Mano:
         
     # Traduce el indice de la carta en la baraja a la carta que es (Ej ind = 11 -> Q)
     def calcula_carta(self):
-        # Inicializamos el valor en 0 antes de calcularlo nuevamente
-        manoMostrar = []
-        
         for ind in self.cartas:
             if ind % 13 + 1 == 1:
-                manoMostrar.append("A")
+                return "A"
             elif ind % 13 + 1 == 11:
-                manoMostrar.append("J")
+                return "J"
             elif ind % 13 + 1 == 12:
-                manoMostrar.append("Q")
+                return "Q"
             elif ind % 13 + 1 == 13:
-                manoMostrar.append("K")
+                return "K"
             else:
-                num = ind % 13 + 1
-                manoMostrar.append(num)
-                
-        return manoMostrar
+                return int(ind % 13 + 1)
+            
+    def traducir_carta(self, i):
+        carta = self.cartas[i]
+        return traduce_carta(carta)
+        
+    
+    def traducir_palo(self, i):
+        palo = self.cartas[i]
+        return traduce_palo(palo)
 
     def abrir_mano(self):
-        self.estado = "A"
+        self.estado = "Activa"
 
     def cerrar_mano(self):
-        self.estado = "C"
+        self.estado = "Cerrada"
         
     def mano_pasada(self):
-        self.estado = "P"
+        self.estado = "PASADA"
 
 
 
@@ -120,11 +123,42 @@ class Croupier():
         self.mano = Mano("Croupier")
         
     def imprime_croupier(self):
-        # Mostramos la primera parte
+        # Mostramos la primera parte: el nombre y la prate superior de la/s carta/s
+        print(f"{self.croupier}:", end='\0')
+        for i in range (len(self.mano.cartas)):
+            print(f"╭───╮", end='\0')
+            
+        print()
         
+        if self.mano.calcular_valor() < 10:
+            print(f"     ({self.mano.calcular_valor()}) ", end='\0')
+        else:
+            print(f"    ({self.mano.calcular_valor()}) ", end='\0')
+        for i in range(len(self.mano.cartas)):
+                # La carta es != 10
+                if self.mano.traducir_carta(i) != 10:
+                    print(f"│  {self.mano.traducir_carta(i)}│", end='\0')
+                # La carta es == 10
+                else:
+                    print(f"│  {self.mano.traducir_carta(i)}│", end='\0')
+                    
+        print()
 
-
-
+        if self.mano.estado == "Activa":
+            print(f"  {self.mano.estado} ", end='\0')
+        elif self.mano.estado == "Cerrada":
+            print(f"{self.mano.estado}", end='\0')
+        else:
+            print(f"  {self.mano.estado} ", end='\0')
+        
+        for i in range(len(self.mano.cartas)):
+                    print(f"│{self.mano.traducir_palo(i)}  │", end='\0')
+        
+        print()
+        
+        print("         ", end='\0')
+        for i in range(len(self.mano.cartas)):
+                    print(f"╰───╯", end='\0')
 class Jugador(Mano):
     def __init__(self):
         self.nombre = "Jugador"
@@ -223,9 +257,10 @@ def traduce_palo(palo):
     else:
         return "♥" # [CORAZONES]
 
-def imprimeInfo():
-    Croupier.imprime_croupier()
-    Jugador.imprime_jugador()
+def imprimeInfo(croupier, jugador):
+    croupier.imprime_croupier()
+    print('\n')
+    jugador.imprime_jugador()
 
 
 def turnoJugador(jugador, mazo):
@@ -287,7 +322,7 @@ def modoJuego(mazo):
             jugador.obtener_mano(0).agregar_carta(mazo.pop())
             
             
-        imprimeInfo()
+        imprimeInfo(croupier, jugador)
         # turnoJugador(jugador, mazo)
         
         
