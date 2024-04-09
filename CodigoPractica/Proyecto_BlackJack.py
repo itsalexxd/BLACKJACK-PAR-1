@@ -178,9 +178,10 @@ class Jugador(Mano):
         self.estado_mano = ["Activa"]
         
     def agregar_mano(self):
-        nombreMano = f"mano{chr(ord('A'))}"
+        nombreMano = f"Mano{chr(ord('A') + len(self.manos)+1)}"
         nuevaMano = Mano(nombreMano)
         self.manos.append(nuevaMano)
+        self.nombre_mano.append(nombreMano)
         
     def obtener_mano(self, indice):
         return self.manos[indice]
@@ -195,17 +196,17 @@ class Jugador(Mano):
     def calcular_valor_manos(self):
         for i in range(len(self.manos)):
             # Inicializamos el valor en 0 antes de calcularlo nuevamente
-            valor = 0
+            valor = 0 # Valor total de la mano
             num_as = 0  # Contador de ases (que valen 1 u 11)
             
-            for carta in range(len(self.manos[i].cartas)):
-                if (carta % 13 + 1) in [11, 12, 13]:
+            for j in range(len(self.manos[i].cartas)):
+                if (self.manos[i].cartas[j] % 13 + 1) in [11, 12, 13]:
                     valor += 10
-                elif (carta % 13 + 1) == 1:
+                elif (self.manos[i].cartas[j] % 13 + 1) == 1:
                     num_as += 1
                     valor += 11  # Asumimos el valor del as como 11 por defecto
                 else:
-                    valor += int(carta % 13 + 1)  # Las cartas numéricas tienen su valor numérico
+                    valor += int(self.manos[i].cartas[j] % 13 + 1)  # Las cartas numéricas tienen su valor numérico
             
             # Ajustamos el valor de los ases si el total es mayor a 21
             while num_as > 0 and valor > 21:
@@ -230,11 +231,13 @@ class Jugador(Mano):
             for j in range (len(self.manos[i].cartas)):
                 print(f"╭────╮", end='\0')
             
-        print()
+            print()
         
         # Mostramos el valor total de la mano y el valor de la/s carta/s
-        for i in range(len(self.manos)):
-            print(f"({self.calcular_valor_manos()}) ", end='\0')
+            if self.calcular_valor_manos() < 10:
+                print(f"    ({self.calcular_valor_manos()}) ", end='\0')
+            else:
+                print(f"   ({self.calcular_valor_manos()}) ", end='\0')
             for j in range (len(self.manos[i].cartas)):
                 # La carta es != 10
                 if self.traducir_carta(i,j) != 10:
@@ -243,22 +246,23 @@ class Jugador(Mano):
                 else:
                     print(f"│  {self.traducir_carta(i,j)}│", end='\0')
                     
-        print()
+            print()
         
         # Mostramos la apuesta relacionada a la mano y el palo de la/s carta/s
-        for i in range(len(self.manos)):
             if self.apuesta[i] < 10: # Ajustamos la apuesta en funcion del valor
-                print(f"    {self.apuesta[i]}€ ", end='\0')
+                print(f"     {self.apuesta[i]}€ ", end='\0')
             else:
-                print(f"   {self.apuesta[i]}€ ", end='\0')
+                print(f"    {self.apuesta[i]}€ ", end='\0')
             for j in range(len(self.manos[i].cartas)):
                 print(f"│{self.traducir_palo(i,j)}   │", end='\0')
                     
-        print()
+            print()
         
         # Mostramos el estado de la mano y el final de la carta
-        for i in range(len(self.manos)):
-            print(f"{self.estado_mano[i]}", end='\0')
+            if self.estado_mano[i] == "Cerrada":
+                print(f" {self.estado_mano[i]}", end='\0')
+            else:
+                print(f"  {self.estado_mano[i]}", end='\0')
             for j in range(len(self.manos[i].cartas)):
                     print(f"╰────╯", end='\0')
                     
@@ -352,7 +356,7 @@ def modoJuego(mazo):
         
         # Agregamos una mano al jugador
         jugador.agregar_mano()
-
+        
         separaciones(2)
 
         print("REPARTO INICIAL")
@@ -361,6 +365,7 @@ def modoJuego(mazo):
             croupier.mano.agregar_carta(mazo.pop())
             jugador.agregar_carta_jugador(0,mazo.pop())
             croupier.mano.agregar_carta(mazo.pop())
+            jugador.agregar_carta_jugador(0,mazo.pop())
             
             
         imprimeInfo(croupier, jugador)
