@@ -318,16 +318,20 @@ def imprimeInfo(croupier, jugador):
     jugador.imprime_jugador()
 
 # Compara las cartas de la mano[i] del jugador
+    # 2 cartas iguales -> True
+    # No hay cartas iguales -> False
 def compara_cartas(jugador, i):
     for j in range(len(jugador.manos[i].cartas)): # Recorro las cartas (carta que comparo)
-        carta = jugador.manos[i].cartas[j]
+        carta1 = jugador.manos[i].cartas[j]
+        carta =  traduce_carta(carta1)
         for q in range(len(jugador.manos[i].cartas)): # Recorro las cartas (carta que uso para comparar)
-            otra_carta = jugador.manos[i].cartas[q]
+            carta2 = jugador.manos[i].cartas[q]
+            otra_carta = traduce_carta(carta2)
             
-    if carta == otra_carta:
-        return True
-    else:
-        return False
+        if carta == otra_carta:
+            return True
+        else:
+            return False
     
     
 def turno_jugador(jugador):
@@ -358,29 +362,35 @@ def modoJuego(mazo):
         separaciones(2)
         
         valorApuesta = int(input("¿Apuesta? [2] [10] [50]  "))
-        jugador.apuesta.append(valorApuesta)
-        
-        
-        # REPARTO INICIAL #
-        
-        # Agregamos una mano al jugador
-        jugador.agregar_mano()
-        
-        separaciones(2)
+        if valorApuesta in [2, 10, 50]:
+            jugador.apuesta.append(valorApuesta)
+            
+            
+            # REPARTO INICIAL #
+            
+            # Agregamos una mano al jugador
+            jugador.agregar_mano()
+            
+            separaciones(2)
 
-        print("REPARTO INICIAL")
-        # Inserto la primera carta al croupier y al jugador
-        for i in range(1):
-            croupier.mano.agregar_carta(mazo.pop())
-            jugador.agregar_carta_jugador(0,mazo.pop())
-            croupier.mano.agregar_carta(mazo.pop())
-            jugador.agregar_carta_jugador(0,mazo.pop())
+            print("REPARTO INICIAL")
+            # Inserto la primera carta al croupier y al jugador
+            for i in range(1):
+                croupier.mano.agregar_carta(mazo.pop())
+                jugador.agregar_carta_jugador(0,mazo.pop())
+                croupier.mano.agregar_carta(mazo.pop())
+                jugador.agregar_carta_jugador(0,mazo.pop())
+                
+                
+            imprimeInfo(croupier, jugador)
+            turno_jugador(jugador)
             
+            contador_partidas += 1
+        else:
+            print("Apuesta no valida, inserte la apuesta de nuevo...")
+            valorApuesta = int(input("¿Apuesta? [2] [10] [50]  "))
             
-        imprimeInfo(croupier, jugador)
-        turno_jugador(jugador)
         
-        contador_partidas += 1
         
         
 def modoAnalisis(mazo):
