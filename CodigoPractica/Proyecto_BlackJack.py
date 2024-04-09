@@ -334,11 +334,32 @@ def compara_cartas(jugador, i):
             return False
     
     
-def turno_jugador(jugador):
+def turno_jugador(jugador, mazo):
     print("TURNO DEL JUGADOR")
     for i in range(len(jugador.manos)): # Recorro las manos
         if compara_cartas(jugador, i) == False: # Compruebo si se activa la funcion para separar
             jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar  ")
+            
+            # Pedimos carta (agregamos carta a la mano i)
+            if jugada in ["P", "p"]:
+                jugador.agregar_carta_jugador(i, mazo.pop())
+                jugador.imprime_jugador()
+                
+            # Cerramos la mano i
+            elif jugada in ["C", "c"]:
+                jugador.manos[i].estado_mano[i] = "Cerrada"
+            
+            # Doblamos la apuesta de la mano i
+            elif jugada in ["D", "d"]:
+                jugador.manos[i].apuesta[i] += jugador.manos[i].apuesta[i] * 2
+                print(jugador.manos[i].apuesta[i])
+            
+            # Entrada no valida
+            else:
+                print("Entrada no valida, inserte de nuevo la accion que desea realizar...")
+                jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar  ")
+        
+        # Entrada no valida
         else:
             jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar [S]eparar  ")
             
@@ -346,7 +367,6 @@ def turno_jugador(jugador):
 def modoJuego(mazo):
     # Variable que controla el bucle para jugar partidas
     finPartidas = True
-    
     # Contador del balance del jugador y las apuestas
     balance = 0
     
@@ -375,15 +395,16 @@ def modoJuego(mazo):
 
             print("REPARTO INICIAL")
             # Inserto la primera carta al croupier y al jugador
-            for i in range(1):
-                croupier.mano.agregar_carta(mazo.pop())
-                jugador.agregar_carta_jugador(0,mazo.pop())
-                croupier.mano.agregar_carta(mazo.pop())
-                jugador.agregar_carta_jugador(0,mazo.pop())
-                
-                
+            croupier.mano.agregar_carta(mazo.pop())
+            jugador.agregar_carta_jugador(0,mazo.pop())
+            
+            
+            
             imprimeInfo(croupier, jugador)
-            turno_jugador(jugador)
+            
+            turno_jugador(jugador, mazo)
+            
+            imprimeInfo(croupier, jugador)
             
             contador_partidas += 1
         else:
