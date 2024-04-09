@@ -159,6 +159,12 @@ class Croupier():
         print("         ", end='\0')
         for i in range(len(self.mano.cartas)):
                     print(f"╰───╯", end='\0')
+
+
+
+
+
+
 class Jugador(Mano):
     def __init__(self):
         self.nombre = "Jugador"
