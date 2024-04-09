@@ -124,6 +124,7 @@ class Jugador(Mano):
     def __init__(self):
         self.nombre = "Jugador"
         self.manos = []
+        self.apuesta = []
         self.nombre_mano = ["ManoA"]
         self.estado_mano = ["A"]
         
@@ -139,22 +140,47 @@ class Jugador(Mano):
         for i in range(len(self.manos)):
             self.manos[i].calcular_valor()
     
+    # Recibe el indice de la carta y traduce el indice al valor de la carta en cuestion
+    def traducir_carta(self, i, j):
+        carta = self.manos[i].cartas[j]
+        return traduce_carta(carta)
+    
+    def traducir_palo(self, i, j):
+        palo = self.manos[i].cartas[j]
+        return traduce_palo(palo)
+    
     def imprime_jugador(self):
+        # Mostramos el nombre de la mano y la parte superior
         for i in range(len(self.manos)):
             print(f"<{self.nombre_mano}>:", end='\0')
             for j in range (len(self.manos[i].cartas)):
-                print(f"╭───────╮", end='\0')
+                print(f"╭───╮", end='\0')
+            
+        print()
         
-        print('\n')
-        
+        # Mostramos el valor total de la mano y el valor de la/s carta/s
         for i in range(len(self.manos)):
             print(f"({self.calcular_valor_manos()}):", end='\0')
             for j in range (len(self.manos[i].cartas)):
-                if len(self.manos[i].cartas[j].numCarta()) == 1:
-                    print(f"│    {self.manos[i].cartas[j].numCarta()}  │", end='\0')
+                # La carta es != 10
+                if self.traducir_carta(i,j) != 10:
+                    print(f"│  {self.traducir_carta(i,j)} │", end='\0')
+                # La carta es == 10
                 else:
-                    print(f"│    {self.manos[i].cartas[j].numCarta()} │", end='\0')
-
+                    print(f"│  {self.traducir_carta(i,j)}│", end='\0')
+                    
+        print()
+        
+        # Mostramos la apuesta relacionada a la mano y el palo de la/s carta/s
+        for i in range(len(self.manos)):
+            print(f"{self.apuesta}€")
+            for j in range(len(self.manos[i].cartas)):
+                    print(f"│{self.traducir_palo(i,j)}  │", end='\0')
+                    
+                    
+                    
+                    
+                    
     def separarMano(self, indice_mano, indice_carta):
         mano_original = self.manos[indice_mano]
         carta = mano_original.cartas.pop(indice_carta)  # Quitamos la carta de la mano original
@@ -163,7 +189,27 @@ class Jugador(Mano):
         nueva_mano.agregar_carta(carta)  # Agregamos la carta separada a la nueva mano
         self.manos.append(nueva_mano)  # Agregamos la nueva mano a las manos del jugador
 
-
+def traduce_carta(carta):
+    if carta % 13 + 1 == 1:
+        return "A"
+    elif carta % 13 + 1 == 11:
+        return "J"
+    elif carta % 13 + 1 == 12:
+        return "Q"
+    elif carta % 13 + 1 == 13:
+        return "K"
+    else:
+        return str(carta % 13 + 1)
+    
+def traduce_palo(palo):
+    if palo >= 0 and palo <= 12:
+        return "♠"  # [PICAS]
+    elif palo >= 13 and palo <= 25:
+        return "♣" # [TREVOLES]
+    elif palo >= 26 and palo <= 38:
+        return "♦" # [DIAMANTES]
+    else:
+        return "♥" # [CORAZONES]
 
 def imprimeInfo(jugador, croupier):
     print(F"<{croupier.mano.estado}>{croupier.mano.nombre} ({croupier.mano.calcular_valor()}): ", croupier.mano.calcula_carta())
@@ -236,8 +282,9 @@ def modoJuego(mazo):
         
         separaciones(2)
         
+        
         jugador.imprime_jugador()
-        turnoJugador(jugador, mazo)
+        # turnoJugador(jugador, mazo)
         
         
         
