@@ -225,6 +225,7 @@ class Jugador(Mano):
         return traduce_palo(palo)
     
     def imprime_jugador(self):
+        # Linea 1
         # Mostramos el nombre de la mano y la parte superior
         for i in range(len(self.manos)):
             print(f"<{self.nombre_mano[i]}>:", end='\0')
@@ -233,6 +234,7 @@ class Jugador(Mano):
             
             print()
         
+        # Linea 2
         # Mostramos el valor total de la mano y el valor de la/s carta/s
             if self.calcular_valor_manos() < 10:
                 print(f"    ({self.calcular_valor_manos()}) ", end='\0')
@@ -248,6 +250,7 @@ class Jugador(Mano):
                     
             print()
         
+        # Linea 3
         # Mostramos la apuesta relacionada a la mano y el palo de la/s carta/s
             if self.apuesta[i] < 10: # Ajustamos la apuesta en funcion del valor
                 print(f"     {self.apuesta[i]}€ ", end='\0')
@@ -258,6 +261,7 @@ class Jugador(Mano):
                     
             print()
         
+        # Linea 4
         # Mostramos el estado de la mano y el final de la carta
             if self.estado_mano[i] == "Cerrada":
                 print(f" {self.estado_mano[i]}", end='\0')
@@ -305,30 +309,31 @@ def imprimeInfo(croupier, jugador):
     jugador.imprime_jugador()
 
 
-def turnoJugador(jugador, mazo):
+def turno_jugador(jugador, mazo):
     print("TURNO DEL JUGADOR")
-    for i, mano in enumerate(jugador.manos):
-        jugada = input(f"¿Jugada para {mano.nombre}? [P]edir [D]oblar [C]errar")
+    for i in range(len(jugador.manos)):
+        jugada = input(f"¿Jugada para {jugador.mano[i].nombre}? [P]edir [D]oblar [C]errar")
         
         # Pedimos carta
         if jugada in ["P", "p"]:
             cartaNueva = mazo.pop()
-            mano.agregar_carta(cartaNueva)
+            jugador.mano[i].agregar_carta(cartaNueva)
         
         # Doblar apuesta (solo se puede doblar 1 vez por mano)
         elif jugada in ["D", "d"]:
+            
             pass
         
         # Cerrar mano
         elif jugada in ["C", "c"]:
-            mano.cerrar_mano()
+            jugador.mano[i].cerrar_mano()
         
         elif jugada in ["S", "s"] and len(mano.cartas) == 2 and mano.cartas[0] == mano.cartas[1] == 10:
             jugador.separar_mano(i, 0)
         
         else:
             print("Opcion no valida, por favor, inserte de nuevo.")
-            jugada = input(f"¿Jugada para {mano.nombre}? [P]edir [D]oblar [C]errar")
+            jugada = input(f"¿Jugada para {jugador.mano[i].nombre}? [P]edir [D]oblar [C]errar")
 
 def modoJuego(mazo):
     # Variable que controla el bucle para jugar partidas
@@ -369,7 +374,7 @@ def modoJuego(mazo):
             
             
         imprimeInfo(croupier, jugador)
-        # turnoJugador(jugador, mazo)
+        turno_jugador(jugador, mazo)
         
         
         
