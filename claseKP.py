@@ -1,20 +1,7 @@
-class Madre():
-    def __init__(self, nombre, edad):
-        self.nombre = nombre
-        self.edad = edad
-        
-    def presentarse(self):
-        print("Mi nombre es", self.nombre, "y tengo", self.edad, "años de edad")
-        
-mimadre = Madre("Bulma", "34")
-mimadre.presentarse()
-
-
-
-class Padre(Madre):
-    pass
-mipadre = Padre("vegeta", "37")
-mipadre.presentarse()
-
-for i in range(10):
-    print (f"{i}", end='\0')
+apuestaCorrecta = False
+while apuestaCorrecta == False:
+    valor_apuesta = int(input("Apuesta: "))
+    if valor_apuesta == 2 or valor_apuesta == 10 or valor_apuesta == 50:
+        print(valor_apuesta)
+    else:
+        print("No valida")
