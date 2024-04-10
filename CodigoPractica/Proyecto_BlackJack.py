@@ -177,6 +177,7 @@ class Jugador(Mano):
     def __init__(self):
         self.nombre = "Jugador"
         self.manos = []
+        self.valor_mano = []
         self.apuesta = []
         self.nombre_mano = ["ManoA"]
         self.estado_mano = ["Activa"]
@@ -218,6 +219,27 @@ class Jugador(Mano):
 
             return valor
         
+    def calcular_valor_mano_dos(self, indice_mano):
+            # Inicializamos el valor en 0 antes de calcularlo nuevamente
+            valor = 0 # Valor total de la mano
+            num_as = 0  # Contador de ases (que valen 1 u 11)
+            
+            for j in range(len(self.manos[indice_mano].cartas)):
+                if (self.manos[indice_mano].cartas[j] % 13 + 1) in [11, 12, 13]:
+                    valor += 10
+                elif (self.manos[indice_mano].cartas[j] % 13 + 1) == 1:
+                    num_as += 1
+                    valor += 11  # Asumimos el valor del as como 11 por defecto
+                else:
+                    valor += int(self.manos[indice_mano].cartas[j] % 13 + 1)  # Las cartas numéricas tienen su valor numérico
+            
+            # Ajustamos el valor de los ases si el total es mayor a 21
+            while num_as > 0 and valor > 21:
+                valor -= 10  # Restamos 10 al valor total por cada as
+                num_as -= 1
+
+            return str(valor)
+        
         
     def calcular_valor_manos(self):
         for i in range(len(self.manos)):
@@ -238,7 +260,7 @@ class Jugador(Mano):
             while num_as > 0 and valor > 21:
                 valor -= 10  # Restamos 10 al valor total por cada as
                 num_as -= 1
-
+            
             return valor
     
     # Recibe el indice de la carta y traduce el indice al valor de la carta en cuestion
@@ -256,18 +278,29 @@ class Jugador(Mano):
         # Linea 1
         # Mostramos el nombre de la mano y la parte superior
         for i in range(len(self.manos)):
+            if i > 0:
+                print(" | ", end='\0')
             print(f"<{self.nombre_mano[i]}>:", end='\0')
             for j in range (len(self.manos[i].cartas)):
                 print(f"╭────╮", end='\0')
             
-            print()
+            
+        print()
+        
         
         # Linea 2
         # Mostramos el valor total de la mano y el valor de la/s carta/s
+        for i in range(len(self.manos)):
+            if i > 0:
+                if self.calcular_valor_manos() < 10:
+                    print(" |   ", end='\0')
+                else:
+                    print(" | ", end='\0')
+                    
             if self.calcular_valor_manos() < 10:
-                print(f"    ({self.calcular_valor_manos()}) ", end='\0')
+                print(f"    ({self.calcular_valor_mano_dos(i)}) ", end='\0')
             else:
-                print(f"   ({self.calcular_valor_manos()}) ", end='\0')
+                print(f"   ({self.calcular_valor_mano_dos(i)}) ", end='\0')
             for j in range (len(self.manos[i].cartas)):
                 # La carta es != 10
                 if self.traducir_carta(i,j) != 10:
@@ -276,10 +309,16 @@ class Jugador(Mano):
                 else:
                     print(f"│  {self.traducir_carta(i,j)}│", end='\0')
                     
-            print()
+        
+        
+        print()
         
         # Linea 3
         # Mostramos la apuesta relacionada a la mano y el palo de la/s carta/s
+        for i in range(len(self.manos)):
+            if i > 0:
+                print(" | ", end='\0')
+                        
             if self.apuesta[i] < 10: # Ajustamos la apuesta en funcion del valor
                 print(f"     {self.apuesta[i]}€ ", end='\0')
             else:
@@ -287,10 +326,14 @@ class Jugador(Mano):
             for j in range(len(self.manos[i].cartas)):
                 print(f"│{self.traducir_palo(i,j)}   │", end='\0')
                     
-            print()
+        print()
         
         # Linea 4
         # Mostramos el estado de la mano y el final de la carta
+        for i in range(len(self.manos)):
+            if i > 0:
+                print(" | ", end='\0')
+                        
             if self.estado_mano[i] == "Cerrada":
                 print(f"{self.estado_mano[i]} ", end='\0')
             else:
@@ -298,8 +341,6 @@ class Jugador(Mano):
             for j in range(len(self.manos[i].cartas)):
                     print(f"╰────╯", end='\0')
 
-            if i > 1:
-                print(" | ", end='\0')
             
         separaciones(3)
                     
@@ -311,6 +352,8 @@ class Jugador(Mano):
         nueva_mano = Mano(nombre_nueva_mano)  # Creamos una nueva mano para la carta separada
         nueva_mano.agregar_carta(carta)  # Agregamos la carta separada a la nueva mano
         self.manos.append(nueva_mano)  # Agregamos la nueva mano a las manos del jugador
+        self.apuesta.append(self.apuesta[indice_mano])
+        self.estado_mano.append("Activa")
 
 # Recibe el indice de una carta y calcula el valor de la carta correspondiente al indice
 def traduce_carta(carta):
@@ -346,23 +389,47 @@ def imprimeInfo(croupier, jugador):
     # 2 cartas iguales -> True
     # No hay cartas iguales -> False
 def compara_cartas(jugador, i):
+    # Variable para ver si hay cartas iguales
+    cartas_iguales = 0
+    # Si hay mas de una carta en la mano, comprobamos si hay 2 cartas iguales
     if len(jugador.manos[i].cartas) > 1:
-        for j in range(len(jugador.manos[i].cartas)): # Recorro las cartas (carta que comparo)
-            carta1 = jugador.manos[i].cartas[j]
-            carta =  traduce_carta(carta1)
+        for j in range(len(jugador.manos[i].cartas) - 1): # Recorro las cartas (carta que comparo)
+            carta1 = jugador.manos[i].cartas[j] # Guardo el indice de la carta en carta1 (la que comparamos)
+            carta =  traduce_carta(carta1) # Traducimos el indice en el valor de la carta
             for q in range(len(jugador.manos[i].cartas)): # Recorro las cartas (carta que uso para comparar)
-                carta2 = jugador.manos[i].cartas[q]
-                otra_carta = traduce_carta(carta2)
+                carta2 = jugador.manos[i].cartas[q] # Guardo el indice de la carta en carta2 (con la que se compara)
+                otra_carta = traduce_carta(carta2) # Traducimos el indice en el valor de la carta
+            
+            # Compruebo si las cartas son iguales o no (no pueden valer lo mismo j y q (es la misma carta))
+            if j != q and carta == otra_carta:
+                # Si carta == otra_carta, sumamos 1 a la variable ya que tienen el mismo valor de carta
+                cartas_iguales += 1
                 
-            if carta == otra_carta:
-                return True
-            else:
-                return False
+        if cartas_iguales > 0:
+            return True
+        else:
+            return False
+    # Si solo hay una carta, devolvemos FALSE automaticamente ya que no puede haber otra carta igual
     else:
         return False
+
+def dime_carta_repetida(jugador, i):
+    # Variable para ver si hay cartas iguales
+    cartas_iguales = 0
+    # Si hay mas de una carta en la mano, comprobamos si hay 2 cartas iguales
+    if len(jugador.manos[i].cartas) > 1:
+        for j in range(len(jugador.manos[i].cartas) - 1): # Recorro las cartas (carta que comparo)
+            carta1 = jugador.manos[i].cartas[j] # Guardo el indice de la carta en carta1 (la que comparamos)
+            carta =  traduce_carta(carta1) # Traducimos el indice en el valor de la carta
+            for q in range(len(jugador.manos[i].cartas)): # Recorro las cartas (carta que uso para comparar)
+                carta2 = jugador.manos[i].cartas[q] # Guardo el indice de la carta en carta2 (con la que se compara)
+                otra_carta = traduce_carta(carta2) # Traducimos el indice en el valor de la carta
+            
+            # Compruebo si las cartas son iguales o no (no pueden valer lo mismo j y q (es la misma carta))
+            if j != q and carta == otra_carta:
+                # Si carta == otra_carta, sumamos 1 a la variable ya que tienen el mismo valor de carta
+                return q
     
-            
-            
 def modoJuego(mazo):
     # Variable que controla el bucle para jugar partidas
     finPartidas = True
@@ -436,7 +503,33 @@ def modoJuego(mazo):
                         # La opcion separar se activa ya que tiene 2 cartas con el mismo valor
                         else:
                             jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar [S]eparar  ")
-                    
+                            # Pedimos carta (agregamos carta a la mano i)
+                            if jugada == "P" or jugada == "p":
+                                jugador.agregar_carta_jugador(i, mazo.pop())
+                                
+                            
+                            # Cerramos la mano i
+                            elif jugada in ["C", "c"]:
+                                jugador.estado_mano[i] = "Cerrada"
+                            
+                            # Doblamos la apuesta de la mano i, sumamos una carta y si la suma > 21 -> PASADA; sino Cerrada
+                            elif jugada in ["D", "d"]:
+                                jugador.apuesta[i] = jugador.apuesta[i] * 2 # Doblamos la apuesta
+                                jugador.agregar_carta_jugador(i, mazo.pop()) # Agregamos una carta
+                                if jugador.calcular_valor_mano(i) > 21: # Si el valor de la mano supera 21
+                                    jugador.estado_mano[i] = "PASADA" # El estado pasa a ser PASADA
+                                else:
+                                    jugador.estado_mano[i] = "Cerrada" # Si no, se cierra la mano
+                                    
+                            # Separamos la mano ya que tiene 2 cartas con el mismo valor
+                            elif jugada == "S" or jugada == "s":
+                                jugador.separarMano(i, dime_carta_repetida(jugador, i))
+                                
+                            
+                            # Enrtada no valida, la pedimos de nuevo
+                            else:
+                                print("Entrada no valida, insertela de nuevo...")
+                                jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar [S]eparar  ")
                     # En caso de que el estado de la mano no sea Activo, no se podra modificar
                     else:
                         print(f"La mano {jugador.nombre_mano[i]} esta {jugador.estado_mano[i]}.")
@@ -446,7 +539,7 @@ def modoJuego(mazo):
                     
                     jugador.imprime_jugador()
                 
-                
+            fin_jugador = True
                 
                 
                 
