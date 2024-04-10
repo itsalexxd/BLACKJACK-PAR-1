@@ -197,6 +197,28 @@ class Jugador(Mano):
             print("El indice insertado para la mano no es valido")
 
 
+    def calcular_valor_mano(self, indice_mano):
+            # Inicializamos el valor en 0 antes de calcularlo nuevamente
+            valor = 0 # Valor total de la mano
+            num_as = 0  # Contador de ases (que valen 1 u 11)
+            
+            for j in range(len(self.manos[indice_mano].cartas)):
+                if (self.manos[indice_mano].cartas[j] % 13 + 1) in [11, 12, 13]:
+                    valor += 10
+                elif (self.manos[indice_mano].cartas[j] % 13 + 1) == 1:
+                    num_as += 1
+                    valor += 11  # Asumimos el valor del as como 11 por defecto
+                else:
+                    valor += int(self.manos[indice_mano].cartas[j] % 13 + 1)  # Las cartas numéricas tienen su valor numérico
+            
+            # Ajustamos el valor de los ases si el total es mayor a 21
+            while num_as > 0 and valor > 21:
+                valor -= 10  # Restamos 10 al valor total por cada as
+                num_as -= 1
+
+            return valor
+        
+        
     def calcular_valor_manos(self):
         for i in range(len(self.manos)):
             # Inicializamos el valor en 0 antes de calcularlo nuevamente
@@ -275,7 +297,10 @@ class Jugador(Mano):
                 print(f" {self.estado_mano[i]} ", end='\0')
             for j in range(len(self.manos[i].cartas)):
                     print(f"╰────╯", end='\0')
-                    
+
+            if i > 1:
+                print(" | ", end='\0')
+            
         separaciones(3)
                     
     # Separa la mano
@@ -321,47 +346,21 @@ def imprimeInfo(croupier, jugador):
     # 2 cartas iguales -> True
     # No hay cartas iguales -> False
 def compara_cartas(jugador, i):
-    for j in range(len(jugador.manos[i].cartas)): # Recorro las cartas (carta que comparo)
-        carta1 = jugador.manos[i].cartas[j]
-        carta =  traduce_carta(carta1)
-        for q in range(len(jugador.manos[i].cartas)): # Recorro las cartas (carta que uso para comparar)
-            carta2 = jugador.manos[i].cartas[q]
-            otra_carta = traduce_carta(carta2)
-            
-        if carta == otra_carta:
-            return True
-        else:
-            return False
-    
-    
-def turno_jugador(jugador, mazo):
-    print("TURNO DEL JUGADOR")
-    for i in range(len(jugador.manos)): # Recorro las manos
-        if compara_cartas(jugador, i) == False: # Compruebo si se activa la funcion para separar
-            jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar  ")
-            
-            # Pedimos carta (agregamos carta a la mano i)
-            if jugada in ["P", "p"]:
-                jugador.agregar_carta_jugador(i, mazo.pop())
-                jugador.imprime_jugador()
+    if len(jugador.manos[i].cartas) > 1:
+        for j in range(len(jugador.manos[i].cartas)): # Recorro las cartas (carta que comparo)
+            carta1 = jugador.manos[i].cartas[j]
+            carta =  traduce_carta(carta1)
+            for q in range(len(jugador.manos[i].cartas)): # Recorro las cartas (carta que uso para comparar)
+                carta2 = jugador.manos[i].cartas[q]
+                otra_carta = traduce_carta(carta2)
                 
-            # Cerramos la mano i
-            elif jugada in ["C", "c"]:
-                jugador.manos[i].estado_mano[i] = "Cerrada"
-            
-            # Doblamos la apuesta de la mano i
-            elif jugada in ["D", "d"]:
-                jugador.manos[i].apuesta[i] += jugador.manos[i].apuesta[i] * 2
-                print(jugador.manos[i].apuesta[i])
-            
-            # Entrada no valida
+            if carta == otra_carta:
+                return True
             else:
-                print("Entrada no valida, inserte de nuevo la accion que desea realizar...")
-                jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar  ")
-        
-        # Entrada no valida
-        else:
-            jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar [S]eparar  ")
+                return False
+    else:
+        return False
+    
             
             
 def modoJuego(mazo):
@@ -385,9 +384,6 @@ def modoJuego(mazo):
         if valorApuesta in [2, 10, 50]:
             jugador.apuesta.append(valorApuesta)
             
-            
-            # REPARTO INICIAL #
-            
             # Agregamos una mano al jugador
             jugador.agregar_mano()
             
@@ -398,19 +394,68 @@ def modoJuego(mazo):
             croupier.mano.agregar_carta(mazo.pop())
             jugador.agregar_carta_jugador(0,mazo.pop())
             
-            
-            
+            # Muestra la informacion del croupier y el jugador
             imprimeInfo(croupier, jugador)
             
-            turno_jugador(jugador, mazo)
+            # Turno del jugador
+            print("TURNO DEL JUGADOR")
+            fin_jugador = False
             
-            imprimeInfo(croupier, jugador)
-            
-            contador_partidas += 1
+            while fin_jugador == False:
+                for i in range(len(jugador.manos)): # Recorro las manos del jugador
+                    if jugador.estado_mano[i] == "Activa": # Si el estado de la mano no es Activa, no se podra editar
+                        if compara_cartas(jugador, i) == False: # Compruebo si se activa la funcion para separar y mostrarla
+                            jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar  ")
+                            
+                            # Pedimos carta (agregamos carta a la mano i)
+                            if jugada == "P" or jugada == "p":
+                                jugador.agregar_carta_jugador(i, mazo.pop())
+                                
+                            
+                            # Cerramos la mano i
+                            elif jugada in ["C", "c"]:
+                                jugador.estado_mano[i] = "Cerrada"
+                            
+                            # Doblamos la apuesta de la mano i, sumamos una carta y si la suma > 21 -> PASADA; sino Cerrada
+                            elif jugada in ["D", "d"]:
+                                jugador.apuesta[i] = jugador.apuesta[i] * 2 # Doblamos la apuesta
+                                jugador.agregar_carta_jugador(i, mazo.pop()) # Agregamos una carta
+                                if jugador.calcular_valor_mano(i) > 21: # Si el valor de la mano supera 21
+                                    jugador.estado_mano[i] = "PASADA" # El estado pasa a ser PASADA
+                                else:
+                                    jugador.estado_mano[i] = "Cerrada" # Si no, se cierra la mano
+                                
+                                
+                            
+                            # Entrada no valida
+                            else:
+                                print("Entrada no valida, inserte de nuevo la accion que desea realizar...")
+                                jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar ")
+                                
+                                
+                        # La opcion separar se activa ya que tiene 2 cartas con el mismo valor
+                        else:
+                            jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar [S]eparar  ")
+                    
+                    # En caso de que el estado de la mano no sea Activo, no se podra modificar
+                    else:
+                        print(f"La mano {jugador.nombre_mano[i]} esta {jugador.estado_mano[i]}.")
+                        i = i + 1
+                        
+                    print()
+                    
+                    jugador.imprime_jugador()
+                
+                
+                
+                
+                
         else:
             print("Apuesta no valida, inserte la apuesta de nuevo...")
             valorApuesta = int(input("¿Apuesta? [2] [10] [50]  "))
             
+        contador_partidas += 1
+        
         
         
         
