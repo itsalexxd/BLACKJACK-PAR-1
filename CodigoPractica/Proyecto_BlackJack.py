@@ -297,8 +297,8 @@ class Jugador(Mano):
                 else:
                     print(" | ", end='\0')
                     
-            if self.calcular_valor_manos() < 10:
-                print(f"    ({self.calcular_valor_mano_dos(i)}) ", end='\0')
+            if self.calcular_valor_mano(i) < 10:
+                print(f"    ({self.calcular_valor_mano(i)}) ", end='\0')
             else:
                 print(f"   ({self.calcular_valor_mano_dos(i)}) ", end='\0')
             for j in range (len(self.manos[i].cartas)):
