@@ -469,7 +469,6 @@ def modoJuego(mazo):
                 # Turno del jugador
                 print("TURNO DEL JUGADOR")
                 fin_jugador = False
-                
                 while fin_jugador == False:
                     for i in range(len(jugador.manos)): # Recorro las manos del jugador
                         if jugador.estado_mano[i] == "Activa": # Si el estado de la mano no es Activa, no se podra editar
@@ -506,7 +505,7 @@ def modoJuego(mazo):
                             else:
                                 jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar [S]eparar  ")
                                 # Pedimos carta (agregamos carta a la mano i)
-                                if jugada == "P" or jugada == "p":
+                                if jugada in ["P", "p"]:
                                     jugador.agregar_carta_jugador(i, mazo.pop())
                                     
                                 
@@ -524,7 +523,7 @@ def modoJuego(mazo):
                                         jugador.estado_mano[i] = "Cerrada" # Si no, se cierra la mano
                                         
                                 # Separamos la mano ya que tiene 2 cartas con el mismo valor
-                                elif jugada == "S" or jugada == "s":
+                                elif jugada in ["S", "s"]:
                                     jugador.separarMano(i, dime_carta_repetida(jugador, i))
                                     
                                 
@@ -541,7 +540,7 @@ def modoJuego(mazo):
                         
                         jugador.imprime_jugador()
                     
-                fin_jugador = True
+                    fin_jugador = True
                     
                     
                     
@@ -580,7 +579,6 @@ def Main():
     
     print("*** BLACKJACK - PARADIGMAS DE PROGRAMACIÓN 2023/24 ***")
     
-    
     mazo = generamosMazo()
 
     print("Indique el modo de ejecucion:")
@@ -590,21 +588,22 @@ def Main():
     
     bucleCorrecto = True
     while bucleCorrecto:
-        if modoEjecucion == "J" or modoEjecucion == "j":
+        if modoEjecucion in ["J", "j"]:
             modoJuego(mazo)
+            bucleCorrecto = False
             
-        elif modoEjecucion == "A" or modoEjecucion == "a":
+        elif modoEjecucion in ["A", "a"]:
             modoAnalisis(mazo)
+            bucleCorrecto = False
             
         elif modoEjecucion == "":
             modoPredeterminado(mazo)
+            bucleCorrecto = False
         
         else:
             separaciones(2)
             print("Opcion insertada no valida, vuelva a insertar el modo de ejecucion")
             modoEjecucion = input("[J]uego [A]nalisis:" )
-
-
 
 
 if __name__ == "__main__":
