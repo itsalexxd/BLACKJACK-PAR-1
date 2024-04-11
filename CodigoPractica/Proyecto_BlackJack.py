@@ -279,7 +279,7 @@ class Jugador(Mano):
         # Mostramos el nombre de la mano y la parte superior
         for i in range(len(self.manos)):
             if i > 0:
-                print(" | ", end='\0')
+                print(" │ ", end='\0')
             print(f"<{self.nombre_mano[i]}>:", end='\0')
             for j in range (len(self.manos[i].cartas)):
                 print(f"╭────╮", end='\0')
@@ -293,9 +293,9 @@ class Jugador(Mano):
         for i in range(len(self.manos)):
             if i > 0:
                 if self.calcular_valor_manos() < 10:
-                    print(" |   ", end='\0')
+                    print(" │   ", end='\0')
                 else:
-                    print(" | ", end='\0')
+                    print(" │ ", end='\0')
                     
             if self.calcular_valor_mano(i) < 10:
                 print(f"    ({self.calcular_valor_mano(i)}) ", end='\0')
@@ -317,7 +317,7 @@ class Jugador(Mano):
         # Mostramos la apuesta relacionada a la mano y el palo de la/s carta/s
         for i in range(len(self.manos)):
             if i > 0:
-                print(" | ", end='\0')
+                print(" │ ", end='\0')
                         
             if self.apuesta[i] < 10: # Ajustamos la apuesta en funcion del valor
                 print(f"     {self.apuesta[i]}€ ", end='\0')
@@ -332,7 +332,7 @@ class Jugador(Mano):
         # Mostramos el estado de la mano y el final de la carta
         for i in range(len(self.manos)):
             if i > 0:
-                print(" | ", end='\0')
+                print(" │ ", end='\0')
                         
             if self.estado_mano[i] == "Cerrada":
                 print(f"{self.estado_mano[i]} ", end='\0')
