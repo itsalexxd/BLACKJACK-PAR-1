@@ -1,19 +1,3 @@
-
-                    
-                    # Agregamos una mano al jugador
-                    jugador.agregar_mano()
-                    
-                    separaciones(2)
-
-                    print("REPARTO INICIAL")
-                    # Inserto la primera carta al croupier y al jugador
-                    croupier.mano.agregar_carta(mazo.pop())
-                    jugador.agregar_carta_jugador(0,mazo.pop())
-                    
-                    # Muestra la informacion del croupier y el jugador
-                    imprimeInfo(croupier, jugador)
-                    
-                    # Turno del jugador
                     print("TURNO DEL JUGADOR")
                     fin_jugador = False
                     while fin_jugador == False:
