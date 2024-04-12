@@ -429,132 +429,84 @@ def dime_carta_repetida(jugador, i):
             if j != q and carta == otra_carta:
                 # Si carta == otra_carta, sumamos 1 a la variable ya que tienen el mismo valor de carta
                 return q
-    
+
+###################
+### MODO JUEGO ####
+###################
 def modoJuego(mazo):
-    # Variable que controla el bucle para jugar partidas
-    finPartidas = True
-    # Contador del balance del jugador y las apuestas
-    balance = 0
+    croupier = Croupier()       # Creo el croupier
+    jugador = Jugador()     # Creo al jugador
+    jugador.agregar_mano()      # Le doy una mano al jugador
+    balance = 0     # Balance de la partida del jugador
     
-    while finPartidas:
-        # Contador de partidas
-        contador_partidas = 1
-        # Creo al croupier y al jugador
-        croupier = Croupier()
-        jugador = Jugador()
+    partida = True      # Variable para llevar el control del bucle de las partidas
+    while partida:
+        contador_partidas = 1       # Variable que lleva las cuentas de las partidas que lleva el jugador
+        print("--- INICIO PARTIDA #", contador_partidas, " --- BALANCE = ", balance, "€")
         
-        print("--- INICIO PARTIDA #", contador_partidas, " --- BALANCE = ", balance, "€" )
         
-        separaciones(2)
-
-        apuesta_correcta = False
-        while apuesta_correcta == False:
-            valorApuesta = int(input("¿Apuesta? [2] [10] [50]  "))
-            if valorApuesta in [2, 10, 50]:
-                jugador.apuesta.append(valorApuesta)
+        control_apuesta = False     # Variable para controlar el bucle a la hora de pedir la apuesta
+        while not control_apuesta:      # Bucle para controlar las excepciones a la hora de pedir el valor de la apuesta
+            try:
+                valor_apuesta_str = input("¿Apuesta? [2] [10] [50] ")       # Pido que inserte la apuesta que desea realizar
+                valor_apuesta = int(valor_apuesta_str)      # Transformo el valor en int
                 
-                # Agregamos una mano al jugador
-                jugador.agregar_mano()
+                if valor_apuesta not in [2,10,50]:      # Si la apuesta no coincide con los valores validos, muestro mensaje de error por pantalla
+                    print("El valor insertado no es valido, inserte el valor correcto")
                 
-                separaciones(2)
-
-                print("REPARTO INICIAL")
-                # Inserto la primera carta al croupier y al jugador
-                croupier.mano.agregar_carta(mazo.pop())
-                jugador.agregar_carta_jugador(0,mazo.pop())
-                
-                # Muestra la informacion del croupier y el jugador
-                imprimeInfo(croupier, jugador)
-                
-                # Turno del jugador
-                print("TURNO DEL JUGADOR")
-                fin_jugador = False
-                while fin_jugador == False:
-                    for i in range(len(jugador.manos)): # Recorro las manos del jugador
-                        if jugador.estado_mano[i] == "Activa": # Si el estado de la mano no es Activa, no se podra editar
-                            if compara_cartas(jugador, i) == False: # Compruebo si se activa la funcion para separar y mostrarla
-                                jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar  ")
-                                
-                                # Pedimos carta (agregamos carta a la mano i)
-                                if jugada == "P" or jugada == "p":
-                                    jugador.agregar_carta_jugador(i, mazo.pop())
-                                    
-                                
-                                # Cerramos la mano i
-                                elif jugada in ["C", "c"]:
-                                    jugador.estado_mano[i] = "Cerrada"
-                                
-                                # Doblamos la apuesta de la mano i, sumamos una carta y si la suma > 21 -> PASADA; sino Cerrada
-                                elif jugada in ["D", "d"]:
-                                    jugador.apuesta[i] = jugador.apuesta[i] * 2 # Doblamos la apuesta
-                                    jugador.agregar_carta_jugador(i, mazo.pop()) # Agregamos una carta
-                                    if jugador.calcular_valor_mano(i) > 21: # Si el valor de la mano supera 21
-                                        jugador.estado_mano[i] = "PASADA" # El estado pasa a ser PASADA
-                                    else:
-                                        jugador.estado_mano[i] = "Cerrada" # Si no, se cierra la mano
-                                    
-                                    
-                                
-                                # Entrada no valida
-                                else:
-                                    print("Entrada no valida, inserte de nuevo la accion que desea realizar...")
-                                    jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar ")
-                                    
-                                    
-                            # La opcion separar se activa ya que tiene 2 cartas con el mismo valor
-                            else:
-                                jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar [S]eparar  ")
-                                # Pedimos carta (agregamos carta a la mano i)
-                                if jugada in ["P", "p"]:
-                                    jugador.agregar_carta_jugador(i, mazo.pop())
-                                    
-                                
-                                # Cerramos la mano i
-                                elif jugada in ["C", "c"]:
-                                    jugador.estado_mano[i] = "Cerrada"
-                                
-                                # Doblamos la apuesta de la mano i, sumamos una carta y si la suma > 21 -> PASADA; sino Cerrada
-                                elif jugada in ["D", "d"]:
-                                    jugador.apuesta[i] = jugador.apuesta[i] * 2 # Doblamos la apuesta
-                                    jugador.agregar_carta_jugador(i, mazo.pop()) # Agregamos una carta
-                                    if jugador.calcular_valor_mano(i) > 21: # Si el valor de la mano supera 21
-                                        jugador.estado_mano[i] = "PASADA" # El estado pasa a ser PASADA
-                                    else:
-                                        jugador.estado_mano[i] = "Cerrada" # Si no, se cierra la mano
-                                        
-                                # Separamos la mano ya que tiene 2 cartas con el mismo valor
-                                elif jugada in ["S", "s"]:
-                                    jugador.separarMano(i, dime_carta_repetida(jugador, i))
-                                    
-                                
-                                # Enrtada no valida, la pedimos de nuevo
-                                else:
-                                    print("Entrada no valida, insertela de nuevo...")
-                                    jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar [S]eparar  ")
-                        # En caso de que el estado de la mano no sea Activo, no se podra modificar
-                        else:
-                            print(f"La mano {jugador.nombre_mano[i]} esta {jugador.estado_mano[i]}.")
-                            i = i + 1
+                else:       # La apuesta es correcta, empieza el reparto inicial
+                    control_apuesta = True      # Cambiamos el estado de la variable que controla el bucle para que no vuelva a pedirnos la apuesta
+                    jugador.apuesta.append(valor_apuesta)       # Guardamos la apuesta en la clase del jugador
+                    
+                    separaciones(2)
+                    
+                    #########################
+                    #### REPARTO INICIAL ####
+                    #########################
+                    print("REPARTO INICIAL")
+                    # Inserto una carta al croupier y al jugador
+                    croupier.mano.agregar_carta(mazo.pop())
+                    jugador.agregar_carta_jugador(0, mazo.pop())        # El 0 hace referencia a la mano inicial del jugador
+                    
+                    imprimeInfo(croupier, jugador)      # Mostramos la informacion de las manos del croupier y del jugador
+                    
+                    ###########################
+                    #### TURNO DEL JUGADOR ####
+                    ###########################
+                    print("TURNO DEL JUGADOR")
+                    control_jugador = False     # Variable que lleva el control del bucle del turno del jugador
+                    while not control_jugador:      # Bucle para llevar a cabo el turno del jugador para cada mano
+                        for i in range(len(jugador.manos)):     # Recorro todas las manos del jugador
                             
-                        print()
-                        
-                        jugador.imprime_jugador()
-                    
-                    fin_jugador = True
                     
                     
                     
-            else:
-                print("Apuesta no valida, inserte la apuesta de nuevo...")
-                valorApuesta = int(input("¿Apuesta? [2] [10] [50]  "))
-        else:
-            print("Apuesta no valida, inserte la apuesta de nuevo...")
-            valorApuesta = int(input("¿Apuesta? [2] [10] [50]  "))
+                    
+            except ValueError:      # En caso de que haya error a la hora de insertar el valor de la apuesta mostramos un mensaje de error
+                print("Por favor, ingresa un valor numerico valido.")
+
+
+
+        ###########################
+        #### FIN DE LA PARTIDA ####
+        ###########################
+        volver_jugar = False
+        while not volver_jugar:
+            otra_partida = input(print("¿Otra partida? [S/N] "))    # Variable para la respuesta de jugar otra partida
+            if otra_partida in ["S", "s"]:      # Se juega otra partida (no hacemos nada, el bucle empieza de nuevo)
+                volver_jugar = True
+            
+            elif otra_partida in ["N", "n"]:        # Mostramos el balance final y cerramos el bucle
+                print("BALANCE FINAL: ", balance, "€")
+                volver_jugar = True
+                partida = False
                 
-        contador_partidas += 1
-        
-        
-        
+            else:       # Entrada no valida, la pedimos de nuevo
+                print("Entrada no valida, por favor, insertela de nuevo")
+                
+                
+        contador_partidas += 1      # Sumamos una partida a la variable
+
         
 def modoAnalisis(mazo):
     pass
