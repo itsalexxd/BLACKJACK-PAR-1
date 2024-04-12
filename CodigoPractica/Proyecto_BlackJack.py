@@ -261,7 +261,7 @@ class Jugador(Mano):
                 valor -= 10  # Restamos 10 al valor total por cada as
                 num_as -= 1
             
-            return valor
+        return valor
     
     # Recibe el indice de la carta y traduce el indice al valor de la carta en cuestion
     def traducir_carta(self, i, j):
@@ -283,8 +283,8 @@ class Jugador(Mano):
             print(f"<{self.nombre_mano[i]}>:", end='\0')
             for j in range (len(self.manos[i].cartas)):
                 print(f"╭────╮", end='\0')
-            
-            
+        
+        
         print()
         
         
@@ -308,10 +308,10 @@ class Jugador(Mano):
                 # La carta es == 10
                 else:
                     print(f"│  {self.traducir_carta(i,j)}│", end='\0')
-                    
         
         
         print()
+        
         
         # Linea 3
         # Mostramos la apuesta relacionada a la mano y el palo de la/s carta/s
@@ -431,7 +431,7 @@ def dime_carta_repetida(jugador, i):
                 return q
 
 ###################
-### MODO JUEGO ####
+### MODO JUEGO #### 
 ###################
 def modoJuego(mazo):
     croupier = Croupier()       # Creo el croupier
@@ -509,8 +509,8 @@ def modoJuego(mazo):
                                 else:       # En este caso, si se muestra la accion de separar la mano
                                     control_accion = False      # Variable que lleva el control del bucle para las acciones del jugador y tratar los errores
                                     while not control_accion:
-                                        accion = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar ")        # Pido al jugador que inserte la jugada que desea realizar
-                                        if accion not in ["P", "p", "C", "c", "D", "d"]:        # Si la accion insertada no es valida, mostramos el error por pantalla y lo volvemos a pedir
+                                        accion = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar [S]eparar")        # Pido al jugador que inserte la jugada que desea realizar
+                                        if accion not in ["P", "p", "C", "c", "D", "d", "S", "s"]:        # Si la accion insertada no es valida, mostramos el error por pantalla y lo volvemos a pedir
                                             print(f"Entrada no valida, por favor, inserte de nuevo la accion que desea realizar para la {jugador.nombre_mano[i]}")
                                         
                                         else:       # En caso de que la entrada sea correcta, realizamos la accion correspondiente
