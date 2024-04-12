@@ -11,7 +11,7 @@ import os
 
 # Genero una baraja de cartas mezclada con 2 mazos
 def generamosMazo():
-    estrategia = externo2.Estrategia(2)
+    estrategia = externo2.Estrategia(externo2.Mazo.NUM_BARAJAS)
     mazo = externo2.Mazo(MiCarta,estrategia)
 
     listaCartas = []
@@ -596,6 +596,9 @@ def Main():
     clearTerminal()
     
     print("*** BLACKJACK - PARADIGMAS DE PROGRAMACIÓN 2023/24 ***")
+    
+    # estrategia = externo2.Estrategia(externo2.Mazo.NUM_BARAJAS)
+    # mazo2 = externo2.Mazo(MiCarta, estrategia)
     
     mazo = generamosMazo()
 
