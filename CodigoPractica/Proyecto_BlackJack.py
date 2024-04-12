@@ -72,9 +72,9 @@ class Mano:
         num_as = 0  # Contador de ases (que valen 1 u 11)
         
         for carta in self.cartas:
-            if carta % 13 + 1 in [11, 12, 13]:
+            if (carta % 13 + 1) in [11, 12, 13]:
                 valor += 10
-            elif carta % 13 + 1 == 1:
+            elif (carta % 13 + 1) == 1:
                 num_as += 1
                 valor += 11  # Asumimos el valor del as como 11 por defecto
             else:
@@ -135,6 +135,7 @@ class Croupier():
             print(f"╭────╮", end='\0')
             
         print()
+        
         
         if self.mano.calcular_valor() < 10:
             print(f"     ({self.mano.calcular_valor()}) ", end='\0')
@@ -486,18 +487,17 @@ def modoJuego(mazo):
                     while control_jugada:
                         if compara_cartas(jugador, i) == False:     # En caso de que no haya dos cartas con el mismo valor(Ej: 7 y 7), no se muestra la opcion para separar la mano
                             jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar ")        # Pido al jugador que inserte la jugada que desea realizar
-                            control_jugada = False      # Salimos del bucle
                             
                             if jugada not in ["P", "p", "C", "c", "D", "d"]:        # Si la jugada insertada no es valida, mostramos el error por pantalla y lo volvemos a pedir
                                 print(f"Entrada no valida, por favor, inserte de nuevo la jugada que desea realizar para la {jugador.nombre_mano[i]}")
-                                
+                            
                         else:
                             jugada = input(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar [S]eparar ")        # Pido al jugador que inserte la jugada que desea realizar
-                            control_jugada = False
                             
                             if jugada not in ["P", "p", "C", "c", "D", "d", "S", "s"]:        # Si la jugada insertada no es valida, mostramos el error por pantalla y lo volvemos a pedir
                                 print(f"Entrada no valida, por favor, inserte de nuevo la jugada que desea realizar para la {jugador.nombre_mano[i]}")
-                    
+                        control_jugada = False      # Salimos del bucle
+                        
                     if jugada in ["P", "p"]:        # Pedimos y agregamos una carta a la mano en cuestion
                         jugador.agregar_carta_jugador(i, mazo.pop())        # i hace referencia a la mano, mazo.pop() inserta una carta del mazo
                     
@@ -527,6 +527,31 @@ def modoJuego(mazo):
                 control_jugador = False
             else:
                 jugador.imprime_jugador()
+        
+        separaciones(2)
+        
+        ############################
+        #### TURNO DEL CROUPIER ####
+        ############################
+        print("TURNO DEL CROUPIER")
+        
+        croupier.imprime_croupier()
+        
+        print()
+        
+        while croupier.mano.calcular_valor() < 17:
+            croupier.mano.agregar_carta(mazo.pop())
+            print()
+            croupier.imprime_croupier()
+        
+        separaciones(3)
+        
+        
+        ##################
+        #### RECUENTO ####
+        ##################
+        
+        
         ###########################
         #### FIN DE LA PARTIDA ####
         ###########################
