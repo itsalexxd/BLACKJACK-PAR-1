@@ -169,7 +169,7 @@ class Croupier():
         for i in range(len(self.mano.cartas)):
                 print("╰────╯", end='\0')
 
-        def reiniciar_mano_croupier (self):
+        def reiniciar_mano_croupier(self):
             self.mano = Mano("Croupier")
 
 
@@ -588,9 +588,9 @@ def modoJuego(mazo):
                 
         
 
-  #######################
-  #### MODO ANÁLISIS ####
-  #######################     
+#######################
+#### MODO ANÁLISIS ####
+######################
 def modoAnalisis(mazo):
     croupier = Croupier() #Creo al croupier
     jugador = Jugador()   #Creo al jugador
@@ -631,7 +631,7 @@ def modoAnalisis(mazo):
                 if jugador.estado_mano[j] in ["Cerrada", "Pasada"]:
                     print(f"La mano {jugador.nombre_mano[j]} esta {jugador.estado_mano[j]} y no puede ser modificada.")
                     
-                else: 
+                else:
                     if compara_cartas(jugador, j) == False:
                         print (f"¿Jugada para {jugador.nombre_mano[j]}? [P]edir [D]oblar [C]errar ")
                         jugada = estrategia.jugada(croupier.mano.cartas[0], mano_actual.cartas)
@@ -660,7 +660,7 @@ def modoAnalisis(mazo):
                             manos_cerradas += 1
                 
                     elif jugada == "C":
-                        jugador.estado[j] = "Cerrada"
+                        jugador.estado_mano[j] = "Cerrada"
                         manos_cerradas += 1
                         
                     elif jugada == "S":
@@ -670,8 +670,8 @@ def modoAnalisis(mazo):
             jugador.imprime_jugador()
             control_jugador = False
             
-        else: 
-            jugador.imprime_jugdor()
+        else:
+            jugador.imprime_jugador()
             
     separaciones (2)
     
@@ -686,16 +686,16 @@ def modoAnalisis(mazo):
         croupier.imprime_croupier()
         
     else:
-          while croupier.mano.calcular_valor() < 17:
-              croupier.mano.agregar_carta(mazo.pop())
-              print()
-              croupier.imprime_croupier()
-              
+        while croupier.mano.calcular_valor() < 17:
+            croupier.mano.agregar_carta(mazo.pop())
+            print()
+            croupier.imprime_croupier()
+            
     if croupier.mano.calcular_valor()>21:
-        croupier.estado_mano= "Pasada"
+        croupier.mano.estado= "Pasada"
     
     else:
-        croupier.estado_mano = "Cerrada"
+        croupier.mano.estado = "Cerrada"
         
     separaciones(3)
     
@@ -709,9 +709,9 @@ def modoPredeterminado(mazo):
     jugador = Jugador()
     
     jugador.agregar_mano()
-    balance = 0 
+    balance = 0
     
-    partida = True 
+    partida = True
     while partida:
         contador_partidas = 1
         print("--- INICIO PARTIDA #", contador_partidas, " --- BALANCE = ", balance, "€")
@@ -810,7 +810,7 @@ def modoPredeterminado(mazo):
     ##################
     #### RECUENTO ####
     ##################
-     
+
     ###########################
     #### FIN DE LA PARTIDA ####
     ###########################
