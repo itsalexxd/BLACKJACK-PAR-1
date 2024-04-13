@@ -531,7 +531,8 @@ def modoJuego(mazo, balance, contador_partidas):
         print("REPARTO INICIAL")
         # Inserto una carta al croupier y al jugador
         croupier.mano.agregar_carta(mazo.pop())
-        jugador.agregar_carta_jugador(0, mazo.pop())        # El 0 hace referencia a la mano inicial del jugador
+        for _ in range(2):
+            jugador.agregar_carta_jugador(0, mazo.pop())        # El 0 hace referencia a la mano inicial del jugador
         
         imprimeInfo(croupier, jugador)      # Mostramos la informacion de las manos del croupier y del jugador
         
@@ -568,7 +569,7 @@ def modoJuego(mazo, balance, contador_partidas):
                         jugador.agregar_carta_jugador(i, mazo.pop())        # i hace referencia a la mano, mazo.pop() inserta una carta del mazo
                     
                     elif jugada in ["D", "d"]:      # Doblamos la apuesta del jugador, agregamos una carta y cambiamos el estado de la mano correspondiente
-                        jugador.apuesta[i] = jugador.apuesta[i] * 2        # Doblamos la apuesta de la mano correspondiente
+                        jugador.apuesta[i] *= 2        # Doblamos la apuesta de la mano correspondiente
                         jugador.agregar_carta_jugador(i, mazo.pop())        # Agregamos una carta a la mano correspondiente
                         
                         if jugador.calcular_valor_mano(i) > 21:     # Si el valor total de la mano es valor > 21 -> PASADA
@@ -623,12 +624,97 @@ def modoJuego(mazo, balance, contador_partidas):
             partida = False
         else:
             limpiar_todo(croupier, jugador)
+            contador_partidas += 1
 
         clearTerminal()
         
+#######################
+#### MODO ANALISIS ####
+#######################
 def modoAnalisis(mazo, balance, contador_partidas):
-    pass
+    croupier = Croupier() #Creo al croupier
+    jugador = Jugador()   #Creo al jugador
+    jugador.agregar_mano() #Creo una mano al jugador
+    
+    estrategia = externo2.Estrategia(externo2.Mazo.NUM_BARAJAS)     #Crear la estrategia que el mº de barajas que hay en el mazo
+    
+    control_entrada = True
+    while control_entrada:
+        partidas_str = input("¿Número de partidas? ")
+        partidas = int(partidas_str)
+        if partidas < 0:
+            print("Entrada no valida, por favor, inserte un numero de partidas valido")
+        else:
+            control_entrada = False
+            
+    control_entrada = False
+    for i in range(partidas):       # Bucle que lleva la cuenta de las partidas
+        print("--- INICIO PARTIDA #", i+1, " --- BALANCE = ", balance, "€")
+        jugador.limpiar_mano()      # Limpio la mano del jugador para cada partida nueva
+        croupier.limpiar_mano()     # Limpio la mano del croupier para la partida nueva
+        
+        ### REPARTO INICIAL ####
+        croupier.mano.agregar_carta(mazo.pop())     # Agrego una carta a la mano del  croupier
+        for _ in range(2):
+            jugador.agregar_carta_jugador(0, mazo.pop())        # Agrego las 2 cartas al jugador
+        
+        apuesta = estrategia.apuesta(2,10,50)       # Calcula la apuesta segun la estrategia
+        print("¿Apuesta? [2] [10] [50] ", apuesta)      # Mostramos la apuesta seleccionada por la estrategia
+        
+        separaciones(2)
+        
+        print("REPARTO INICIAL")
+        imprimeInfo(croupier, jugador)
+        ###########################
+        #### TURNO DEL JUGADOR ####
+        ###########################
+        print("TURNO DEL JUGADOR")
+        control_jugador = True
+        manos_cerradas_pasadas = 0
+        while control_jugador:
+            for j in range(len(jugador.manos)):
+                if jugador.estado_mano[j] in ["Cerrada", "PASADA"]:
+                    print(f"La mano {jugador.nombre_mano[j]} esta {jugador.estado_mano[j]} y no puede ser modificada.")
+                    manos_cerradas_pasadas += 1
+                    
+                else:
+                    if compara_cartas(jugador, j) == False:
+                        print (f"¿Jugada para {jugador.nombre_mano[j]}? [P]edir [D]oblar [C]errar ")
+                        jugada = estrategia.jugada(croupier.mano.cartas[0], jugador.manos[j].cartas)
+                        
+                        if jugada in ["S", "s"]:
+                            print ("No se pueden separar las cartas")
+                                
+                    else:
+                        print (f"¿Jugada para {jugador.nombre_mano[j]}? [P]edir [D]oblar [C]errar [S]eparar")
+                    
+                    if jugada in ["P", "p"]:
+                        jugador.agregar_carta_jugador(j, mazo.pop())
+                        
+                    elif jugada in ["D", "d"]:
+                        jugador.apuesta[j] *= 2
+                        jugador.agregar_carta_jugador(j, mazo.pop())
+                        
+                        if jugador.calcular_valor_mano(j) > 21:
+                            jugador.estado_mano[j] = "PASADA"
+                        else:
+                            jugador.estado_mano[j] = "Cerrada"
 
+                    elif jugada in ["C", "c"]:
+                        jugador.estado_mano[j] = "Cerrada"
+                        
+                    elif jugada in ["S", "s"]:
+                        jugador.separarMano(j, dime_carta_repetida(jugador, j))
+                        
+        if manos_cerradas_pasadas == len(jugador.manos):
+            jugador.imprime_jugador()
+            control_jugador = False
+            
+        else:
+            jugador.imprime_jugador()
+            
+        separaciones (2)
+        
 def modoPredeterminado(mazo, balance, contador_partidas):
     pass
 

@@ -177,7 +177,6 @@ class Croupier():
 #######################
 #### CLASE JUGADOR ####
 #######################
-
 class Jugador(Mano):
     def __init__(self):
         self.nombre = "Jugador"
