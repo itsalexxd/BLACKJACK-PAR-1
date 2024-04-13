@@ -64,6 +64,7 @@ class Mano:
 
     def agregar_carta(self, carta):
         self.cartas.append(carta)
+        
 
     # Calcula el valor total de la mano
     def calcular_valor(self):
