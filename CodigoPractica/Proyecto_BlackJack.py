@@ -197,6 +197,9 @@ class Jugador(Mano):
             self.manos[mano_indice].agregar_carta(carta)
         else:
             print("El indice insertado para la mano no es valido")
+            
+        if self.calcular_valor_mano(mano_indice) > 21:
+            self.estado_mano[mano_indice] = "PASADA"
 
 
     def calcular_valor_mano(self, indice_mano):
@@ -478,17 +481,20 @@ def volver_jugar(balance, contador_partidas):
         else:       # Entrada no valida, la pedimos de nuevo
             print("Entrada no valida, por favor, insertela de nuevo")
                 
-                
-        
+######################
+#### LIMPIAR TODO ####
+######################
+def limpiar_todo(croupier, jugador):
+    pass
         
 ###################
 ### MODO JUEGO ####
 ###################
-def modoJuego(mazo):
+def modoJuego(mazo, balance):
     croupier = Croupier()       # Creo el croupier
     jugador = Jugador()     # Creo al jugador
     jugador.agregar_mano()      # Le doy una mano al jugador
-    balance = 0     # Balance de la partida del jugador
+    
     
     partida = True      # Variable para llevar el control del bucle de las partidas
     while partida:
@@ -530,7 +536,9 @@ def modoJuego(mazo):
             for i in range(len(jugador.manos)):     # Recorro todas las manos del jugador
                 if jugador.estado_mano[i] in ["Cerrada", "PASADA"]:     # En este caso, el jugador no podra gestionar la mano en cuestion y lo mostramos por pantalla
                     print(f"La mano {jugador.nombre_mano[i]} esta {jugador.estado_mano[i]} y no puede ser modificada.")
-                
+                    manos_cerradas += 1     # Sumamos 1 a las manos cerradas / pasadas
+                    print()
+                    
                 else:       # En este caso la mano esta abierta y puede ser modificada
                     
                     control_jugada = True      # Variable que lleva el control del bucle para las jugadaes del jugador y tratar los errores
@@ -557,15 +565,13 @@ def modoJuego(mazo):
                         
                         if jugador.calcular_valor_mano(i) > 21:     # Si el valor total de la mano es valor > 21 -> PASADA
                             jugador.estado_mano[i] = "PASADA"
-                            manos_cerradas += 1     # Sumamos 1 a las manos cerradas / pasadas
 
                         else:       # valor < 21 -> Cerrada
                             jugador.estado_mano[i] = "Cerrada"
-                            manos_cerradas += 1     # Sumamos 1 a las manos cerradas / pasadas
                     
                     elif jugada in ["C", "c"]:      # jugada insertada = "C" o "c"
                         jugador.estado_mano[i] = "Cerrada"      # Cambiamos el estado de la mano a Cerrada
-                        manos_cerradas += 1     # Sumamos 1 a las manos cerradas / pasadas
+                        
                     
                     else:    #Caso separar: Separar
                         jugador.separarMano(i, dime_carta_repetida(jugador, i))     # Separamos la mano cuando haya 2 cartas con el mismo valor (Ej: 7 y 7)
@@ -608,13 +614,13 @@ def modoJuego(mazo):
         if volver_jugar(balance, contador_partidas) == False:
             partida = False
         else:
-            pass
+            limpiar_todo(croupier, jugador)
 
         
-def modoAnalisis(mazo):
+def modoAnalisis(mazo, balance):
     pass
 
-def modoPredeterminado(mazo):
+def modoPredeterminado(mazo, balance):
     pass
 
 
@@ -634,34 +640,33 @@ def Main():
     
     print("*** BLACKJACK - PARADIGMAS DE PROGRAMACIÓN 2023/24 ***")
     
-    # estrategia = externo2.Estrategia(externo2.Mazo.NUM_BARAJAS)
-    # mazo2 = externo2.Mazo(MiCarta, estrategia)
-    
-    mazo = generamosMazo()
-
-    print("Indique el modo de ejecucion:")
-    modoEjecucion = input("[J]uego [A]nalisis: ")
-    
-    separaciones(2)
+    balance = 0     # Balance de la partida del jugador
+    mazo = generamosMazo()      # Generamos el mazo para la partida
     
     bucleCorrecto = True
     while bucleCorrecto:
+        separaciones(2)
+        
+        print("Indique el modo de ejecucion:")
+        modoEjecucion = input("[J]uego [A]nalisis: ")
+        
+        separaciones(2)
+        
         if modoEjecucion in ["J", "j"]:
-            modoJuego(mazo)
+            modoJuego(mazo, balance)
             bucleCorrecto = False
             
         elif modoEjecucion in ["A", "a"]:
-            modoAnalisis(mazo)
+            modoAnalisis(mazo, balance)
             bucleCorrecto = False
             
         elif modoEjecucion == "":
-            modoPredeterminado(mazo)
+            modoPredeterminado(mazo, balance)
             bucleCorrecto = False
         
         else:
             separaciones(2)
             print("Opcion insertada no valida, vuelva a insertar el modo de ejecucion")
-            modoEjecucion = input("[J]uego [A]nalisis:" )
 
 
 if __name__ == "__main__":
