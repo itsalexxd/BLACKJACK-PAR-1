@@ -105,7 +105,6 @@ class Mano:
         carta = self.cartas[i]
         return traduce_carta(carta)
         
-    
     def traducir_palo(self, i):
         palo = self.cartas[i]
         return traduce_palo(palo)
@@ -118,6 +117,8 @@ class Mano:
         
     def mano_pasada(self):
         self.estado = "PASADA"
+        
+    
 
 ########################
 #### CLASE CROUPIER ####
@@ -166,8 +167,9 @@ class Croupier():
         print("         ", end='\0')
         for i in range(len(self.mano.cartas)):
                     print(f"╰────╯", end='\0')
-
-
+                    
+    def limpiar_mano(self):
+        self.mano = Mano("Croupier")
 
 
 #######################
@@ -191,6 +193,13 @@ class Jugador(Mano):
         
     def obtener_mano(self, indice):
         return self.manos[indice]
+
+    def limpiar_mano(self):
+        self.manos = []
+        self.valor_mano = []
+        self.apuesta = []
+        self.nombre_mano = ["ManoA"]
+        self.estado_mano = ["Activa"]
     
     def agregar_carta_jugador(self, mano_indice, carta):
         if 0 <= mano_indice < len(self.manos):
@@ -485,12 +494,13 @@ def volver_jugar(balance, contador_partidas):
 #### LIMPIAR TODO ####
 ######################
 def limpiar_todo(croupier, jugador):
-    pass
+    croupier.limpiar_mano()
+    jugador.limpiar_mano()
         
 ###################
 ### MODO JUEGO ####
 ###################
-def modoJuego(mazo, balance):
+def modoJuego(mazo, balance, contador_partidas):
     croupier = Croupier()       # Creo el croupier
     jugador = Jugador()     # Creo al jugador
     jugador.agregar_mano()      # Le doy una mano al jugador
@@ -498,7 +508,6 @@ def modoJuego(mazo, balance):
     
     partida = True      # Variable para llevar el control del bucle de las partidas
     while partida:
-        contador_partidas = 1       # Variable que lleva las cuentas de las partidas que lleva el jugador
         print("--- INICIO PARTIDA #", contador_partidas, " --- BALANCE = ", balance, "€")
         
         
@@ -540,7 +549,6 @@ def modoJuego(mazo, balance):
                     print()
                     
                 else:       # En este caso la mano esta abierta y puede ser modificada
-                    
                     control_jugada = True      # Variable que lleva el control del bucle para las jugadaes del jugador y tratar los errores
                     while control_jugada:
                         if compara_cartas(jugador, i) == False:     # En caso de que no haya dos cartas con el mismo valor(Ej: 7 y 7), no se muestra la opcion para separar la mano
@@ -616,11 +624,12 @@ def modoJuego(mazo, balance):
         else:
             limpiar_todo(croupier, jugador)
 
+        clearTerminal()
         
-def modoAnalisis(mazo, balance):
+def modoAnalisis(mazo, balance, contador_partidas):
     pass
 
-def modoPredeterminado(mazo, balance):
+def modoPredeterminado(mazo, balance, contador_partidas):
     pass
 
 
@@ -641,6 +650,7 @@ def Main():
     print("*** BLACKJACK - PARADIGMAS DE PROGRAMACIÓN 2023/24 ***")
     
     balance = 0     # Balance de la partida del jugador
+    contador_partidas = 1       # Variable que lleva las cuentas de las partidas que lleva el jugador
     mazo = generamosMazo()      # Generamos el mazo para la partida
     
     bucleCorrecto = True
@@ -653,15 +663,15 @@ def Main():
         separaciones(2)
         
         if modoEjecucion in ["J", "j"]:
-            modoJuego(mazo, balance)
+            modoJuego(mazo, balance, contador_partidas)
             bucleCorrecto = False
             
         elif modoEjecucion in ["A", "a"]:
-            modoAnalisis(mazo, balance)
+            modoAnalisis(mazo, balance, contador_partidas)
             bucleCorrecto = False
             
         elif modoEjecucion == "":
-            modoPredeterminado(mazo, balance)
+            modoPredeterminado(mazo, balance, contador_partidas)
             bucleCorrecto = False
         
         else:
