@@ -430,7 +430,34 @@ def dime_carta_repetida(jugador, i):
             if j != q and carta == otra_carta:
                 # Si carta == otra_carta, sumamos 1 a la variable ya que tienen el mismo valor de carta
                 return q
+            
 
+##########################
+#### RECUENTO PARTIDA ####
+##########################
+def recuento_partida(croupier, jugador, balance):
+    
+    separaciones(2)
+    
+    print("CONTABILIZACION DE RESULTADOS")
+    for i in range(len(jugador.manos)):     # Imprimo el resumen de la partida para cada mano del jugador
+        print(f"* Croupier: {croupier.mano.calcular_valor()}, {jugador.nombre_mano[i]}: {jugador.manos[i].calcular_valor()} -> ", end='')
+        
+        if croupier.mano.calcular_valor() > jugador.calcular_valor_mano(i):     # Croupier gana
+            print(f"-{jugador.apuesta[i]}")
+            balance -= jugador.apuesta[i]       # Restamos al balance de la partida el valor de la apuesta de la mano peridad
+        else:       # El jugador gana
+            print(f" +{jugador.apuesta[i]}")
+            balance += jugador.apuesta[i]       # Sumamos al balance de la partida, el valor de la apuesta de la mano ganada
+            
+    print("Resultado de la partida: ", end='\0')
+    if balance > 0:     # Balance positivo
+        print( "+", balance)
+    else:       # Balance negativo
+        print(balance)
+        
+        
+        
 ###################
 ### MODO JUEGO ####
 ###################
@@ -550,7 +577,7 @@ def modoJuego(mazo):
         ##################
         #### RECUENTO ####
         ##################
-        
+        recuento_partida(croupier, jugador, balance)
         
         ###########################
         #### FIN DE LA PARTIDA ####
