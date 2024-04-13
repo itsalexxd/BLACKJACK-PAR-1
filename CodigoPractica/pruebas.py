@@ -169,8 +169,8 @@ class Croupier():
         for i in range(len(self.mano.cartas)):
                 print("╰────╯", end='\0')
 
-        def reiniciar_mano_croupier(self):
-            self.mano = Mano("Croupier")
+    def reiniciar_mano_croupier(self):
+        self.mano = Mano("Croupier")
 
 
 
