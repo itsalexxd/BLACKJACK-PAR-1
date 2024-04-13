@@ -455,7 +455,30 @@ def recuento_partida(croupier, jugador, balance):
         print( "+", balance)
     else:       # Balance negativo
         print(balance)
+    
+    return balance
+
+#####################
+#### FIN PARTIDA ####
+#####################
+def volver_jugar(balance, contador_partidas):
+    volver_jugar = True
+    while volver_jugar:
+        otra_partida = input("¿Otra partida? [S/N] ")    # Variable para la respuesta de jugar otra partida
+        if otra_partida in ["S", "s"]:      # Se juega otra partida (no hacemos nada, el bucle empieza de nuevo)
+            contador_partidas += 1      # Sumamos una partida a la variable
+            volver_jugar = False
+            return True
         
+        elif otra_partida in ["N", "n"]:        # Mostramos el balance final y cerramos el bucle
+            print("BALANCE FINAL: ", balance, "€")
+            volver_jugar = False
+            return False
+            
+        else:       # Entrada no valida, la pedimos de nuevo
+            print("Entrada no valida, por favor, insertela de nuevo")
+                
+                
         
         
 ###################
@@ -577,28 +600,15 @@ def modoJuego(mazo):
         ##################
         #### RECUENTO ####
         ##################
-        recuento_partida(croupier, jugador, balance)
+        balance = recuento_partida(croupier, jugador, balance)
         
         ###########################
         #### FIN DE LA PARTIDA ####
         ###########################
-        volver_jugar = True
-        while volver_jugar:
-            otra_partida = input(print("¿Otra partida? [S/N] "))    # Variable para la respuesta de jugar otra partida
-            if otra_partida in ["S", "s"]:      # Se juega otra partida (no hacemos nada, el bucle empieza de nuevo)
-                contador_partidas += 1      # Sumamos una partida a la variable
-                volver_jugar = False
-            
-            elif otra_partida in ["N", "n"]:        # Mostramos el balance final y cerramos el bucle
-                print("BALANCE FINAL: ", balance, "€")
-                volver_jugar = False
-                partida = False
-                
-            else:       # Entrada no valida, la pedimos de nuevo
-                print("Entrada no valida, por favor, insertela de nuevo")
-                
-                
-        
+        if volver_jugar(balance, contador_partidas) == False:
+            partida = False
+        else:
+            pass
 
         
 def modoAnalisis(mazo):
