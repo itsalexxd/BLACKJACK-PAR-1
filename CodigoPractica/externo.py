@@ -1,4 +1,13 @@
+""" Paradigmas de Programación, curso 2023/24
+    Código externo para la primera práctica
+    Versión utilizada en el enunciado
+    (c) César Vaca
+
+    Atención: En este código se usan type hints para ayudar a documentar el código, pero
+    vosotros no estais obligados a usarlo
+"""
 import random
+
 
 class CartaBase(object):
     """ Clase minimalista que representa una carta de la baraja
@@ -86,7 +95,6 @@ class Estrategia(object):
         if any(c.valor == 1 for c in jugador) and vj < 12:
             return Estrategia.MATA[vj - 3][vc - 1]
         return Estrategia.MATN[vj - 4][vc - 1]
-
 
 
 class Mazo(object):

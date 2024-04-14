@@ -6,13 +6,13 @@ García del Caz, Carla
 Curso 2023-2024
 """
 
-import externo2
+import externo
 import os
 
 # Genero una baraja de cartas mezclada con 2 mazos
 def generamosMazo():
-    estrategia = externo2.Estrategia(externo2.Mazo.NUM_BARAJAS)
-    mazo = externo2.Mazo(MiCarta,estrategia)
+    estrategia = externo.Estrategia(externo.Mazo.NUM_BARAJAS)
+    mazo = externo.Mazo(MiCarta,estrategia)
 
     listaCartas = []
     # Calculo e inserto el indice de las cartas en listaCartas
@@ -22,16 +22,16 @@ def generamosMazo():
 
     return listaCartas
 
-# PICAS TREVOLES DIAMANTES CORAZONES ♠  ♥  ♦  ♣#
+# PICAS TREBOLES DIAMANTES CORAZONES ♠  ♣  ♦  ♥    #
 # A-10 y (J Q K) = 10
-class MiCarta(externo2.CartaBase):
+class MiCarta(externo.CartaBase):
     # Devuelve el palo en un rango de 0-51
     @property
     def palo(self):
         if self.ind >= 0 and self.ind <= 12:
             return "♠"  # [PICAS]"
         elif self.ind >= 13 and self.ind <= 25:
-            return "♣" # [TREVOLES]"
+            return "♣" # [TREBOLES]"
         elif self.ind >= 26 and self.ind <= 38:
             return "♦" # [DIAMANTES]"
         else:
@@ -196,9 +196,9 @@ class Jugador(Mano):
 
     def limpiar_mano(self):
         for i in range(len(self.manos)):
-            self.manos[i] = []
-            self.valor_mano[i] = []
-            self.apuesta[i] = []
+            self.manos = []
+            self.valor_mano = []
+            self.apuesta = []
             
             if i > 0:
                 self.nombre_mano[i] = ""
@@ -218,7 +218,7 @@ class Jugador(Mano):
             # Inicializamos el valor en 0 antes de calcularlo nuevamente
             valor = 0 # Valor total de la mano
             num_as = 0  # Contador de ases (que valen 1 u 11)
-            
+            # print(indice_mano)
             for j in range(len(self.manos[indice_mano].cartas)):
                 if (self.manos[indice_mano].cartas[j] % 13 + 1) in [11, 12, 13]:
                     valor += 10
@@ -504,13 +504,12 @@ def limpiar_todo(croupier, jugador):
 ### MODO JUEGO ####
 ###################
 def modoJuego(mazo, balance, contador_partidas):
-    croupier = Croupier()       # Creo el croupier
-    jugador = Jugador()     # Creo al jugador
-    jugador.agregar_mano()      # Le doy una mano al jugador
-    
-    
     partida = True      # Variable para llevar el control del bucle de las partidas
     while partida:
+        croupier = Croupier()       # Creo el croupier
+        jugador = Jugador()     # Creo al jugador
+        jugador.agregar_mano()      # Le doy una mano al jugador
+        
         print("--- INICIO PARTIDA #", contador_partidas, " --- BALANCE = ", balance, "€")
         
         
@@ -629,17 +628,14 @@ def modoJuego(mazo, balance, contador_partidas):
         if volver_jugar(balance, contador_partidas) == False:
             partida = False
         else:
-            limpiar_todo(croupier, jugador)
             contador_partidas += 1
-
-        clearTerminal()
         
 #######################
 #### MODO ANALISIS ####
 #######################
 def modoAnalisis(mazo, balance, contador_partidas):
     
-    estrategia = externo2.Estrategia(externo2.Mazo.NUM_BARAJAS)     #Crear la estrategia que el mº de barajas que hay en el mazo
+    estrategia = externo.Estrategia(externo.Mazo.NUM_BARAJAS)     #Crear la estrategia que el nº de barajas que hay en el mazo
     
     control_entrada = True
     while control_entrada:
@@ -650,25 +646,29 @@ def modoAnalisis(mazo, balance, contador_partidas):
         else:
             control_entrada = False
             
-    control_entrada = False
     for i in range(partidas):       # Bucle que lleva la cuenta de las partidas
         croupier = Croupier() #Creo al croupier
         jugador = Jugador()   #Creo al jugador
         jugador.agregar_mano() #Creo una mano al jugador
         print("--- INICIO PARTIDA #", i+1, " --- BALANCE = ", balance, "€")
         
+        apuesta = estrategia.apuesta(2,10,50)       # Calcula la apuesta segun la estrategia
+        print("¿Apuesta? [2] [10] [50] ", apuesta)      # Mostramos la apuesta seleccionada por la estrategia
+        jugador.apuesta.append(apuesta)
+        
+        separaciones(2)
+        
+        ########################
         ### REPARTO INICIAL ####
+        ########################
+        print("REPARTO INICIAL")
+        # Insertamos las cartas al croupier y al jugador
         croupier.mano.agregar_carta(mazo.pop())     # Agrego una carta a la mano del  croupier
         for _ in range(2):
             jugador.agregar_carta_jugador(0, mazo.pop())        # Agrego las 2 cartas al jugador
         
-        apuesta = estrategia.apuesta(2,10,50)       # Calcula la apuesta segun la estrategia
-        print("¿Apuesta? [2] [10] [50] ", apuesta)      # Mostramos la apuesta seleccionada por la estrategia
-        
-        separaciones(2)
-        
-        print("REPARTO INICIAL")
         imprimeInfo(croupier, jugador)
+        
         ###########################
         #### TURNO DEL JUGADOR ####
         ###########################

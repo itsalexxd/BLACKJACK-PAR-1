@@ -1,7 +1,7 @@
 # Sesion 3 -> Tratamiento de ficheros y excepciones
 
 # Como importar paquetes externos en python
-''' 
+'''
 IMPORTACION
 -----------
 
@@ -14,12 +14,12 @@ from externo import estrategia (importamos los objetos QUE QUERAMOS)
 
 Iguales en cuanto rendimiento
 '''
-import CodigoPractica.externo2 as externo2 # Tienen que estar en el mismo directorio
+import CodigoPractica.externo as externo # Tienen que estar en el mismo directorio
 # Para usar los objetos importados, se usan como si estuvieran en el mismo programa
 
 # Ejemplo de lectura de ficheros
 def Main():
-    mazo = externo2.Mazo(1,2)
+    mazo = externo.Mazo(1,2)
     print(mazo.reparte())
     
     # Tratamiento de excepciones a la hora de abrir un fichero
