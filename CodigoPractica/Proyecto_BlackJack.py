@@ -504,7 +504,16 @@ def volver_jugar(balance, contador_partidas):
             
         else:       # Entrada no valida, la pedimos de nuevo
             print("Entrada no valida, por favor, insertela de nuevo")
-        
+
+#################################
+#### COMPRUEBA Y GENERA MAZO ####
+#################################
+def comprueba_genera_mazo(mazo):
+    if len(mazo) <= 1:
+        mazo += generamosMazo()
+    else:
+        pass
+
 ###################
 ### MODO JUEGO ####
 ###################
@@ -537,8 +546,11 @@ def modoJuego(mazo, balance, contador_partidas):
         #########################
         print("REPARTO INICIAL")
         # Inserto una carta al croupier y al jugador
+        comprueba_genera_mazo(mazo)
         croupier.mano.agregar_carta(mazo.pop())
+        
         for _ in range(2):
+            comprueba_genera_mazo(mazo)
             jugador.agregar_carta_jugador(0, mazo.pop())        # El 0 hace referencia a la mano inicial del jugador
         
         
@@ -586,10 +598,12 @@ def modoJuego(mazo, balance, contador_partidas):
                             control_jugada = False      # Salimos del bucle
                             
                         if jugada in ["P", "p"]:        # Pedimos y agregamos una carta a la mano en cuestion
+                            comprueba_genera_mazo(mazo)
                             jugador.agregar_carta_jugador(i, mazo.pop())        # i hace referencia a la mano, mazo.pop() inserta una carta del mazo
                         
                         elif jugada in ["D", "d"]:      # Doblamos la apuesta del jugador, agregamos una carta y cambiamos el estado de la mano correspondiente
                             jugador.apuesta[i] *= 2        # Doblamos la apuesta de la mano correspondiente
+                            comprueba_genera_mazo(mazo)
                             jugador.agregar_carta_jugador(i, mazo.pop())        # Agregamos una carta a la mano correspondiente
                             
                             if jugador.calcular_valor_mano(i) > 21:     # Si el valor total de la mano es valor > 21 -> PASADA
@@ -625,6 +639,7 @@ def modoJuego(mazo, balance, contador_partidas):
             print()
             
             while croupier.mano.calcular_valor() < 17:
+                comprueba_genera_mazo(mazo)
                 croupier.mano.agregar_carta(mazo.pop())
                 
                 if croupier.mano.calcular_valor() > 21:
@@ -676,6 +691,8 @@ def modoAnalisis(mazo, balance, contador_partidas, estrategia):
         jugador = Jugador()     # Creo al jugador
         jugador.agregar_mano()      # Le doy una mano al jugador
         
+        separaciones(3)
+        
         print("--- INICIO PARTIDA #", contador_partidas, " --- BALANCE = ", balance, "€")
         
         
@@ -690,7 +707,10 @@ def modoAnalisis(mazo, balance, contador_partidas, estrategia):
         #########################
         print("REPARTO INICIAL")
         # Inserto una carta al croupier y al jugador
+        comprueba_genera_mazo(mazo)
         croupier.mano.agregar_carta(mazo.pop())
+        
+        comprueba_genera_mazo(mazo)
         for _ in range(2):
             jugador.agregar_carta_jugador(0, mazo.pop())        # El 0 hace referencia a la mano inicial del jugador
         
@@ -740,10 +760,12 @@ def modoAnalisis(mazo, balance, contador_partidas, estrategia):
                             control_jugada = False      # Salimos del bucle
                             
                         if jugada in ["P", "p"]:        # Pedimos y agregamos una carta a la mano en cuestion
+                            comprueba_genera_mazo(mazo)
                             jugador.agregar_carta_jugador(i, mazo.pop())        # i hace referencia a la mano, mazo.pop() inserta una carta del mazo
                         
                         elif jugada in ["D", "d"]:      # Doblamos la apuesta del jugador, agregamos una carta y cambiamos el estado de la mano correspondiente
                             jugador.apuesta[i] *= 2        # Doblamos la apuesta de la mano correspondiente
+                            comprueba_genera_mazo(mazo)
                             jugador.agregar_carta_jugador(i, mazo.pop())        # Agregamos una carta a la mano correspondiente
                             
                             if jugador.calcular_valor_mano(i) > 21:     # Si el valor total de la mano es valor > 21 -> PASADA
@@ -779,6 +801,7 @@ def modoAnalisis(mazo, balance, contador_partidas, estrategia):
             print()
             
             while croupier.mano.calcular_valor() < 17:
+                comprueba_genera_mazo(mazo)
                 croupier.mano.agregar_carta(mazo.pop())
                 
                 if croupier.mano.calcular_valor() > 21:
