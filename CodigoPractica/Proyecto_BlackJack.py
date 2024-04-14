@@ -17,7 +17,7 @@ def generamosMazo():
     listaCartas = []
     # Calculo e inserto el indice de las cartas en listaCartas
     for i in range(103):
-        valor = int(mazo.reparte().ind)
+        valor = mazo.reparte()
         listaCartas.append(valor)
 
     return listaCartas
@@ -55,7 +55,6 @@ class MiCarta(externo.CartaBase):
 ####################
 #### CLASE MANO ####
 ####################
-
 class Mano:
     def __init__(self, nombre):
         self.nombre = nombre
@@ -73,13 +72,13 @@ class Mano:
         num_as = 0  # Contador de ases (que valen 1 u 11)
         
         for carta in self.cartas:
-            if (carta % 13 + 1) in [11, 12, 13]:
+            if (carta.ind % 13 + 1) in [11, 12, 13]:
                 valor += 10
-            elif (carta % 13 + 1) == 1:
+            elif (carta.ind % 13 + 1) == 1:
                 num_as += 1
                 valor += 11  # Asumimos el valor del as como 11 por defecto
             else:
-                valor += int(carta % 13 + 1)  # Las cartas numéricas tienen su valor numérico
+                valor += (carta.ind % 13 + 1)  # Las cartas numéricas tienen su valor numérico
         
         # Ajustamos el valor de los ases si el total es mayor a 21
         while num_as > 0 and valor > 21:
@@ -103,11 +102,11 @@ class Mano:
                 return int(ind % 13 + 1)
             
     def traducir_carta(self, i):
-        carta = self.cartas[i]
+        carta = self.cartas[i].ind
         return traduce_carta(carta)
         
     def traducir_palo(self, i):
-        palo = self.cartas[i]
+        palo = self.cartas[i].ind
         return traduce_palo(palo)
 
     def abrir_mano(self):
@@ -220,13 +219,13 @@ class Jugador(Mano):
             num_as = 0  # Contador de ases (que valen 1 u 11)
             # print(indice_mano)
             for j in range(len(self.manos[indice_mano].cartas)):
-                if (self.manos[indice_mano].cartas[j] % 13 + 1) in [11, 12, 13]:
+                if (self.manos[indice_mano].cartas[j].ind % 13 + 1) in [11, 12, 13]:
                     valor += 10
-                elif (self.manos[indice_mano].cartas[j] % 13 + 1) == 1:
+                elif (self.manos[indice_mano].cartas[j].ind % 13 + 1) == 1:
                     num_as += 1
                     valor += 11  # Asumimos el valor del as como 11 por defecto
                 else:
-                    valor += int(self.manos[indice_mano].cartas[j] % 13 + 1)  # Las cartas numéricas tienen su valor numérico
+                    valor += self.manos[indice_mano].cartas[j].ind % 13 + 1  # Las cartas numéricas tienen su valor numérico
             
             # Ajustamos el valor de los ases si el total es mayor a 21
             while num_as > 0 and valor > 21:
@@ -241,13 +240,13 @@ class Jugador(Mano):
             num_as = 0  # Contador de ases (que valen 1 u 11)
             
             for j in range(len(self.manos[indice_mano].cartas)):
-                if (self.manos[indice_mano].cartas[j] % 13 + 1) in [11, 12, 13]:
+                if (self.manos[indice_mano].cartas[j].ind % 13 + 1) in [11, 12, 13]:
                     valor += 10
-                elif (self.manos[indice_mano].cartas[j] % 13 + 1) == 1:
+                elif (self.manos[indice_mano].cartas[j].ind % 13 + 1) == 1:
                     num_as += 1
                     valor += 11  # Asumimos el valor del as como 11 por defecto
                 else:
-                    valor += int(self.manos[indice_mano].cartas[j] % 13 + 1)  # Las cartas numéricas tienen su valor numérico
+                    valor += self.manos[indice_mano].cartas[j].ind % 13 + 1  # Las cartas numéricas tienen su valor numérico
             
             # Ajustamos el valor de los ases si el total es mayor a 21
             while num_as > 0 and valor > 21:
@@ -264,13 +263,13 @@ class Jugador(Mano):
             num_as = 0  # Contador de ases (que valen 1 u 11)
             
             for j in range(len(self.manos[i].cartas)):
-                if (self.manos[i].cartas[j] % 13 + 1) in [11, 12, 13]:
+                if (self.manos[i].cartas[j].ind % 13 + 1) in [11, 12, 13]:
                     valor += 10
-                elif (self.manos[i].cartas[j] % 13 + 1) == 1:
+                elif (self.manos[i].cartas[j].ind % 13 + 1) == 1:
                     num_as += 1
                     valor += 11  # Asumimos el valor del as como 11 por defecto
                 else:
-                    valor += int(self.manos[i].cartas[j] % 13 + 1)  # Las cartas numéricas tienen su valor numérico
+                    valor += self.manos[i].cartas[j].ind % 13 + 1  # Las cartas numéricas tienen su valor numérico
             
             # Ajustamos el valor de los ases si el total es mayor a 21
             while num_as > 0 and valor > 21:
@@ -281,12 +280,12 @@ class Jugador(Mano):
     
     # Recibe el indice de la carta y traduce el indice al valor de la carta en cuestion
     def traducir_carta(self, i, j):
-        carta = self.manos[i].cartas[j]
+        carta = self.manos[i].cartas[j].ind
         return traduce_carta(carta)
     
     # Recibe el indice de la carta y lo traduce al palo correspondiente
     def traducir_palo(self, i, j):
-        palo = self.manos[i].cartas[j]
+        palo = self.manos[i].cartas[j].ind
         return traduce_palo(palo)
     
     # Muestra la informacion del jugador
@@ -410,10 +409,10 @@ def compara_cartas(jugador, i):
     # Si hay mas de una carta en la mano, comprobamos si hay 2 cartas iguales
     if len(jugador.manos[i].cartas) > 1:
         for j in range(len(jugador.manos[i].cartas) - 1): # Recorro las cartas (carta que comparo)
-            carta1 = jugador.manos[i].cartas[j] # Guardo el indice de la carta en carta1 (la que comparamos)
+            carta1 = jugador.manos[i].cartas[j].ind # Guardo el indice de la carta en carta1 (la que comparamos)
             carta =  traduce_carta(carta1) # Traducimos el indice en el valor de la carta
             for q in range(len(jugador.manos[i].cartas)): # Recorro las cartas (carta que uso para comparar)
-                carta2 = jugador.manos[i].cartas[q] # Guardo el indice de la carta en carta2 (con la que se compara)
+                carta2 = jugador.manos[i].cartas[q].ind # Guardo el indice de la carta en carta2 (con la que se compara)
                 otra_carta = traduce_carta(carta2) # Traducimos el indice en el valor de la carta
             
             # Compruebo si las cartas son iguales o no (no pueden valer lo mismo j y q (es la misma carta))
@@ -435,10 +434,10 @@ def dime_carta_repetida(jugador, i):
     # Si hay mas de una carta en la mano, comprobamos si hay 2 cartas iguales
     if len(jugador.manos[i].cartas) > 1:
         for j in range(len(jugador.manos[i].cartas) - 1): # Recorro las cartas (carta que comparo)
-            carta1 = jugador.manos[i].cartas[j] # Guardo el indice de la carta en carta1 (la que comparamos)
+            carta1 = jugador.manos[i].cartas[j].ind # Guardo el indice de la carta en carta1 (la que comparamos)
             carta =  traduce_carta(carta1) # Traducimos el indice en el valor de la carta
             for q in range(len(jugador.manos[i].cartas)): # Recorro las cartas (carta que uso para comparar)
-                carta2 = jugador.manos[i].cartas[q] # Guardo el indice de la carta en carta2 (con la que se compara)
+                carta2 = jugador.manos[i].cartas[q].ind # Guardo el indice de la carta en carta2 (con la que se compara)
                 otra_carta = traduce_carta(carta2) # Traducimos el indice en el valor de la carta
             
             # Compruebo si las cartas son iguales o no (no pueden valer lo mismo j y q (es la misma carta))
@@ -458,12 +457,22 @@ def recuento_partida(croupier, jugador, balance):
     for i in range(len(jugador.manos)):     # Imprimo el resumen de la partida para cada mano del jugador
         print(f"* Croupier: {croupier.mano.calcular_valor()}, {jugador.nombre_mano[i]}: {jugador.manos[i].calcular_valor()} -> ", end='')
         
-        if croupier.mano.calcular_valor() > jugador.calcular_valor_mano(i):     # Croupier gana
+        if jugador.estado_mano(i) == "PASADA" and croupier.mano.estado == "PASADA" or jugador.manos[i].calcular_valor() == croupier.mano.calcular_valor():      # Si ambas manos están pasadas o tienen el mismo valor
+            # Ninguno obtiene beneficio
+            print("+0")
+            
+        elif croupier.mano.calcular_valor() > 21 or jugador.manos[i].calcular_valor() > croupier.mano.calcular_valor():       # Si el crupier se ha pasado o la mano del jugador es mayor
+            # El croupier paga el valor de la apuesta de esa mano al jugador
+            print(f"+{jugador.apuesta[i]}")
+            balance += jugador.apuesta[i]
+            
+        elif jugador.estado_mano[i] == "PASADA" or jugador.manos[i].calcular_valor() < croupier.mano.calcular_valor():       # Si el jugador se ha pasado o su mano es menor que la del croupie
+            # El jugador paga el valor de la apuesta de la mano al croupier
             print(f"-{jugador.apuesta[i]}")
-            balance -= jugador.apuesta[i]       # Restamos al balance de la partida el valor de la apuesta de la mano peridad
-        else:       # El jugador gana
-            print(f" +{jugador.apuesta[i]}")
-            balance += jugador.apuesta[i]       # Sumamos al balance de la partida, el valor de la apuesta de la mano ganada
+            balance -= jugador.apuesta[i]
+        else:
+            pass
+            
             
     print("Resultado de la partida: ", end='\0')
     if balance > 0:     # Balance positivo
@@ -629,6 +638,7 @@ def modoJuego(mazo, balance, contador_partidas):
             partida = False
         else:
             contador_partidas += 1
+            clearTerminal()
         
 #######################
 #### MODO ANALISIS ####
