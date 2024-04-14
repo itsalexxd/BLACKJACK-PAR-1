@@ -176,7 +176,6 @@ class Croupier():
 #######################
 #### CLASE JUGADOR ####
 #######################
-
 class Jugador(Mano):
     def __init__(self):
         self.nombre = "Jugador"
@@ -534,6 +533,9 @@ def modoJuego(mazo, balance, contador_partidas):
         croupier.mano.agregar_carta(mazo.pop())
         for _ in range(2):
             jugador.agregar_carta_jugador(0, mazo.pop())        # El 0 hace referencia a la mano inicial del jugador
+        
+        # if jugador.calcular_valor_mano() == 21:
+        #     print("")
         
         imprimeInfo(croupier, jugador)      # Mostramos la informacion de las manos del croupier y del jugador
         
