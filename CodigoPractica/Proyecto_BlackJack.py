@@ -179,11 +179,11 @@ class Croupier():
 class Jugador(Mano):
     def __init__(self):
         self.nombre = "Jugador"
-        self.manos = []
-        self.valor_mano = []
-        self.apuesta = []
-        self.nombre_mano = ["ManoA"]
-        self.estado_mano = ["Activa"]
+        self.manos = []     # INTs
+        self.valor_mano = []        # INTs
+        self.apuesta = []       # INTs
+        self.nombre_mano = ["ManoA"]        # STRs
+        self.estado_mano = ["Activa"]       # STRs
         
     def agregar_mano(self):
         nombreMano = f"Mano{chr(ord('A') + len(self.manos)+1)}"
@@ -195,11 +195,14 @@ class Jugador(Mano):
         return self.manos[indice]
 
     def limpiar_mano(self):
-        self.manos = []
-        self.valor_mano = []
-        self.apuesta = []
-        self.nombre_mano = ["ManoA"]
-        self.estado_mano = ["Activa"]
+        for i in range(len(self.manos)):
+            self.manos[i] = []
+            self.valor_mano[i] = []
+            self.apuesta[i] = []
+            
+            if i > 0:
+                self.nombre_mano[i] = ""
+                self.estado_mano[i] = ""
     
     def agregar_carta_jugador(self, mano_indice, carta):
         if 0 <= mano_indice < len(self.manos):
@@ -635,9 +638,6 @@ def modoJuego(mazo, balance, contador_partidas):
 #### MODO ANALISIS ####
 #######################
 def modoAnalisis(mazo, balance, contador_partidas):
-    croupier = Croupier() #Creo al croupier
-    jugador = Jugador()   #Creo al jugador
-    jugador.agregar_mano() #Creo una mano al jugador
     
     estrategia = externo2.Estrategia(externo2.Mazo.NUM_BARAJAS)     #Crear la estrategia que el mº de barajas que hay en el mazo
     
@@ -652,9 +652,10 @@ def modoAnalisis(mazo, balance, contador_partidas):
             
     control_entrada = False
     for i in range(partidas):       # Bucle que lleva la cuenta de las partidas
+        croupier = Croupier() #Creo al croupier
+        jugador = Jugador()   #Creo al jugador
+        jugador.agregar_mano() #Creo una mano al jugador
         print("--- INICIO PARTIDA #", i+1, " --- BALANCE = ", balance, "€")
-        jugador.limpiar_mano()      # Limpio la mano del jugador para cada partida nueva
-        croupier.limpiar_mano()     # Limpio la mano del croupier para la partida nueva
         
         ### REPARTO INICIAL ####
         croupier.mano.agregar_carta(mazo.pop())     # Agrego una carta a la mano del  croupier
@@ -717,6 +718,24 @@ def modoAnalisis(mazo, balance, contador_partidas):
             jugador.imprime_jugador()
             
         separaciones (2)
+        ##################
+        #### RECUENTO ####
+        ##################
+        balance = recuento_partida(croupier, jugador, balance)
+        
+        ###########################
+        #### FIN DE LA PARTIDA ####
+        ###########################
+        if volver_jugar(balance, contador_partidas) == False:
+            partida = False
+        else:
+            limpiar_todo(croupier, jugador)
+            contador_partidas += 1
+
+        clearTerminal()
+        
+        # jugador.limpiar_mano()      # Limpio la mano del jugador para cada partida nueva
+        # croupier.limpiar_mano()     # Limpio la mano del croupier para la partida nueva
         
 def modoPredeterminado(mazo, balance, contador_partidas):
     pass
