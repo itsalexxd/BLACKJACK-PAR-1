@@ -100,7 +100,7 @@ class Mano:
             elif ind % 13 + 1 == 13:
                 return "K"
             else:
-                return int(ind % 13 + 1)
+                return ind % 13 + 1
             
     def traducir_carta(self, i):
         carta = self.cartas[i].ind
@@ -169,8 +169,8 @@ class Croupier():
         for i in range(len(self.mano.cartas)):
                     print(f"╰────╯", end='\0')
                     
-    def limpiar_mano(self):
-        self.mano = Mano("Croupier")
+        print()
+    
 
 
 #######################
@@ -636,8 +636,6 @@ def modoJuego(mazo, balance, contador_partidas):
             
             croupier.imprime_croupier()
             
-            print()
-            
             while croupier.mano.calcular_valor() < 17:
                 comprueba_genera_mazo(mazo)
                 croupier.mano.agregar_carta(mazo.pop())
@@ -650,7 +648,7 @@ def modoJuego(mazo, balance, contador_partidas):
                     print()
                     croupier.imprime_croupier()
             
-            separaciones(3)
+            separaciones(2)
             
             
             ##################
@@ -889,6 +887,7 @@ def modoPredeterminado(mazo, balance, contador_partidas):
         while croupier.mano.calcular_valor() < 17:
             comprueba_genera_mazo(mazo)
             croupier.mano.agregar_carta(mazo.pop())
+            croupier.imprime_croupier()
             
             if croupier.mano.calcular_valor() > 21:
                 croupier.mano.mano_pasada()
@@ -897,19 +896,16 @@ def modoPredeterminado(mazo, balance, contador_partidas):
             elif croupier.mano.calcular_valor() > 17:
                 croupier.mano.cerrar_mano()
                 croupier.imprime_croupier()
-            
         
         separaciones(3)
-        
         
         ##################
         #### RECUENTO ####
         ##################
         balance = recuento_partida(croupier, jugador, balance)
         
-        
         separaciones(2)
-            
+        
     contador_partidas += 1
     modoJuego(mazo, balance, contador_partidas)
 
