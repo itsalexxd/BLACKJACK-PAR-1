@@ -714,9 +714,10 @@ def modoAnalisis(mazo, balance, contador_partidas, estrategia):
         for _ in range(2):
             jugador.agregar_carta_jugador(0, mazo.pop())        # El 0 hace referencia a la mano inicial del jugador
         
-        imprimeInfo(croupier, jugador)
+        
         
         if jugador.calcular_valor_mano(0) == 21:
+            imprimeInfo(croupier, jugador)
             print("*****************")
             print("*** BLACKJACK ***")
             print("*****************")
