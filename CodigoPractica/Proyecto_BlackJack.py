@@ -662,15 +662,17 @@ def modoJuego(mazo, balance, contador_partidas):
                 while croupier.mano.calcular_valor() < 17:
                     comprueba_genera_mazo(mazo)
                     croupier.mano.agregar_carta(mazo.pop())
-                    croupier.imprime_croupier()
+                    
                     
                     if croupier.mano.calcular_valor() > 21:
                         croupier.mano.mano_pasada()
+                        
                     elif croupier.mano.calcular_valor() > 17:
                         croupier.mano.cerrar_mano()
+                        
                     else:
-                        print()
                         croupier.imprime_croupier()
+                    croupier.imprime_croupier()
             
             separaciones(2)
             
@@ -827,7 +829,7 @@ def modoAnalisis(mazo, balance, contador_partidas, estrategia):
                 while croupier.mano.calcular_valor() < 17:
                     comprueba_genera_mazo(mazo)
                     croupier.mano.agregar_carta(mazo.pop())
-                    croupier.imprime_croupier()
+                    
                     
                     if croupier.mano.calcular_valor() > 21:
                         croupier.mano.mano_pasada()
@@ -838,6 +840,7 @@ def modoAnalisis(mazo, balance, contador_partidas, estrategia):
                     else:
                         print()
                         croupier.imprime_croupier()
+                    croupier.imprime_croupier()
             
             separaciones(3)
             
