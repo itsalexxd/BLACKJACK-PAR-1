@@ -16,7 +16,7 @@ def generamosMazo():
 
     listaCartas = []
     # Calculo e inserto el indice de las cartas en listaCartas
-    for i in range(103):
+    for _ in range(104):
         valor = mazo.reparte()
         listaCartas.append(valor)
 
@@ -694,6 +694,7 @@ def modoAnalisis(mazo, balance, contador_partidas, estrategia):
         for _ in range(2):
             jugador.agregar_carta_jugador(0, mazo.pop())        # El 0 hace referencia a la mano inicial del jugador
         
+        imprimeInfo(croupier, jugador)
         
         if jugador.calcular_valor_mano(0) == 21:
             print("*****************")
@@ -705,7 +706,6 @@ def modoAnalisis(mazo, balance, contador_partidas, estrategia):
             ##################
             jugador.apuesta[0] *= 3/2
             balance = recuento_partida(croupier, jugador, balance)
-            imprimeInfo(croupier, jugador)      # Mostramos la informacion de las manos del croupier y del jugador
         else:
             imprimeInfo(croupier, jugador)
             ###########################
@@ -725,14 +725,14 @@ def modoAnalisis(mazo, balance, contador_partidas, estrategia):
                         control_jugada = True      # Variable que lleva el control del bucle para las jugadaes del jugador y tratar los errores
                         while control_jugada:
                             if compara_cartas(jugador, i) == False:     # En caso de que no haya dos cartas con el mismo valor(Ej: 7 y 7), no se muestra la opcion para separar la mano
-                                jugada = estrategia.jugada(croupier.mano.cartas, jugador.manos[i].cartas)
+                                jugada = estrategia.jugada(croupier.mano.cartas[0], jugador.manos[i].cartas)
                                 print(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar ", jugada)        # Pido al jugador que inserte la jugada que desea realizar
                                 
                                 if jugada not in ["P", "p", "C", "c", "D", "d"]:        # Si la jugada insertada no es valida, mostramos el error por pantalla y lo volvemos a pedir
                                     print(f"Entrada no valida, por favor, inserte de nuevo la jugada que desea realizar para la {jugador.nombre_mano[i]}")
                                 
                             else:
-                                jugada = estrategia.jugada(croupier.mano.cartas, jugador.manos[i].cartas)
+                                jugada = estrategia.jugada(croupier.mano.cartas[0], jugador.manos[i].cartas)
                                 print(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar [S]eparar ", jugada)        # Pido al jugador que inserte la jugada que desea realizar
                                 
                                 if jugada not in ["P", "p", "C", "c", "D", "d", "S", "s"]:        # Si la jugada insertada no es valida, mostramos el error por pantalla y lo volvemos a pedir
@@ -800,11 +800,8 @@ def modoAnalisis(mazo, balance, contador_partidas, estrategia):
             ###########################
             #### FIN DE LA PARTIDA ####
             ###########################
-            if volver_jugar(balance, contador_partidas) == False:
-                partida = False
-            else:
-                contador_partidas += 1
-                clearTerminal()
+            contador_partidas += 1
+                
         
 def modoPredeterminado(mazo, balance, contador_partidas):
     pass
