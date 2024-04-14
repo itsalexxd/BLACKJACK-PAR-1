@@ -22,6 +22,7 @@ def generamosMazo():
 
     return listaCartas
 
+
 # PICAS TREBOLES DIAMANTES CORAZONES ♠  ♣  ♦  ♥    #
 # A-10 y (J Q K) = 10
 class MiCarta(externo.CartaBase):
@@ -333,7 +334,6 @@ class Jugador(Mano):
         for i in range(len(self.manos)):
             if i > 0:
                 print(" │ ", end='\0')
-                        
             if self.apuesta[i] < 10: # Ajustamos la apuesta en funcion del valor
                 print(f"     {self.apuesta[i]}€ ", end='\0')
             else:
@@ -626,8 +626,14 @@ def modoJuego(mazo, balance, contador_partidas):
             
             while croupier.mano.calcular_valor() < 17:
                 croupier.mano.agregar_carta(mazo.pop())
-                print()
-                croupier.imprime_croupier()
+                
+                if croupier.mano.calcular_valor() > 21:
+                    croupier.mano.mano_pasada()
+                elif croupier.mano.calcular_valor() > 17:
+                    croupier.mano.cerrar_mano()
+                else:
+                    print()
+                    croupier.imprime_croupier()
             
             separaciones(3)
             
@@ -649,8 +655,156 @@ def modoJuego(mazo, balance, contador_partidas):
 #######################
 #### MODO ANALISIS ####
 #######################
-def modoAnalisis(mazo, balance, contador_partidas):
-    pass
+def modoAnalisis(mazo, balance, contador_partidas, estrategia):
+    control_entrada_partidas = True
+    while control_entrada_partidas:
+        num_partidas_str = input("¿Numero de partidas? ")
+        try:
+            num_partidas = int(num_partidas_str)
+        
+            if num_partidas < 0:
+                print("Numero de partidas no valido, por favor, inserte un numero valido...")
+            else:
+                control_entrada_partidas = False
+        
+        except ValueError:
+            print("Por favor, inserte un numero positivo")
+    
+
+    while contador_partidas <= num_partidas:
+        croupier = Croupier()       # Creo el croupier
+        jugador = Jugador()     # Creo al jugador
+        jugador.agregar_mano()      # Le doy una mano al jugador
+        
+        print("--- INICIO PARTIDA #", contador_partidas, " --- BALANCE = ", balance, "€")
+        
+        
+        apuesta = estrategia.apuesta(2,10,50)
+        print("¿Apuesta? [2] [10] [50] ", apuesta)
+        jugador.apuesta.append(apuesta)
+        
+        separaciones(2)
+        
+        #########################
+        #### REPARTO INICIAL ####
+        #########################
+        print("REPARTO INICIAL")
+        # Inserto una carta al croupier y al jugador
+        croupier.mano.agregar_carta(mazo.pop())
+        for _ in range(2):
+            jugador.agregar_carta_jugador(0, mazo.pop())        # El 0 hace referencia a la mano inicial del jugador
+        
+        
+        if jugador.calcular_valor_mano(0) == 21:
+            print("*****************")
+            print("*** BLACKJACK ***")
+            print("*****************")
+            
+            ##################
+            #### RECUENTO ####
+            ##################
+            jugador.apuesta[0] *= 3/2
+            balance = recuento_partida(croupier, jugador, balance)
+            imprimeInfo(croupier, jugador)      # Mostramos la informacion de las manos del croupier y del jugador
+        else:
+            imprimeInfo(croupier, jugador)
+            ###########################
+            #### TURNO DEL JUGADOR ####
+            ###########################
+            print("TURNO DEL JUGADOR")
+            control_jugador = True      # Variable que lleva el control del bucle del jugador
+            manos_cerradas = 0      # Variable que lleva la cuenta de las manos cerradas y pasadas (no se pueden modificar)
+            while control_jugador:      # Bucle para llevar a cabo el turno del jugador para cada mano
+                for i in range(len(jugador.manos)):     # Recorro todas las manos del jugador
+                    if jugador.estado_mano[i] in ["Cerrada", "PASADA"]:     # En este caso, el jugador no podra gestionar la mano en cuestion y lo mostramos por pantalla
+                        print(f"La mano {jugador.nombre_mano[i]} esta {jugador.estado_mano[i]} y no puede ser modificada.")
+                        manos_cerradas += 1     # Sumamos 1 a las manos cerradas / pasadas
+                        print()
+                        
+                    else:       # En este caso la mano esta abierta y puede ser modificada
+                        control_jugada = True      # Variable que lleva el control del bucle para las jugadaes del jugador y tratar los errores
+                        while control_jugada:
+                            if compara_cartas(jugador, i) == False:     # En caso de que no haya dos cartas con el mismo valor(Ej: 7 y 7), no se muestra la opcion para separar la mano
+                                jugada = estrategia.jugada(croupier.mano.cartas, jugador.manos[i].cartas)
+                                print(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar ", jugada)        # Pido al jugador que inserte la jugada que desea realizar
+                                
+                                if jugada not in ["P", "p", "C", "c", "D", "d"]:        # Si la jugada insertada no es valida, mostramos el error por pantalla y lo volvemos a pedir
+                                    print(f"Entrada no valida, por favor, inserte de nuevo la jugada que desea realizar para la {jugador.nombre_mano[i]}")
+                                
+                            else:
+                                jugada = estrategia.jugada(croupier.mano.cartas, jugador.manos[i].cartas)
+                                print(f"¿Jugada para {jugador.nombre_mano[i]}? [P]edir [D]oblar [C]errar [S]eparar ", jugada)        # Pido al jugador que inserte la jugada que desea realizar
+                                
+                                if jugada not in ["P", "p", "C", "c", "D", "d", "S", "s"]:        # Si la jugada insertada no es valida, mostramos el error por pantalla y lo volvemos a pedir
+                                    print(f"Entrada no valida, por favor, inserte de nuevo la jugada que desea realizar para la {jugador.nombre_mano[i]}")
+                            control_jugada = False      # Salimos del bucle
+                            
+                        if jugada in ["P", "p"]:        # Pedimos y agregamos una carta a la mano en cuestion
+                            jugador.agregar_carta_jugador(i, mazo.pop())        # i hace referencia a la mano, mazo.pop() inserta una carta del mazo
+                        
+                        elif jugada in ["D", "d"]:      # Doblamos la apuesta del jugador, agregamos una carta y cambiamos el estado de la mano correspondiente
+                            jugador.apuesta[i] *= 2        # Doblamos la apuesta de la mano correspondiente
+                            jugador.agregar_carta_jugador(i, mazo.pop())        # Agregamos una carta a la mano correspondiente
+                            
+                            if jugador.calcular_valor_mano(i) > 21:     # Si el valor total de la mano es valor > 21 -> PASADA
+                                jugador.estado_mano[i] = "PASADA"
+
+                            else:       # valor < 21 -> Cerrada
+                                jugador.estado_mano[i] = "Cerrada"
+                        
+                        elif jugada in ["C", "c"]:      # jugada insertada = "C" o "c"
+                            jugador.estado_mano[i] = "Cerrada"      # Cambiamos el estado de la mano a Cerrada
+                            
+                        
+                        else:    #Caso separar: Separar
+                            jugador.separarMano(i, dime_carta_repetida(jugador, i))     # Separamos la mano cuando haya 2 cartas con el mismo valor (Ej: 7 y 7)
+                        
+                        
+                    
+                    if manos_cerradas == len(jugador.manos):
+                        jugador.imprime_jugador()
+                        control_jugador = False
+                    else:
+                        jugador.imprime_jugador()
+            
+            separaciones(2)
+            
+            ############################
+            #### TURNO DEL CROUPIER ####
+            ############################
+            print("TURNO DEL CROUPIER")
+            
+            croupier.imprime_croupier()
+            
+            print()
+            
+            while croupier.mano.calcular_valor() < 17:
+                croupier.mano.agregar_carta(mazo.pop())
+                
+                if croupier.mano.calcular_valor() > 21:
+                    croupier.mano.mano_pasada()
+                elif croupier.mano.calcular_valor() > 17:
+                    croupier.mano.cerrar_mano()
+                else:
+                    print()
+                    croupier.imprime_croupier()
+            
+            separaciones(3)
+            
+            
+            ##################
+            #### RECUENTO ####
+            ##################
+            balance = recuento_partida(croupier, jugador, balance)
+            
+            ###########################
+            #### FIN DE LA PARTIDA ####
+            ###########################
+            if volver_jugar(balance, contador_partidas) == False:
+                partida = False
+            else:
+                contador_partidas += 1
+                clearTerminal()
         
 def modoPredeterminado(mazo, balance, contador_partidas):
     pass
@@ -675,6 +829,7 @@ def Main():
     balance = 0     # Balance de la partida del jugador
     contador_partidas = 1       # Variable que lleva las cuentas de las partidas que lleva el jugador
     mazo = generamosMazo()      # Generamos el mazo para la partida
+    estrategia = externo.Estrategia(externo.Mazo.NUM_BARAJAS)
     
     bucleCorrecto = True
     while bucleCorrecto:
@@ -690,7 +845,7 @@ def Main():
             bucleCorrecto = False
             
         elif modoEjecucion in ["A", "a"]:
-            modoAnalisis(mazo, balance, contador_partidas)
+            modoAnalisis(mazo, balance, contador_partidas, estrategia)
             bucleCorrecto = False
             
         elif modoEjecucion == "":
