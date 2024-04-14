@@ -156,7 +156,7 @@ class Croupier():
         if self.mano.estado == "Activa":
             print(f"  {self.mano.estado} ", end='\0')
         elif self.mano.estado == "Cerrada":
-            print(f"{self.mano.estado}", end='\0')
+            print(f"{self.mano.estado}  ", end='\0')
         else:
             print(f"  {self.mano.estado} ", end='\0')
         
@@ -828,7 +828,90 @@ def modoAnalisis(mazo, balance, contador_partidas, estrategia):
                 
         
 def modoPredeterminado(mazo, balance, contador_partidas):
-    pass
+    croupier = Croupier()       # Creo el croupier
+    jugador = Jugador()     # Creo al jugador
+    jugador.agregar_mano()      # Le doy una mano al jugador
+    
+    print("--- INICIO PARTIDA #", contador_partidas, " --- BALANCE = ", balance, "€")
+    
+    
+    valor_apuesta = 10
+    jugador.apuesta.append(valor_apuesta)
+    
+    separaciones(2)
+    
+    #########################
+    #### REPARTO INICIAL ####
+    #########################
+    print("REPARTO INICIAL")
+    # Inserto una carta al croupier y al jugador
+    comprueba_genera_mazo(mazo)
+    croupier.mano.agregar_carta(mazo.pop())
+    
+    for _ in range(2):
+        comprueba_genera_mazo(mazo)
+        jugador.agregar_carta_jugador(0, mazo.pop())        # El 0 hace referencia a la mano inicial del jugador
+    
+    
+    if jugador.calcular_valor_mano(0) == 21:
+        print("*****************")
+        print("*** BLACKJACK ***")
+        print("*****************")
+        
+        ##################
+        #### RECUENTO ####
+        ##################
+        jugador.apuesta[0] *= 3/2
+        balance = recuento_partida(croupier, jugador, balance)
+        imprimeInfo(croupier, jugador)      # Mostramos la informacion de las manos del croupier y del jugador
+    else:
+        imprimeInfo(croupier, jugador)
+        ###########################
+        #### TURNO DEL JUGADOR ####
+        ###########################
+        print("TURNO DEL JUGADOR")
+        jugada = "P"
+        print(f"¿Jugada para {jugador.nombre_mano[0]}? [P]edir [D]oblar [C]errar", jugada)
+        jugador.agregar_carta_jugador(0, mazo.pop())
+        jugador.imprime_jugador()
+        
+        separaciones(2)
+        
+        ############################
+        #### TURNO DEL CROUPIER ####
+        ############################
+        print("TURNO DEL CROUPIER")
+        
+        croupier.imprime_croupier()
+        
+        print()
+        
+        while croupier.mano.calcular_valor() < 17:
+            comprueba_genera_mazo(mazo)
+            croupier.mano.agregar_carta(mazo.pop())
+            
+            if croupier.mano.calcular_valor() > 21:
+                croupier.mano.mano_pasada()
+                croupier.imprime_croupier()
+                
+            elif croupier.mano.calcular_valor() > 17:
+                croupier.mano.cerrar_mano()
+                croupier.imprime_croupier()
+            
+        
+        separaciones(3)
+        
+        
+        ##################
+        #### RECUENTO ####
+        ##################
+        balance = recuento_partida(croupier, jugador, balance)
+        
+        
+        separaciones(2)
+            
+    contador_partidas += 1
+    modoJuego(mazo, balance, contador_partidas)
 
 
 
